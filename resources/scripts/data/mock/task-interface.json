@@ -1,0 +1,217 @@
+{
+  "fields": [
+    {
+      "name": "id",
+      "title": "Номер",
+      "type": "string",
+      "readonly": true
+    },
+    {
+      "name": "created_at",
+      "title": "Дата регистрации",
+      "type": "date"
+    },
+    {
+      "name": "department",
+      "title": "Работы для отдела",
+      "type": "select",
+      "required": true,
+      "values": [
+        {
+          "id": 1,
+          "title": "SEO"
+        },
+        {
+          "id": 2,
+          "title": "Индекс разработка"
+        }
+      ]
+    },
+    {
+      "name": "client",
+      "title": "Клиент",
+      "type": "string",
+      "required": true,
+      "autocomplete": true
+    },
+    {
+      "name": "person",
+      "title": "Контактное лицо",
+      "type": "select",
+      "values": []
+    },
+    {
+      "name": "executor",
+      "title": "Ответственный специалист",
+      "type": "select",
+      "required": true,
+      "values": [
+        {
+          "id": 1,
+          "title": "Иванов Иван"
+        },
+        {
+          "id": 2,
+          "title": "Сидоров Петр"
+        },
+        {
+          "id": 3,
+          "title": "Лебедев Сергей"
+        }
+      ]
+    },
+    {
+      "name": "type",
+      "title": "Тип обращения",
+      "type": "select",
+      "values": [
+        {
+          "id": 1,
+          "name": "consultation",
+          "title": "Консультация"
+        },
+        {
+          "id": 2,
+          "name": "content",
+          "title": "Работа по контенту"
+        },
+        {
+          "id": 3,
+          "name": "code",
+          "title": "Доработка кода"
+        },
+        {
+          "id": 4,
+          "name": "design",
+          "title": "Дизайн"
+        },
+        {
+          "id": 5,
+          "name": "configure",
+          "title": "Конфигурирование системы"
+        },
+        {
+          "id": 6,
+          "name": "warranty",
+          "title": "Гарантийные работы"
+        },
+        {
+          "id": 7,
+          "name": "other",
+          "title": "Другое"
+        }
+      ]
+    },
+    {
+      "name": "priority",
+      "title": "Приоритет",
+      "type": "select",
+      "values": [
+        {
+          "id": 1,
+          "name": "high",
+          "title": "Высокий"
+        },
+        {
+          "id": 2,
+          "name": "middle",
+          "title": "Средний"
+        },
+        {
+          "id": 3,
+          "name": "low",
+          "title": "Низкий"
+        }
+      ]
+    },
+    {
+      "name": "status",
+      "title": "Статус",
+      "type": "select",
+      "values": [
+        {
+          "id": 1,
+          "name": "new",
+          "title": "Передано специалисту",
+          "default": true
+        },
+        {
+          "id": 2,
+          "name": "progress",
+          "title": "В процессе выполнения"
+        },
+        {
+          "id": 3,
+          "name": "complete",
+          "title": "Выполнено"
+        },
+        {
+          "id": 4,
+          "name": "waiting_answer",
+          "title": "Ожидается ответ клиента"
+        },
+        {
+          "id": 5,
+          "name": "waiting_payment",
+          "title": "Ожидается оплата клиента"
+        },
+        {
+          "id": 6,
+          "name": "additional",
+          "title": "По доп. соглашению"
+        },
+        {
+          "id": 7,
+          "name": "cancel",
+          "title": "Отложено/отменено"
+        }
+      ]
+    },
+    {
+      "name": "short_description",
+      "title": "Суть проблемы",
+      "type": "text"
+    },
+    {
+      "name": "full_description",
+      "title": "Комментарий",
+      "type": "text"
+    },
+    {
+      "name": "deadline_date",
+      "title": "Выполнить до",
+      "type": "date"
+    },
+    {
+      "name": "complete_date",
+      "title": "Дата выполнения",
+      "type": "date"
+    },
+    {
+      "name": "current_time",
+      "title": "Мой таймер (мин.)",
+      "type": "string",
+      "readonly": true
+    },
+    {
+      "name": "client_time",
+      "title": "Время для клиента (мин.)",
+      "type": "string"
+    },
+    {
+      "name": "max_time",
+      "title": "Макс. время выполнения (мин.)",
+      "type": "string"
+    },
+    {
+      "name": "tech_comment",
+      "title": "Технический комментарий",
+      "type": "text"
+    },
+    {
+      "name": "client_comment",
+      "title": "Комментарий для клиента",
+      "type": "text"
+    }
+  ]
+}

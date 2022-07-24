@@ -1,0 +1,13 @@
+{
+    "name": "Vpanel",
+    "alias": "vpanel",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Vpanel\\Providers\\VpanelServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
