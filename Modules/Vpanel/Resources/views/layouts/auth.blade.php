@@ -6,10 +6,17 @@
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/>
     <title>{{env('APP_NAME')}}</title>
-    <!-- Scripts and CSS import -->
-    @vite
+    @vite('auth')
 </head>
-<body class="dark:bg-gray-900">
-    @yield('content')
+<body class="bg-gray-100">
+<div class="flex flex-col h-screen justify-center items-center">
+    <div class="flex items-center justify-center mb-10">
+        <span class="self-center text-xl font-semibold whitespace-nowrap">index.v CMS</span>
+    </div>
+    <div class="w-1/2">
+        @yield('content')
+    </div>
+</div>
+
 </body>
 </html>

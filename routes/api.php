@@ -6,10 +6,9 @@ use App\Http\Controllers\API\TaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\API\DashboardController;
-use \App\Modules\Users\Controllers\UserController;
 
-Route::post('login', [UserController::class, 'login']);
-Route::middleware('auth:sanctum')->post('logout', [UserController::class, 'logout']);
+//Route::post('login', [UserController::class, 'login']);
+//Route::middleware('auth:sanctum')->post('logout', [UserController::class, 'logout']);
 
 Route::group(['prefix' => 'user', 'middleware' => 'auth:sanctum'], function () {
     Route::get('', function (Request $request) {
@@ -19,9 +18,9 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth:sanctum'], function () {
     Route::post('create', function (Request $request) {});
 });
 
-Route::group(['prefix' => 'users', 'middleware' => 'auth:sanctum'], function () {
-    Route::get('executors', [UserController::class, 'getExecutors']);
-});
+//Route::group(['prefix' => 'users', 'middleware' => 'auth:sanctum'], function () {
+//    Route::get('executors', [UserController::class, 'getExecutors']);
+//});
 
 Route::group(['prefix' => 'dashboard', 'middleware' => 'auth:sanctum'], function () {
     Route::get('performance', [DashboardController::class, 'getPerformance']);

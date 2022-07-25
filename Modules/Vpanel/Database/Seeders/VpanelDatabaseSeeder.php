@@ -3,7 +3,7 @@
 namespace Modules\Vpanel\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Eloquent\Model;
+use Modules\Vpanel\Entities\User;
 
 class VpanelDatabaseSeeder extends Seeder
 {
@@ -14,8 +14,12 @@ class VpanelDatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Model::unguard();
+        User::factory()->create([
+            'name' => 'admin',
+            'email' => 'admin@test.ru',
+            'password' => bcrypt('123')
+        ]);
 
-        // $this->call("OthersTableSeeder");
+        User::factory(3)->create();
     }
 }

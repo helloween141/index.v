@@ -42,12 +42,10 @@
             <span class="ml-4">{{ userStore.user.name }}</span>
           </RouterLink>
         </li>
-        <li>
-          <a href="#" @click.prevent="logout" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
+          <a href="/admin/logout/" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
             <i class="fa-solid fa-sign-out text-gray-500 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white dark:text-gray-400"></i>
             <span class="ml-4">Выйти</span>
           </a>
-        </li>
       </ul>
     </div>
   </aside>
