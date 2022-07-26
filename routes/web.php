@@ -13,11 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/admin', function () {
-    return view('admin/index');
-})->where('any', '.*');
+//Route::get('/admin', function () {
+//    return view('admin/index');
+//})->where('any', '.*');
 
 
-Route::get('/', function () {
-    return view('app');
-})->where('any', '.*');
+//Route::get('/', function () {
+//    return view('app');
+//})->where('any', '.*');

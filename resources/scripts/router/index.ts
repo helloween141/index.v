@@ -10,14 +10,16 @@ const router = createRouter({
             path: '/admin/:module/:model/:id?/',
             name: 'module',
             component: () => import('../views/ModuleView.vue'),
+            meta: {
+                middleware: 'auth'
+            }
         },
         {
             path: '/admin/',
             name: 'dashboard',
             component: () => DashboardView,
             meta: {
-                middleware: 'auth',
-                title: 'Главная'
+                middleware: 'auth'
             }
         },
         {
@@ -25,8 +27,7 @@ const router = createRouter({
             name: 'login',
             component: () => LoginView,
             meta: {
-                middleware: 'guest',
-                title: 'Авторизация'
+                middleware: 'guest'
             }
         },
     ]
@@ -34,7 +35,7 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
     try {
-        document.title = `${to.meta.title}`
+        document.title = 'index.v CMS'
         const userStore = useUserStore()
         await userStore.getUserData()
         if (to.meta.middleware === 'guest') {

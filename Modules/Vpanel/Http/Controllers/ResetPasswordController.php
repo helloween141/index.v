@@ -2,26 +2,19 @@
 
 namespace Modules\Vpanel\Http\Controllers;
 
-use Carbon\Carbon;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Database\QueryException;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Routing\Redirector;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
 use Modules\Vpanel\Entities\User;
 
 class ResetPasswordController extends Controller
 {
     public function index($token)
     {
-        return view('vpanel::reset_password', ['token' => $token]);
+        return view('vpanel::reset_password', [
+            'token' => $token
+        ]);
     }
 
     public function reset(Request $request)
@@ -39,15 +32,15 @@ class ResetPasswordController extends Controller
             ])
             ->first();
 
-        if(!$updatePassword){
+        if (!$updatePassword) {
             return back()->withInput()->with('error', 'Неверный токен!');
         }
 
-        $user = User::where('email', $request->email)
+        User::where('email', $request->email)
             ->update(['password' => Hash::make($request->password)]);
 
-        DB::table('password_resets')->where(['email'=> $request->email])->delete();
+        DB::table('password_resets')->where(['email' => $request->email])->delete();
 
-        return redirect('/login')->with('message', 'Ваш пароль был изменен!');
+        return redirect()->route('login.show')->with('message', 'Ваш пароль был изменен!');
     }
 }

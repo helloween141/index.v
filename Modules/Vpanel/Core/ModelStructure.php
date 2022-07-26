@@ -16,9 +16,9 @@ class ModelStructure
 
     protected string $accusativeRecordTitle;
 
-    protected string $viewComponent = 'DefaultView';
+    protected string $editorComponent = 'DefaultModelEditor';
 
-    protected string $formComponent = 'DefaultForm';
+    protected string $formComponent = 'DefaultModelForm';
 
     public function addField(Field $field): ModelStructure
     {
@@ -50,9 +50,9 @@ class ModelStructure
         return $this;
     }
 
-    public function setViewComponent($name): ModelStructure
+    public function setEditorComponent($name): ModelStructure
     {
-        $this->viewComponent = $name;
+        $this->editorComponent = $name;
         return $this;
     }
 

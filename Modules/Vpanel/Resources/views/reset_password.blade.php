@@ -8,6 +8,16 @@
         </div>
     @endif
 
+    @if ($errors->any())
+        <div class="text-sm bg-gray-100 text-red-700">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li class="font-medium mb-2">{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <form method="post" action="{{ route('reset.perform') }}" class="shadow-md rounded px-8 pt-6 pb-8 bg-gray-50">
         @csrf
 
@@ -28,8 +38,8 @@
         </div>
 
         <div class="mb-6">
-            <label for="password-confirm" class="block mb-2 text-sm font-medium text-gray-900">Повторите пароль</label>
-            <input type="password" id="password-confirm" name="password-confirm" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+            <label for="password_confirmation" class="block mb-2 text-sm font-medium text-gray-900">Повторите пароль</label>
+            <input type="password" id="password_confirmation" name="password_confirmation" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
         </div>
 
         <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Восстановить</button>
