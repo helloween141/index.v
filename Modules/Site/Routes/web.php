@@ -11,6 +11,6 @@
 |
 */
 
-Route::prefix('site')->group(function() {
-    Route::get('/', 'SiteController@index');
-});
+Route::get('/', function () {
+    return view('app');
+})->where('any', '.*');

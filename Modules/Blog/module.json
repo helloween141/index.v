@@ -2,15 +2,15 @@
   "name": "Blog",
   "menu": {
     "title": "Блог",
-    "icon": "fa-solid fa-blog",
-    "model": "Blog",
+    "icon": "fa-solid fa-newspaper",
+    "module": "Blog",
     "list": [
       {
-        "name": "News",
+        "model": "News",
         "title": "Новости"
       },
       {
-        "name": "Authors",
+        "model": "Author",
         "title": "Авторы"
       }
     ]

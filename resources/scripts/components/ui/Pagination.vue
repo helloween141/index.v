@@ -1,7 +1,11 @@
 <template>
-  <div v-if="pages">
-    <div class="mb-5">
-      <ul class="inline-flex items-center -space-x-px">
+  <nav v-if="pages.total > 0" class="flex justify-between items-center pt-4">
+    <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
+      Показывается <span class="font-semibold text-gray-900 dark:text-white">{{ pages.from }}-{{ pages.to }}</span>
+      из <span class="font-semibold text-gray-900 dark:text-white">{{ pages.total }}</span>
+    </span>
+
+    <ul class="inline-flex items-center -space-x-px">
         <li v-for="(link, key) in pages.links">
           <a v-if="key === 0"
              href="#"
@@ -41,8 +45,7 @@
           </a>
         </li>
       </ul>
-    </div>
-  </div>
+  </nav>
 </template>
 
 <script>

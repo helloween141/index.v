@@ -8,13 +8,13 @@ class ModelStructure
 {
     protected array $fields = [];
 
-    protected string $masterModel;
+    protected string $masterModel = '';
 
-    protected string $modelTitle;
+    protected string $title = '';
 
-    protected string $recordTitle;
+    protected string $recordTitle = '';
 
-    protected string $accusativeRecordTitle;
+    protected string $accusativeRecordTitle = '';
 
     protected string $editorComponent = 'DefaultModelEditor';
 
@@ -28,7 +28,7 @@ class ModelStructure
 
     public function setModelTitle($title): ModelStructure
     {
-        $this->modelTitle = $title;
+        $this->title = $title;
         return $this;
     }
 
@@ -62,9 +62,19 @@ class ModelStructure
         return $this;
     }
 
+    public function getFields(): array
+    {
+        return $this->fields;
+    }
+
     public function toArray(): array
     {
-        return (array)$this;
+        $vars = get_object_vars($this);
+        $array = array();
+        foreach ($vars as $key => $value) {
+            $array [ltrim($key, '_')] = $value;
+        }
+        return $array;
     }
 }
 

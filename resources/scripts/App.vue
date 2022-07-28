@@ -10,15 +10,20 @@
 
 <script lang="ts">
 import {defineComponent, onMounted, ref} from "vue";
-import AuthView from "@/views/LoginView.vue";
 import {useThemeStore} from "@/stores/theme";
 import axios from "axios";
-import Sidebar from "@/components/ui/Sidebar.vue";
+import Sidebar from "@/components/ui/sidebar/Sidebar.vue";
+import {useUserStore} from "@/stores/user";
 
 export default defineComponent({
-  components: {Sidebar, AuthView},
+  components: {Sidebar},
   setup() {
     const themeStore = useThemeStore()
+    const userStore = useUserStore()
+
+    onMounted(async () => {
+      await userStore.getUserData()
+    });
 
     const onToggleTheme = () => {
       themeStore.switchTheme()
@@ -39,6 +44,7 @@ export default defineComponent({
       try {
         axios.get('/api/vpanel/menu').then(response => {
           menu.value = response.data
+          console.log(menu.value)
         })
       } catch (error) {
         console.error(error)

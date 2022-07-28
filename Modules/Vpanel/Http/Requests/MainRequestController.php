@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Vpanel\Core\BaseModel;
 use Nwidart\Modules\Facades\Module;
 
 class MainRequestController extends Controller
@@ -23,33 +24,29 @@ class MainRequestController extends Controller
         return $list;
     }
 
-    public function getInterface(Request $request) {
+    public function getInterface(Request $request): array
+    {
         $moduleName = $request->get('module', '');
         $modelName = $request->get('model', '');
-        if (!$moduleName || !$modelName) {
-            return [];
-        }
 
-        $model = $this->getModelClass($moduleName, $modelName);
-
-        if (!class_exists($model)) {
-            return [
-                'success' => 'false'
-            ];
+        $model = $this->getModel($moduleName, $modelName);
+        if (!$model) {
+            throw new \Error('Model not found!');
         }
 
         return [
-            'structure' => $model->getStructure(),
-            'list' => $model->getAll()
+            'interface' => $model->getStructure()->toArray(),
+            'list' => $model->getList()
         ];
     }
 
-    public function getList(Request $request) {
-
-    }
-
-    private function getModelClass($moduleName, $modelName): string
+    private function getModel($moduleName, $modelName): ?BaseModel
     {
-        return 'Modules\\' . $moduleName . '\\Entities\\' . ucfirst($modelName);
+        $modelClass = 'Modules\\' . $moduleName . '\\Entities\\' . ucfirst($modelName);
+        if (!class_exists($modelClass)) {
+            return null;
+        }
+
+        return new $modelClass();
     }
 }
