@@ -4,6 +4,8 @@ namespace Modules\Blog\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Blog\Entities\Author;
+use Modules\Blog\Entities\News;
 
 class BlogDatabaseSeeder extends Seeder
 {
@@ -14,8 +16,7 @@ class BlogDatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Model::unguard();
-
-        // $this->call("OthersTableSeeder");
+        Author::factory(3)->create();
+        News::factory(3)->create();
     }
 }

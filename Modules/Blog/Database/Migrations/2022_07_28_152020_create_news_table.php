@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->timestamp('date');
-            $table->foreignId('author_id');
+            $table->foreignId('author_id')->constrained('authors');
         });
     }
 

@@ -34,10 +34,20 @@ class MainRequestController extends Controller
             throw new \Error('Model not found!');
         }
 
-        return [
-            'interface' => $model->getStructure()->toArray(),
-            'list' => $model->getList()
-        ];
+        return $model->getStructure()->toArray();
+    }
+
+    public function getList(Request $request)
+    {
+        $moduleName = $request->get('module', '');
+        $modelName = $request->get('model', '');
+
+        $model = $this->getModel($moduleName, $modelName);
+        if (!$model) {
+            throw new \Error('Model not found!');
+        }
+
+        return $model->getList();
     }
 
     private function getModel($moduleName, $modelName): ?BaseModel

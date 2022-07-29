@@ -17,19 +17,29 @@ export default defineComponent({
     const targetComponent = shallowRef('')
     const route = useRoute()
 
+    // TODO: Refactoring
     watch(route, async (to) => {
       try {
-        const response = await axios.get(`/api/vpanel/interface`, {
+        const interfaceResponse = await axios.get(`/api/vpanel/interface`, {
           params: {
             'module': route.params.module,
             'model': route.params.model
           }
         })
-        if (response.data) {
-          const inteface = response.data.interface;
-          loadComponent(inteface.editorComponent)
-          modelInterface.value = inteface
-          modelValues.value = response.data.list
+        if (interfaceResponse.data) {
+          const interfaceData = interfaceResponse.data
+          modelInterface.value = interfaceData;
+          loadComponent(interfaceData.editorComponent)
+
+          const listResponse = await axios.get(`/api/vpanel/list`, {
+            params: {
+              'module': route.params.module,
+              'model': route.params.model
+            }
+          })
+          if (listResponse.data) {
+            modelValues.value = listResponse.data
+          }
         }
       } catch (error) {
         console.error(error)
