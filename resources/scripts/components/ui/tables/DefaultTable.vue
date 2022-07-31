@@ -9,9 +9,16 @@
       </tr>
       </thead>
       <tbody>
-      <tr v-for="item in values" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-        <td class="py-4 px-6" v-for="(record, key, index) in item" :key="index" v-show="headerNames.includes(key)">
-          {{record}}
+      <tr v-for="(item, index) in values"
+          :key="index"
+          class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer"
+          @click="onClick(item.id)"
+      >
+        <td class="py-4 px-6" v-for="(value, key, index) in item"
+            :key="index"
+            v-show="headerNames.includes(key)"
+        >
+          {{value}}
         </td>
       </tr>
       </tbody>
@@ -28,19 +35,23 @@ export default defineComponent({
     headers: Array,
     values: Array
   },
-  setup(props) {
+  setup(props, { emit }) {
     const headerNames = ref([])
     props.headers.forEach(header => {
       headerNames.value.push(header['name'])
     })
 
+    const onClick = (recordId: number) => {
+      emit('choose-record', recordId)
+    }
+
     return {
-      headerNames
+      headerNames,
+      onClick
     }
   }
 })
 </script>
 
 <style scoped>
-
 </style>

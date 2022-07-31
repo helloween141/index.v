@@ -1,19 +1,48 @@
 <template>
-  <div class="relative overflow-x-auto">
-    <!--<span class="text-white">{{values}}</span>-->
-    <form @submit.prevent="handleSave">
+
+  <div class="mb-3 flex justify-between items-center">
+    <div>
+      <h1 class="dark:text-white text-2xl">
+        <span>
+          Редактировать {{ model.recordTitle }}
+        </span>
+      </h1>
+    </div>
+
+    <div>
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-3">
+          <span class="text-white">
+             Сохранить
+          </span>
+      </button>
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-3">
+          <span class="text-white">
+            Сохранить и выйти
+          </span>
+      </button>
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-3">
+          <span class="text-white">
+            Удалить
+          </span>
+      </button>
+    </div>
+  </div>
+
+  <div class="relative overflow-x-auto" >
+    <span class="text-white">{{values}}</span>
+    <form @submit.prevent="onSave">
       <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <tbody>
         <tr
-            v-for="field in fields"
+            v-for="field in model.fields"
             v-show="!field.hidden"
             :key="field"
             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white odd:bg-gray-50"
         >
-          <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap w-1/6">
+          <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap w-48">
             {{ field.title }}
           </th>
-          <td class="px-6 py-4 w-1/2">
+          <td class="px-6 py-4">
             <InputField
                 v-if="field.type === 'string' || field.type === 'int'"
                 :field="field"
@@ -42,8 +71,8 @@
                 @set-value="setValue"
             />
 
-            <DateTimeField
-                v-else-if="field.type === 'datetime'"
+            <DateField
+                v-else-if="field.type === 'date'"
                 :field="field"
                 :value="values[field.name]"
                 @set-value="setValue"
@@ -52,9 +81,7 @@
         </tr>
         </tbody>
       </table>
-      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-5 mt-5">
-        Сохранить
-      </button>
+
     </form>
   </div>
 </template>
@@ -64,27 +91,23 @@ import InputField from "@/components/ui/fields/InputField.vue";
 import TextField from "@/components/ui/fields/TextField.vue";
 import SelectField from "@/components/ui/fields/SelectField.vue";
 import PointerField from "@/components/ui/fields/PointerField.vue";
-import DateTimeField from "@/components/ui/fields/DateTimeField.vue";
+import DateField from "@/components/ui/fields/DateField.vue";
+import {defineComponent} from "vue";
 
-export default {
-  name: "ModuleForm",
-  components: {DateTimeField, PointerField, SelectField, TextField, InputField},
+export default defineComponent({
+  name: 'ModuleForm',
+  components: {TextField, DateField, PointerField, SelectField, InputField},
   props: {
-    incFields: Object,
-    incValues: Object
+    model: Object,
+    values: Object
   },
-  data() {
-    return {
-      fields: this.incFields,
-      values: this.incValues
-    }
-  },
-  methods: {
-    async handleSave() {
+  setup(props, {emit}) {
+
+    const onSave = () => {
       const formData = new FormData()
 
-      Object.keys(this.values).forEach(key => {
-        let item = this.values[key]
+      Object.keys(props.values).forEach(key => {
+        let item = props.values[key]
         if (item) {
           if (typeof item === 'object' && item.id) {
             formData.append(key, item.id)
@@ -93,14 +116,18 @@ export default {
           }
         }
       })
-      this.$emit('save-form-data', formData)
-    },
-    setValue(fieldName, fieldValue) {
-      console.log(fieldValue)
-      this.values[fieldName] = fieldValue
-    },
+      emit('save-form-data', formData)
+    }
+    const setValue = (fieldName, fieldValue) => {
+      props.values[fieldName] = fieldValue
+    }
+
+    return {
+      onSave,
+      setValue
+    }
   }
-}
+})
 </script>
 
 <style scoped>

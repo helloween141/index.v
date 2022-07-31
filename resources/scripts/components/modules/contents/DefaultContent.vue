@@ -24,7 +24,7 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import Timer from '@/components/ui/Timer.vue'
-import ModuleForm from '@/components/modules/ModuleForm.vue';
+import ModuleForm from '@/components/forms/ModuleForm.vue';
 import {formMixin} from '@/mixins/formMixin'
 
 export default defineComponent({

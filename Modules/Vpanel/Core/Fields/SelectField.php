@@ -5,7 +5,7 @@ class SelectField extends Field
 {
     public array $options = [];
 
-    public function __construct(public string $name) {}
+    public function __construct(public string $name, public string $type = 'select') {}
 
     public function setOptions($options) {
         $this->options = $options;

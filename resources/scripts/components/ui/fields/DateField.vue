@@ -16,7 +16,7 @@
 import moment from 'moment'
 
 export default {
-  name: 'DateTimeField',
+  name: 'DateField',
   props: {
     field: Object,
     value: ''

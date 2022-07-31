@@ -44,7 +44,6 @@ export default defineComponent({
       try {
         axios.get('/api/vpanel/menu').then(response => {
           menu.value = response.data
-          console.log(menu.value)
         })
       } catch (error) {
         console.error(error)

@@ -2,7 +2,7 @@
   <div>
     <div class="mb-3 flex justify-between items-center">
       <div>
-        <h1 class="text-white text-2xl">{{ model.title }}</h1>
+        <h1 class="dark:text-white text-2xl">{{ model.title }}</h1>
       </div>
       <div>
         <button class="bg-blue-700 hover:bg-blue-400 text-gray-800 font-bold py-2 px-4 rounded">
@@ -10,14 +10,18 @@
         </button>
 
         <button class="bg-blue-700 hover:bg-blue-400 ml-3 text-gray-800 font-bold py-2 px-4 rounded">
-        <span class="text-white">
-          <i class="fa-solid fa-circle-plus"></i> Создать {{ model.accusativeRecordTitle }}
-        </span>
+          <span class="text-white">
+            <i class="fa-solid fa-circle-plus"></i> Создать {{ model.accusativeRecordTitle }}
+          </span>
         </button>
       </div>
     </div>
 
-    <DefaultTable :headers="model.fields" :values="values.data" />
+    <DefaultTable
+        @choose-record="chooseRecord"
+        :headers="model.fields"
+        :values="values.data"
+    />
 
     <Pagination :pages="values" />
 
@@ -28,6 +32,7 @@
 import {defineComponent} from "vue";
 import Pagination from "@/components/ui/Pagination.vue";
 import DefaultTable from "@/components/ui/tables/DefaultTable.vue";
+import router from "@/router";
 
 export default defineComponent({
   name: 'DefaultModelEditor',
@@ -37,7 +42,12 @@ export default defineComponent({
     values: Object
   },
   setup() {
+    const chooseRecord = (recordId) => {
+      router.push({ name: 'module', params: { id: recordId } })
+    }
+
     return {
+      chooseRecord
     }
   }
 })

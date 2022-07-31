@@ -16,7 +16,6 @@ class News extends BaseModel
 {
     use HasFactory;
 
-    public $timestamps = false;
     /**
      * Create a new factory instance for the model.
      *

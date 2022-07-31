@@ -24,11 +24,8 @@ class MainRequestController extends Controller
         return $list;
     }
 
-    public function getInterface(Request $request): array
+    public function getInterface(string $moduleName, string $modelName): array
     {
-        $moduleName = $request->get('module', '');
-        $modelName = $request->get('model', '');
-
         $model = $this->getModel($moduleName, $modelName);
         if (!$model) {
             throw new \Error('Model not found!');
@@ -37,17 +34,14 @@ class MainRequestController extends Controller
         return $model->getStructure()->toArray();
     }
 
-    public function getList(Request $request)
+    public function getData(string $moduleName, string $modelName, int $recordId = null)
     {
-        $moduleName = $request->get('module', '');
-        $modelName = $request->get('model', '');
-
         $model = $this->getModel($moduleName, $modelName);
         if (!$model) {
             throw new \Error('Model not found!');
         }
 
-        return $model->getList();
+        return $model->getList($recordId);
     }
 
     private function getModel($moduleName, $modelName): ?BaseModel

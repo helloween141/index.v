@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class BaseModel extends Model
 {
+    public $timestamps = false;
+
     protected ModelStructure $structure;
 
     public function __construct(array $attributes = [])
@@ -19,8 +21,13 @@ class BaseModel extends Model
         return $this->structure;
     }
 
-    public function getList() {
-        $list = self::query()
+    public function getList($recordId = null) {
+        $query = self::query();
+        if ($recordId) {
+            $query->where('id', '=', $recordId);
+        }
+
+        $list = $query
             ->orderBy('id', 'DESC')
             ->paginate();
 

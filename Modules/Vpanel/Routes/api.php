@@ -4,8 +4,8 @@ use Modules\Vpanel\Http\Requests\MainRequestController;
 
 Route::group(['prefix' => 'vpanel'], function () {
     Route::get('/menu', [MainRequestController::class, 'getMenu']);
-    Route::get('/interface', [MainRequestController::class, 'getInterface']);
-    Route::get('/list', [MainRequestController::class, 'getList']);
+    Route::get('/interface/{moduleName}/{modelName}', [MainRequestController::class, 'getInterface']);
+    Route::get('/data/{moduleName}/{modelName}/{recordId?}', [MainRequestController::class, 'getData']);
 });
 
 Route::group(['prefix' => 'user'], function () {
