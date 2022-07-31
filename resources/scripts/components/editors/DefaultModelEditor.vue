@@ -1,29 +1,12 @@
 <template>
   <div>
-    <div class="mb-3 flex justify-between items-center">
-      <div>
-        <h1 class="dark:text-white text-2xl">{{ model.title }}</h1>
-      </div>
-      <div>
-        <button class="bg-blue-700 hover:bg-blue-400 text-gray-800 font-bold py-2 px-4 rounded">
-          <i class="fa-solid fa-filter text-white"></i>
-        </button>
-
-        <button class="bg-blue-700 hover:bg-blue-400 ml-3 text-gray-800 font-bold py-2 px-4 rounded">
-          <span class="text-white">
-            <i class="fa-solid fa-circle-plus"></i> Создать {{ model.accusativeRecordTitle }}
-          </span>
-        </button>
-      </div>
-    </div>
+    <EditorActionPanel :model="model" />
 
     <DefaultTable
-        @choose-record="chooseRecord"
-        :headers="model.fields"
-        :values="values.data"
+        @select-record="selectRecord"
+        :model="model"
+        :values="values"
     />
-
-    <Pagination :pages="values" />
 
   </div>
 </template>
@@ -33,21 +16,22 @@ import {defineComponent} from "vue";
 import Pagination from "@/components/ui/Pagination.vue";
 import DefaultTable from "@/components/ui/tables/DefaultTable.vue";
 import router from "@/router";
+import EditorActionPanel from "@/components/ui/EditorActionPanel.vue";
 
 export default defineComponent({
   name: 'DefaultModelEditor',
-  components: {DefaultTable, Pagination},
+  components: {EditorActionPanel, DefaultTable},
   props: {
     model: Object,
     values: Object
   },
   setup() {
-    const chooseRecord = (recordId) => {
+    const selectRecord = (recordId) => {
       router.push({ name: 'module', params: { id: recordId } })
     }
 
     return {
-      chooseRecord
+      selectRecord
     }
   }
 })

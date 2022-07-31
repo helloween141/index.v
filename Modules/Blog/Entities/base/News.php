@@ -10,6 +10,7 @@ use Modules\Vpanel\Core\BaseModel;
 use Modules\Vpanel\Core\Fields\DateField;
 use Modules\Vpanel\Core\Fields\PointerField;
 use Modules\Vpanel\Core\Fields\StringField;
+use Modules\Vpanel\Core\Fields\TextField;
 use Modules\Vpanel\Core\ModelStructure;
 
 class News extends BaseModel
@@ -32,8 +33,10 @@ class News extends BaseModel
                 ->addField((new StringField('title'))->setTitle('Название')->required())
                 ->addField((new DateField('date'))->setTitle('Дата'))
                 ->addField((new PointerField('author_id'))->setModel(Author::class)->setTitle('Автор')->required())
+                ->addField((new TextField('short_text'))->setTitle('Краткое описание'))
+                ->addField((new TextField('full_text'))->setTitle('Полное описание'))
                 ->setModelTitle('Новости')
-                ->setRecordTitle('Новость')
+                ->setRecordTitle('новость')
                 ->setAccusativeRecordTitle('новость');
     }
 }
