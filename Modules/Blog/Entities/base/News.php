@@ -27,16 +27,20 @@ class News extends BaseModel
         return new NewsFactory();
     }
 
-    public function getStructure(): ModelStructure
+    public static ModelStructure $structure;
+
+    public static array $requiredFields = [];
+
+    public static function setStructure(): void
     {
-        return $this->structure
-                ->addField((new StringField('title'))->setTitle('Название')->required())
-                ->addField((new DateField('date'))->setTitle('Дата'))
-                ->addField((new PointerField('author_id'))->setModel(Author::class)->setTitle('Автор')->required())
-                ->addField((new TextField('short_text'))->setTitle('Краткое описание'))
-                ->addField((new TextField('full_text'))->setTitle('Полное описание'))
-                ->setModelTitle('Новости')
-                ->setRecordTitle('новость')
-                ->setAccusativeRecordTitle('новость');
+        self::$structure = (new ModelStructure)
+            ->addField((new StringField('title'))->setTitle('Название')->required())
+            ->addField((new DateField('date'))->setTitle('Дата'))
+            ->addField((new PointerField('author_id'))->setModel(Author::class)->setTitle('Автор')->required())
+            ->addField((new TextField('short_text'))->setTitle('Краткое описание'))
+            ->addField((new TextField('full_text'))->setTitle('Полное описание'))
+            ->setModelTitle('Новости')
+            ->setRecordTitle('новость')
+            ->setAccusativeRecordTitle('новость');
     }
 }

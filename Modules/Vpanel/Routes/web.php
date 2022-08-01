@@ -20,7 +20,6 @@ Route::prefix('admin')->group(function() {
     Route::get('/restore-password', 'RestorePasswordController@index')->name('restore.show');
     Route::post('/restore-password', 'RestorePasswordController@restore')->name('restore.perform');
 
-
     Route::get('/reset-password/{token}', 'ResetPasswordController@index')->name('reset.show');
     Route::post('/reset-password', 'ResetPasswordController@reset')->name('reset.perform');
 

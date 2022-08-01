@@ -6,7 +6,7 @@ use Modules\Vpanel\Core\Fields\Field;
 
 class ModelStructure
 {
-    protected array $fields = [];
+    public array $fields = [];
 
     protected string $masterModel = '';
 

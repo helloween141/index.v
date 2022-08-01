@@ -22,9 +22,14 @@ class Author extends BaseModel
     {
         return new AuthorFactory();
     }
-    public function getStructure(): ModelStructure
+
+    public static ModelStructure $structure;
+
+    public static array $requiredFields = [];
+
+    public static function setStructure(): void
     {
-        return $this->structure
+        self::$structure = (new ModelStructure)
             ->addField((new StringField('name'))->setTitle('Имя')->required())
             ->setModelTitle('Автор')
             ->setRecordTitle('Автор')

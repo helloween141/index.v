@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
+use Modules\Blog\Entities\Author;
+use Modules\Blog\Entities\News;
 
 class AppServiceProvider extends ServiceProvider
 {

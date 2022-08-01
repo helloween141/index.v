@@ -1,5 +1,8 @@
 <template>
-  <FormActionPanel :model="model" />
+  <FormActionPanel
+      :model="model"
+      @on-save="onSave"
+  />
 
   <div class="relative overflow-x-auto" >
     <span class="text-white">{{values}}</span>
@@ -67,6 +70,10 @@ import PointerField from "@/components/ui/fields/PointerField.vue";
 import DateField from "@/components/ui/fields/DateField.vue";
 import {defineComponent} from "vue";
 import FormActionPanel from "@/components/ui/FormActionPanel.vue";
+import axios from "axios";
+import {useToast} from "vue-toastification";
+import {useRoute} from "vue-router";
+import router from "@/router";
 
 export default defineComponent({
   name: 'ModuleForm',
@@ -76,22 +83,50 @@ export default defineComponent({
     values: Object
   },
   setup(props, {emit}) {
+    const toast = useToast()
+    const route = useRoute()
 
-    const onSave = () => {
-      const formData = new FormData()
-
+    const prepareFormData = () => {
+      const data = new FormData()
       Object.keys(props.values).forEach(key => {
         let item = props.values[key]
         if (item) {
           if (typeof item === 'object' && item.id) {
-            formData.append(key, item.id)
+            data.append(key, item.id)
           } else {
-            formData.append(key, item)
+            data.append(key, item)
           }
         }
       })
-      emit('save-form-data', formData)
+      return data
     }
+
+    const onSave = async () => {
+      const formData = prepareFormData()
+
+      const moduleName = route.params.module
+      const modelName = route.params.model
+
+      try {
+        const response = await axios.post(`/api/vpanel/${moduleName}/${modelName}/save`, formData)
+        const id = response.data?.id || 0
+        if (id) {
+          toast.success("Данные сохранены!", {
+            timeout: 3000
+          });
+
+          //await router.push({ name: 'module', params: { id } })
+
+        } else {
+          toast.error("Ошибка сохранения данных!", {
+            timeout: 3000
+          });
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
     const setValue = (fieldName, fieldValue) => {
       props.values[fieldName] = fieldValue
     }

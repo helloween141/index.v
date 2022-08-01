@@ -31,23 +31,13 @@ export default defineComponent({
         const interfaceResponse = await axios.get(`/api/vpanel/interface/${moduleName}/${modelName}`)
         if (interfaceResponse.data) {
           const interfaceData = interfaceResponse.data
-          modelInterface.value = interfaceData;
-
-          if (recordId) {
-            targetComponent.value = loadFormComponent(interfaceData.formComponent)
-          } else {
-            targetComponent.value = loadEditorComponent(interfaceData.editorComponent)
-          }
+          modelInterface.value = interfaceData
 
           const dataResponse = await axios.get(`/api/vpanel/data/${moduleName}/${modelName}/${recordId}`)
           if (dataResponse.data) {
-            if (recordId) {
-              modelValues.value = dataResponse.data.data[0]
-            } else {
-              modelValues.value = dataResponse.data
-            }
-
+            modelValues.value = recordId ? dataResponse.data : dataResponse.data
           }
+          targetComponent.value = recordId ? loadFormComponent(interfaceData.formComponent) : loadEditorComponent(interfaceData.editorComponent)
         }
       } catch (error) {
         console.error(error)
@@ -65,7 +55,7 @@ export default defineComponent({
     return {
       targetComponent,
       modelInterface,
-      modelValues
+      modelValues,
     }
   }
 })

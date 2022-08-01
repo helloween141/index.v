@@ -11,17 +11,17 @@
     <div>
       <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-3">
           <span class="text-white">
-             Сохранить
+            Назад
           </span>
       </button>
-      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-3">
-          <span class="text-white">
-            Сохранить и выйти
-          </span>
-      </button>
-      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-3">
+      <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-3">
           <span class="text-white">
             Удалить
+          </span>
+      </button>
+      <button @click="onSaveClick" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-3">
+          <span class="text-white">
+            Сохранить
           </span>
       </button>
     </div>
@@ -36,8 +36,15 @@ export default defineComponent({
   props: {
     model: Object
   },
-  setup() {
+  emits: ['on-save'],
+  setup(props, {emit}) {
+    const onSaveClick = () => {
+      emit('on-save')
+    }
 
+    return {
+      onSaveClick
+    }
   }
 })
 </script>

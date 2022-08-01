@@ -6,6 +6,7 @@ Route::group(['prefix' => 'vpanel'], function () {
     Route::get('/menu', [MainRequestController::class, 'getMenu']);
     Route::get('/interface/{moduleName}/{modelName}', [MainRequestController::class, 'getInterface']);
     Route::get('/data/{moduleName}/{modelName}/{recordId?}', [MainRequestController::class, 'getData']);
+    Route::post('/{moduleName}/{modelName}/save/', [MainRequestController::class, 'saveData']);
 });
 
 Route::group(['prefix' => 'user'], function () {
