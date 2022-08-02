@@ -27,13 +27,11 @@ class News extends BaseModel
         return new NewsFactory();
     }
 
-    public static ModelStructure $structure;
-
     public static array $requiredFields = [];
 
-    public static function setStructure(): void
+    public static function getStructure(): ModelStructure
     {
-        self::$structure = (new ModelStructure)
+        return static::createStructure()
             ->addField((new StringField('title'))->setTitle('Название')->required())
             ->addField((new DateField('date'))->setTitle('Дата'))
             ->addField((new PointerField('author_id'))->setModel(Author::class)->setTitle('Автор')->required())

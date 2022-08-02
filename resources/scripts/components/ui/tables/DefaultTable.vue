@@ -42,7 +42,6 @@ export default defineComponent({
     values: Object
   },
   setup(props, { emit }) {
-
     const fieldNames = ref([])
     props.model.fields.forEach(header => {
       fieldNames.value.push(header['name'])

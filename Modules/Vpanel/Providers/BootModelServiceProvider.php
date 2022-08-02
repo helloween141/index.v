@@ -40,4 +40,8 @@ class BootModelServiceProvider extends ServiceProvider
             }
         }
     }
+
+    private function callEntities() {
+
+    }
 }

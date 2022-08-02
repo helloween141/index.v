@@ -2,8 +2,8 @@
   <div v-if="targetComponent">
     <component
         :is="targetComponent"
-        :model="modelInterface"
-        :values="modelValues"
+        :inc-model="modelInterface"
+        :inc-values="modelValues"
     />
   </div>
 </template>
@@ -33,11 +33,15 @@ export default defineComponent({
           const interfaceData = interfaceResponse.data
           modelInterface.value = interfaceData
 
-          const dataResponse = await axios.get(`/api/vpanel/data/${moduleName}/${modelName}/${recordId}`)
-          if (dataResponse.data) {
-            modelValues.value = recordId ? dataResponse.data : dataResponse.data
+          if (recordId) {
+            const recordResponse = await axios.get(`/api/vpanel/record/${moduleName}/${modelName}/${recordId}`)
+            modelValues.value = recordResponse.data
+            targetComponent.value = loadFormComponent(interfaceData.formComponent)
+          } else {
+            const listResponse = await axios.get(`/api/vpanel/list/${moduleName}/${modelName}`)
+            modelValues.value = listResponse.data
+            targetComponent.value = loadEditorComponent(interfaceData.editorComponent)
           }
-          targetComponent.value = recordId ? loadFormComponent(interfaceData.formComponent) : loadEditorComponent(interfaceData.editorComponent)
         }
       } catch (error) {
         console.error(error)

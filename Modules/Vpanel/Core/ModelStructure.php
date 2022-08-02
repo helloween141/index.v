@@ -67,6 +67,36 @@ class ModelStructure
         return $this->fields;
     }
 
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function getRecordTitle(): string
+    {
+        return $this->recordTitle;
+    }
+
+    public function getAccusativeRecordTitle(): string
+    {
+        return $this->accusativeRecordTitle;
+    }
+
+    public function getEditorComponent(): string
+    {
+        return $this->editorComponent;
+    }
+
+    public function getFormComponent(): string
+    {
+        return $this->formComponent;
+    }
+
+    public function getMasterModel(): string
+    {
+        return $this->masterModel;
+    }
+
     public function toArray(): array
     {
         $vars = get_object_vars($this);

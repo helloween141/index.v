@@ -23,13 +23,11 @@ class Author extends BaseModel
         return new AuthorFactory();
     }
 
-    public static ModelStructure $structure;
-
     public static array $requiredFields = [];
 
-    public static function setStructure(): void
+    public static function getStructure(): ModelStructure
     {
-        self::$structure = (new ModelStructure)
+        return static::createStructure()
             ->addField((new StringField('name'))->setTitle('Имя')->required())
             ->setModelTitle('Автор')
             ->setRecordTitle('Автор')

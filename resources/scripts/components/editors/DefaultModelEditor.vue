@@ -1,11 +1,11 @@
 <template>
   <div>
-    <EditorActionPanel :model="model" />
+    <EditorActionPanel :model="incModel" />
 
     <DefaultTable
         @select-record="selectRecord"
-        :model="model"
-        :values="values"
+        :model="incModel"
+        :values="incValues"
     />
 
   </div>
@@ -22,8 +22,8 @@ export default defineComponent({
   name: 'DefaultModelEditor',
   components: {EditorActionPanel, DefaultTable},
   props: {
-    model: Object,
-    values: Object
+    incModel: Object,
+    incValues: Object
   },
   setup() {
     const selectRecord = (recordId) => {

@@ -2,7 +2,6 @@
 
 namespace Modules\Vpanel\Core;
 
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 
 class BaseModel extends Model
@@ -11,22 +10,34 @@ class BaseModel extends Model
 
     protected $guarded = [];
 
-    public static function getStructure(): ModelStructure
+    public static function createStructure(): ModelStructure
     {
-        return static::$structure;
+        return new ModelStructure();
     }
 
-    public static function getData($recordId = null)
+    public static function getList()
     {
-        if ($recordId) {
-            return static::query()
-                ->where('id', '=', $recordId)
-                ->first();
-        }
-
-        return static::query()
+        $list = static::query()
             ->orderBy('id', 'DESC')
             ->paginate();
+
+        $orderedKeys = [];
+        foreach (static::getStructure()->fields as $field) {
+            $orderedKeys[] = $field->name;
+        }
+        $list->getCollection()->transform(function ($value) use ($orderedKeys) {
+            $value->attributes = array_replace(array_flip($orderedKeys), $value->attributes);
+            return $value;
+        });
+
+        return $list;
+    }
+
+    public static function getRecord($id)
+    {
+        return static::query()
+            ->where('id', '=', $id)
+            ->first();
     }
 
 }

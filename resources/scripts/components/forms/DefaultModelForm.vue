@@ -68,7 +68,7 @@ import TextField from "@/components/ui/fields/TextField.vue";
 import SelectField from "@/components/ui/fields/SelectField.vue";
 import PointerField from "@/components/ui/fields/PointerField.vue";
 import DateField from "@/components/ui/fields/DateField.vue";
-import {defineComponent} from "vue";
+import {defineComponent, ref} from "vue";
 import FormActionPanel from "@/components/ui/FormActionPanel.vue";
 import axios from "axios";
 import {useToast} from "vue-toastification";
@@ -79,17 +79,23 @@ export default defineComponent({
   name: 'ModuleForm',
   components: {FormActionPanel, TextField, DateField, PointerField, SelectField, InputField},
   props: {
-    model: Object,
-    values: Object
+    incModel: Object,
+    incValues: Object
   },
   setup(props, {emit}) {
+    const model = ref({})
+    const values = ref({})
+
+    model.value = props.incModel
+    values.value = props.incValues
+
     const toast = useToast()
     const route = useRoute()
 
     const prepareFormData = () => {
       const data = new FormData()
-      Object.keys(props.values).forEach(key => {
-        let item = props.values[key]
+      Object.keys(values.value).forEach(key => {
+        let item = values.value[key]
         if (item) {
           if (typeof item === 'object' && item.id) {
             data.append(key, item.id)
@@ -128,12 +134,14 @@ export default defineComponent({
     }
 
     const setValue = (fieldName, fieldValue) => {
-      props.values[fieldName] = fieldValue
+      values.value[fieldName] = fieldValue
     }
 
     return {
       onSave,
-      setValue
+      setValue,
+      model,
+      values
     }
   }
 })

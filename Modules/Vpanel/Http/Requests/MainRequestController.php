@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Validation\Validator;
+use Illuminate\Support\Facades\Validator;
 use Modules\Vpanel\Core\BaseModel;
 use Nwidart\Modules\Facades\Module;
 
@@ -27,9 +27,9 @@ class MainRequestController extends Controller
 
     public function getInterface(string $moduleName, string $modelName): array
     {
-        $model = $this->getModel($moduleName, $modelName);
-        if (!$model) {
-            throw new \Error('Model not found!');
+        $model = 'Modules\\' . $moduleName . '\\Entities\\' . ucfirst($modelName);
+        if (!class_exists($model)) {
+            return [];
         }
 
         $structure = ($model::getStructure())->toArray();
@@ -37,49 +37,48 @@ class MainRequestController extends Controller
         return $structure;
     }
 
-    public function getData(string $moduleName, string $modelName, int $recordId = null)
+    public function getList(string $moduleName, string $modelName)
     {
-        $model = $this->getModel($moduleName, $modelName);
-        if (!$model) {
-            throw new \Error('Model not found!');
+        $model = 'Modules\\' . $moduleName . '\\Entities\\' . ucfirst($modelName);
+        if (!class_exists($model)) {
+            return [];
         }
 
-        $data = $model::getData($recordId);
-
-        return $data;
+        return $model::getList();
     }
 
-    public function saveData(Request $request, $moduleName, $modelName) {
-        $model = $this->getModel($moduleName, $modelName);
-        if (!$model) {
-            throw new \Error('Model not found!');
+    public function getRecord(string $moduleName, string $modelName, int $id = 0)
+    {
+        $model = 'Modules\\' . $moduleName . '\\Entities\\' . ucfirst($modelName);
+        if (!class_exists($model)) {
+            return [];
         }
 
-        $validator = \Illuminate\Support\Facades\Validator::make($request->post(), $model::$requiredFields);
+        return $model::getRecord($id);
+    }
+
+    public function saveRecord(Request $request, $moduleName, $modelName) {
+        $model = 'Modules\\' . $moduleName . '\\Entities\\' . ucfirst($modelName);
+        if (!class_exists($model)) {
+            return [];
+        }
+
+        $validator = Validator::make($request->post(), $model::$requiredFields);
 
         if ($validator->fails()) {
-            return ['error' => true];
+            return $validator->errors();
         }
 
         $validatedData = $request->post();
+        $recordId = isset($validatedData['id']) ?? 0;
 
         $saveResult = $model::query()->updateOrCreate(
-            ['id' => (int) $validatedData['id']],
+            ['id' => (int) $recordId],
             $validatedData
         );
 
         return [
             'id' => $saveResult->id
         ];
-    }
-
-    private function getModel($moduleName, $modelName): ?string
-    {
-        $modelClass = 'Modules\\' . $moduleName . '\\Entities\\' . ucfirst($modelName);
-        if (!class_exists($modelClass)) {
-            return null;
-        }
-
-        return $modelClass;
     }
 }
