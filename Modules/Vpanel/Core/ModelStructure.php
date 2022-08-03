@@ -6,7 +6,7 @@ use Modules\Vpanel\Core\Fields\Field;
 
 class ModelStructure
 {
-    public array $fields = [];
+    protected array $fields = [];
 
     protected string $masterModel = '';
 
@@ -97,6 +97,21 @@ class ModelStructure
         return $this->masterModel;
     }
 
+    public function getRequiredFields(): array
+    {
+        $required = [];
+        foreach ($this->getFields() as $field) {
+            if ($field->isRequired()) {
+                $required = [
+                    ...$required,
+                    $field->name => 'required'
+                ];
+            }
+        }
+
+        return $required;
+    }
+
     public function toArray(): array
     {
         $vars = get_object_vars($this);
@@ -104,6 +119,7 @@ class ModelStructure
         foreach ($vars as $key => $value) {
             $array [ltrim($key, '_')] = $value;
         }
+
         return $array;
     }
 }

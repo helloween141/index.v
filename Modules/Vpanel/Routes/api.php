@@ -8,6 +8,7 @@ Route::group(['prefix' => 'vpanel'], function () {
     Route::get('/list/{moduleName}/{modelName}/', [MainRequestController::class, 'getList']);
     Route::get('/record/{moduleName}/{modelName}/{id?}', [MainRequestController::class, 'getRecord']);
     Route::post('/{moduleName}/{modelName}/save/', [MainRequestController::class, 'saveRecord']);
+    Route::post('/{moduleName}/{modelName}/delete/{id}', [MainRequestController::class, 'deleteRecord']);
 });
 
 Route::group(['prefix' => 'user'], function () {

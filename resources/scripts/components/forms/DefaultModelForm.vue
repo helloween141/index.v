@@ -2,6 +2,8 @@
   <FormActionPanel
       :model="model"
       @on-save="onSave"
+      @on-delete="onDelete"
+      @on-back="onBack"
   />
 
   <div class="relative overflow-x-auto" >
@@ -83,14 +85,15 @@ export default defineComponent({
     incValues: Object
   },
   setup(props, {emit}) {
-    const model = ref({})
-    const values = ref({})
-
-    model.value = props.incModel
-    values.value = props.incValues
-
     const toast = useToast()
     const route = useRoute()
+    const model = ref({})
+    const values = ref({})
+    const moduleName = route.params.module
+    const modelName = route.params.model
+
+    model.value = props.incModel || {}
+    values.value = props.incValues || {}
 
     const prepareFormData = () => {
       const data = new FormData()
@@ -109,25 +112,25 @@ export default defineComponent({
 
     const onSave = async () => {
       const formData = prepareFormData()
-
-      const moduleName = route.params.module
-      const modelName = route.params.model
-
       try {
         const response = await axios.post(`/api/vpanel/${moduleName}/${modelName}/save`, formData)
         const id = response.data?.id || 0
         if (id) {
-          toast.success("Данные сохранены!", {
-            timeout: 3000
-          });
-
-          //await router.push({ name: 'module', params: { id } })
-
+          toast.success('Данные сохранены!');
         } else {
-          toast.error("Ошибка сохранения данных!", {
-            timeout: 3000
-          });
+          toast.error('Ошибка сохранения данных!');
         }
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    const onDelete = async () => {
+      const id = route.params.id
+      try {
+        await axios.post(`/api/vpanel/${moduleName}/${modelName}/delete/${id}`)
+        await router.push({ name: 'module', params: { 'module': moduleName, 'model': modelName } })
+
       } catch (error) {
         console.error(error)
       }
@@ -137,8 +140,14 @@ export default defineComponent({
       values.value[fieldName] = fieldValue
     }
 
+    const onBack = () => {
+      router.back()
+    }
+
     return {
       onSave,
+      onDelete,
+      onBack,
       setValue,
       model,
       values

@@ -29,19 +29,17 @@ export default defineComponent({
 
       try {
         const interfaceResponse = await axios.get(`/api/vpanel/interface/${moduleName}/${modelName}`)
-        if (interfaceResponse.data) {
-          const interfaceData = interfaceResponse.data
-          modelInterface.value = interfaceData
+        const interfaceData = interfaceResponse.data
+        modelInterface.value = interfaceData
 
-          if (recordId) {
-            const recordResponse = await axios.get(`/api/vpanel/record/${moduleName}/${modelName}/${recordId}`)
-            modelValues.value = recordResponse.data
-            targetComponent.value = loadFormComponent(interfaceData.formComponent)
-          } else {
-            const listResponse = await axios.get(`/api/vpanel/list/${moduleName}/${modelName}`)
-            modelValues.value = listResponse.data
-            targetComponent.value = loadEditorComponent(interfaceData.editorComponent)
-          }
+        if (recordId) {
+          const recordResponse = await axios.get(`/api/vpanel/record/${moduleName}/${modelName}/${recordId}`)
+          modelValues.value = recordResponse.data
+          targetComponent.value = loadFormComponent(interfaceData.formComponent)
+        } else {
+          const listResponse = await axios.get(`/api/vpanel/list/${moduleName}/${modelName}`)
+          modelValues.value = listResponse.data
+          targetComponent.value = loadEditorComponent(interfaceData.editorComponent)
         }
       } catch (error) {
         console.error(error)

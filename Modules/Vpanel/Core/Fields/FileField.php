@@ -3,5 +3,5 @@ namespace Modules\Vpanel\Core\Fields;
 
 class FileField extends Field
 {
-    public function __construct(public string $name, public string $type = 'file') {}
+    public function __construct(public string $type = 'file') {}
 }

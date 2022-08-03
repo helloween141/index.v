@@ -22,8 +22,8 @@ class BaseModel extends Model
             ->paginate();
 
         $orderedKeys = [];
-        foreach (static::getStructure()->fields as $field) {
-            $orderedKeys[] = $field->name;
+        foreach (static::getStructure()->getFields() as $field) {
+            $orderedKeys[] = $field->getName();
         }
         $list->getCollection()->transform(function ($value) use ($orderedKeys) {
             $value->attributes = array_replace(array_flip($orderedKeys), $value->attributes);

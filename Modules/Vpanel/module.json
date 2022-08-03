@@ -5,8 +5,7 @@
     "keywords": [],
     "priority": 0,
     "providers": [
-        "Modules\\Vpanel\\Providers\\VpanelServiceProvider",
-        "Modules\\Vpanel\\Providers\\BootModelServiceProvider"
+        "Modules\\Vpanel\\Providers\\VpanelServiceProvider"
     ],
     "aliases": {},
     "files": [],

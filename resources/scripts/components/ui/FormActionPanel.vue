@@ -9,17 +9,17 @@
     </div>
 
     <div>
-      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-3">
+      <button @click="onBack" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-3">
           <span class="text-white">
             Назад
           </span>
       </button>
-      <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-3">
+      <button @click="onDelete" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-3">
           <span class="text-white">
             Удалить
           </span>
       </button>
-      <button @click="onSaveClick" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-3">
+      <button @click="onSave" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-3">
           <span class="text-white">
             Сохранить
           </span>
@@ -36,14 +36,24 @@ export default defineComponent({
   props: {
     model: Object
   },
-  emits: ['on-save'],
+  emits: ['on-save', 'on-delete', 'on-back'],
   setup(props, {emit}) {
-    const onSaveClick = () => {
+    const onSave= () => {
       emit('on-save')
     }
 
+    const onDelete = () => {
+      emit('on-delete')
+    }
+
+    const onBack = () => {
+      emit('on-back')
+    }
+
     return {
-      onSaveClick
+      onSave,
+      onDelete,
+      onBack
     }
   }
 })

@@ -32,9 +32,7 @@ class MainRequestController extends Controller
             return [];
         }
 
-        $structure = ($model::getStructure())->toArray();
-
-        return $structure;
+        return ($model::getStructure())->toArray();
     }
 
     public function getList(string $moduleName, string $modelName)
@@ -57,28 +55,44 @@ class MainRequestController extends Controller
         return $model::getRecord($id);
     }
 
-    public function saveRecord(Request $request, $moduleName, $modelName) {
+    public function saveRecord(Request $request, string $moduleName, string $modelName) {
         $model = 'Modules\\' . $moduleName . '\\Entities\\' . ucfirst($modelName);
         if (!class_exists($model)) {
             return [];
         }
 
-        $validator = Validator::make($request->post(), $model::$requiredFields);
+        $validator = Validator::make($request->post(), $model::getStructure()->getRequiredFields());
 
         if ($validator->fails()) {
             return $validator->errors();
         }
 
-        $validatedData = $request->post();
-        $recordId = isset($validatedData['id']) ?? 0;
+        $validatedData = $validator->getData();
 
-        $saveResult = $model::query()->updateOrCreate(
-            ['id' => (int) $recordId],
+        $record = $model::query()->updateOrCreate(
+            ['id' => $validatedData['id'] ?? 0],
             $validatedData
         );
 
         return [
-            'id' => $saveResult->id
+            'id' => $record->id
+        ];
+    }
+
+    public function deleteRecord(string $moduleName, string $modelName, int $id)
+    {
+        $model = 'Modules\\' . $moduleName . '\\Entities\\' . ucfirst($modelName);
+        if (!class_exists($model)) {
+            return [];
+        }
+
+        $result = $model::where('id', $id)->delete();
+        if (!$result) {
+            throw new \Error('Запись не найдена!');
+        }
+
+        return [
+            'success' => true
         ];
     }
 }

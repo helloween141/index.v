@@ -2,17 +2,54 @@
 
 namespace Modules\Vpanel\Core\Fields;
 
-abstract class Field
+use Faker\Provider\ar_EG\Text;
+
+class Field
 {
-    public string $title = '';
-    public bool $required = false;
-    public bool $identify = false;
-    public bool $readonly = false;
-    public mixed $defaultValue = '';
+    public string $name;
+
+    public string $title;
+
+    private bool $required = false;
+
+    private bool $identify = false;
+
+    private bool $readonly = false;
+
+    public mixed $defaultValue;
+
+    public static function create($type = '')
+    {
+        return match ($type) {
+            'string' => new StringField(),
+            'bool' => new BoolField(),
+            'date' => new DateField(),
+            'file' => new FileField(),
+            'html' => new HtmlField(),
+            'int' => new IntField(),
+            'float' => new FloatField(),
+            'pointer' => new PointerField(),
+            'select' => new SelectField(),
+            'text' => new TextField(),
+            default => throw new \Error("Field type ${$type} doesn't exists"),
+        };
+    }
+
+    public function setName(string $value): Field
+    {
+        $this->name = $value;
+        return $this;
+    }
 
     public function setTitle(string $value): Field
     {
         $this->title = $value;
+        return $this;
+    }
+
+    public function setDefault(mixed $value): Field
+    {
+        $this->defaultValue = $value;
         return $this;
     }
 
@@ -34,9 +71,23 @@ abstract class Field
         return $this;
     }
 
-    public function setDefault(mixed $defaultValue): Field
+    public function getName(): string
     {
-        $this->defaultValue = $defaultValue;
-        return $this;
+        return $this->name;
+    }
+
+    public function isRequired(): bool
+    {
+        return $this->required;
+    }
+
+    public function isIdentify(): bool
+    {
+        return $this->identify;
+    }
+
+    public function isReadonly(): bool
+    {
+        return $this->readonly;
     }
 }

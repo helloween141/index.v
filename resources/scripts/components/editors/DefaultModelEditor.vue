@@ -1,6 +1,9 @@
 <template>
   <div>
-    <EditorActionPanel :model="incModel" />
+    <EditorActionPanel
+        @on-create="createRecord"
+        :model="incModel"
+    />
 
     <DefaultTable
         @select-record="selectRecord"
@@ -13,7 +16,6 @@
 
 <script lang="ts">
 import {defineComponent} from "vue";
-import Pagination from "@/components/ui/Pagination.vue";
 import DefaultTable from "@/components/ui/tables/DefaultTable.vue";
 import router from "@/router";
 import EditorActionPanel from "@/components/ui/EditorActionPanel.vue";
@@ -30,8 +32,13 @@ export default defineComponent({
       router.push({ name: 'module', params: { id: recordId } })
     }
 
+    const createRecord = () => {
+      router.push({ name: 'module', params: { id: 0 } })
+    }
+
     return {
-      selectRecord
+      selectRecord,
+      createRecord
     }
   }
 })

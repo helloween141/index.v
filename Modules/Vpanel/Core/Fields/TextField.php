@@ -3,5 +3,5 @@ namespace Modules\Vpanel\Core\Fields;
 
 class TextField extends Field
 {
-    public function __construct(public string $name, public string $type = 'text') {}
+    public function __construct(public string $type = 'text') {}
 }
