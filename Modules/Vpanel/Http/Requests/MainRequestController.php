@@ -29,36 +29,54 @@ class MainRequestController extends Controller
     {
         $model = 'Modules\\' . $moduleName . '\\Entities\\' . ucfirst($modelName);
         if (!class_exists($model)) {
-            return [];
+            throw new \Error('Модель не найдена!');
         }
 
         return ($model::getStructure())->toArray();
     }
 
-    public function getList(string $moduleName, string $modelName)
+    public function getList(Request $request, string $moduleName = '', string $modelName = '')
     {
-        $model = 'Modules\\' . $moduleName . '\\Entities\\' . ucfirst($modelName);
+        $pointerModel = $request->get('model');
+        if ($pointerModel) {
+            $model = $pointerModel;
+        } else {
+            $model = 'Modules\\' . $moduleName . '\\Entities\\' . ucfirst($modelName);
+        }
+
         if (!class_exists($model)) {
-            return [];
+            throw new \Error('Модель не найдена!');
         }
 
         return $model::getList();
+    }
+
+    public function getPointer(Request $request)
+    {
+        $model = $request->get('model');
+
+        if (!class_exists($model)) {
+            throw new \Error('Модель не найдена!');
+        }
+
+        return $model::getPointer();
     }
 
     public function getRecord(string $moduleName, string $modelName, int $id = 0)
     {
         $model = 'Modules\\' . $moduleName . '\\Entities\\' . ucfirst($modelName);
         if (!class_exists($model)) {
-            return [];
+            throw new \Error('Модель не найдена!');
         }
 
         return $model::getRecord($id);
     }
 
-    public function saveRecord(Request $request, string $moduleName, string $modelName) {
+    public function saveRecord(Request $request, string $moduleName, string $modelName)
+    {
         $model = 'Modules\\' . $moduleName . '\\Entities\\' . ucfirst($modelName);
         if (!class_exists($model)) {
-            return [];
+            throw new \Error('Модель не найдена!');
         }
 
         $validator = Validator::make($request->post(), $model::getStructure()->getRequiredFields());
@@ -83,16 +101,13 @@ class MainRequestController extends Controller
     {
         $model = 'Modules\\' . $moduleName . '\\Entities\\' . ucfirst($modelName);
         if (!class_exists($model)) {
-            return [];
+            throw new \Error('Модель не найдена!');
         }
 
         $result = $model::where('id', $id)->delete();
-        if (!$result) {
-            throw new \Error('Запись не найдена!');
-        }
 
         return [
-            'success' => true
+            'success' => $result
         ];
     }
 }

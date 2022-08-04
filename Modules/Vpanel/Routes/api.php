@@ -5,9 +5,10 @@ use Modules\Vpanel\Http\Requests\MainRequestController;
 Route::group(['prefix' => 'vpanel'], function () {
     Route::get('/menu', [MainRequestController::class, 'getMenu']);
     Route::get('/interface/{moduleName}/{modelName}', [MainRequestController::class, 'getInterface']);
-    Route::get('/list/{moduleName}/{modelName}/', [MainRequestController::class, 'getList']);
+    Route::get('/list/{moduleName?}/{modelName?}', [MainRequestController::class, 'getList']);
+    Route::get('/pointer', [MainRequestController::class, 'getPointer']);
     Route::get('/record/{moduleName}/{modelName}/{id?}', [MainRequestController::class, 'getRecord']);
-    Route::post('/{moduleName}/{modelName}/save/', [MainRequestController::class, 'saveRecord']);
+    Route::post('/{moduleName}/{modelName}/save', [MainRequestController::class, 'saveRecord']);
     Route::post('/{moduleName}/{modelName}/delete/{id}', [MainRequestController::class, 'deleteRecord']);
 });
 

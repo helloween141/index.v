@@ -18,7 +18,6 @@ return [
                     'resources/css/tailwind.css',
                     'resources/css/font-awesome.css',
                     'resources/scripts/main.ts',
-                    'resources/js/app.js',
                 ],
                 'ignore' => '/\\.(d\\.ts|json)$/',
             ],

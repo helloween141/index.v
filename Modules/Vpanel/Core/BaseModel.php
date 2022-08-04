@@ -2,6 +2,7 @@
 
 namespace Modules\Vpanel\Core;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class BaseModel extends Model
@@ -31,6 +32,11 @@ class BaseModel extends Model
         });
 
         return $list;
+    }
+
+    public static function getPointer(): Collection
+    {
+        return static::all();
     }
 
     public static function getRecord($id)

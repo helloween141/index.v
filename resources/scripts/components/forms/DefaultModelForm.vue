@@ -1,14 +1,13 @@
 <template>
-  <FormActionPanel
-      :model="model"
-      @on-save="onSave"
-      @on-delete="onDelete"
-      @on-back="onBack"
-  />
-
   <div class="relative overflow-x-auto" >
     <span class="text-white">{{values}}</span>
     <form @submit.prevent="onSave">
+      <FormActionPanel
+          :model="model"
+          @on-save="onSave"
+          @on-delete="onDelete"
+          @on-back="onBack"
+      />
       <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <tbody>
         <tr
@@ -59,7 +58,6 @@
         </tr>
         </tbody>
       </table>
-
     </form>
   </div>
 </template>
@@ -72,10 +70,9 @@ import PointerField from "@/components/ui/fields/PointerField.vue";
 import DateField from "@/components/ui/fields/DateField.vue";
 import {defineComponent, ref} from "vue";
 import FormActionPanel from "@/components/ui/FormActionPanel.vue";
-import axios from "axios";
-import {useToast} from "vue-toastification";
 import {useRoute} from "vue-router";
 import router from "@/router";
+import {saveRecord, deleteRecord} from "@/api/actionForm";
 
 export default defineComponent({
   name: 'ModuleForm',
@@ -85,15 +82,12 @@ export default defineComponent({
     incValues: Object
   },
   setup(props, {emit}) {
-    const toast = useToast()
     const route = useRoute()
-    const model = ref({})
-    const values = ref({})
-    const moduleName = route.params.module
-    const modelName = route.params.model
+    const model = ref(props.incModel || {})
+    const values = ref(props.incValues || {})
 
-    model.value = props.incModel || {}
-    values.value = props.incValues || {}
+    const moduleName = route.params.module.toString()
+    const modelName = route.params.model.toString()
 
     const prepareFormData = () => {
       const data = new FormData()
@@ -112,36 +106,20 @@ export default defineComponent({
 
     const onSave = async () => {
       const formData = prepareFormData()
-      try {
-        const response = await axios.post(`/api/vpanel/${moduleName}/${modelName}/save`, formData)
-        const id = response.data?.id || 0
-        if (id) {
-          toast.success('Данные сохранены!');
-        } else {
-          toast.error('Ошибка сохранения данных!');
-        }
-      } catch (error) {
-        console.error(error)
-      }
+      await saveRecord(moduleName, modelName, formData)
     }
 
     const onDelete = async () => {
-      const id = route.params.id
-      try {
-        await axios.post(`/api/vpanel/${moduleName}/${modelName}/delete/${id}`)
-        await router.push({ name: 'module', params: { 'module': moduleName, 'model': modelName } })
-
-      } catch (error) {
-        console.error(error)
-      }
-    }
-
-    const setValue = (fieldName, fieldValue) => {
-      values.value[fieldName] = fieldValue
+      const id = model.value.id || 0
+      await deleteRecord(moduleName, modelName, id)
     }
 
     const onBack = () => {
       router.back()
+    }
+
+    const setValue = (fieldName, fieldValue) => {
+      values.value[fieldName] = fieldValue
     }
 
     return {

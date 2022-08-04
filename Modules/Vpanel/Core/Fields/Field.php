@@ -2,7 +2,6 @@
 
 namespace Modules\Vpanel\Core\Fields;
 
-use Faker\Provider\ar_EG\Text;
 
 class Field
 {
@@ -10,11 +9,11 @@ class Field
 
     public string $title;
 
-    private bool $required = false;
+    public bool $required = false;
 
-    private bool $identify = false;
+    public bool $identify = false;
 
-    private bool $readonly = false;
+    public bool $readonly = false;
 
     public mixed $defaultValue;
 

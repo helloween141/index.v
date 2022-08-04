@@ -1,7 +1,7 @@
 <template>
   <v-select
       :label="identifyLabel"
-      v-model="value"
+      v-model="selectedOption"
       :options="options"
       :required="field.required"
       @search="fetchData"
@@ -22,12 +22,24 @@ export default {
   data() {
     return {
       options: [],
-      identifyLabel: this.field.identify || 'name'
+      identifyLabel: this.field.identify || 'name',
+      selectedOption: ''
     }
+  },
+  async mounted() {
+    const listResponse = await axios.get(`/api/vpanel/pointer`,
+        {
+          params: {
+            'model': this.field.model
+          }
+        })
+    this.options = listResponse.data
+
+    this.selectedOption = (this.options.find(option => option.id === this.value))[this.identifyLabel]
   },
   methods: {
     async fetchData(search, loading) {
-      try {
+      /*try {
         loading(true)
         const searchModel = this.field?.search_model || ''
         if (searchModel) {
@@ -41,10 +53,10 @@ export default {
         loading(false)
       } catch (error) {
         console.error(error)
-      }
+      }*/
     },
     handleInput() {
-      this.$emit('set-value', this.field.name, this.value)
+      this.$emit('set-value', this.field.name, this.selectedOption)
     }
   }
 }
