@@ -11,34 +11,41 @@
   />
 </template>
 
+
 <script>
-export default {
+import {defineComponent, onMounted, ref} from "vue";
+
+export default defineComponent({
   name: 'SelectField',
   props: {
     field: Object,
-    value: ''
+    value: [String, Number]
   },
-  data() {
-    return {
-      currentValue: {},
-      identifyLabel: this.field.identify || 'name'
-    }
-  },
-  created() {
-    if (!this.value) {
-      this.currentValue = this.field.values.find(val => val.default) || this.field.values[0]
-    } else {
-      this.currentValue = (typeof this.value === 'object') ? this.value : this.field.values.find(val => val.id === this.value)
+  emits: ['set-value'],
+  setup(props, {emit}) {
+    const currentValue = ref({})
+    const identifyLabel = ref(props.field.identify || 'name')
+
+    onMounted(() => {
+      if (!props.value) {
+        currentValue.value = props.field.values.find(val => val.default) || props.field.values[0]
+      } else {
+        currentValue.value = (typeof props.value === 'object') ? props.value : props.field.values.find(val => val.id === props.value)
+      }
+      this.handleInput(currentValue.value)
+    })
+
+    const handleInput = () => {
+      emit('set-value', props.field.name, currentValue.value)
     }
 
-    this.handleInput(this.currentValue)
-  },
-  methods: {
-    handleInput(value) {
-      this.$emit('set-value', this.field.name, value)
+    return {
+      currentValue,
+      identifyLabel,
+      handleInput
     }
   }
-}
+})
 </script>
 
 <style scoped>

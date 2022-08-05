@@ -1,7 +1,7 @@
 <template>
   <v-select
-      :label="identifyLabel"
       v-model="selectedOption"
+      :label="identifyLabel"
       :options="options"
       :required="field.required"
       @search="fetchData"
@@ -10,56 +10,55 @@
   />
 </template>
 
-<script>
+<script lang="ts">
+import {defineComponent, onMounted, ref} from "vue";
 import axios from "axios";
 
-export default {
+export default defineComponent({
   name: 'PointerField',
   props: {
     field: Object,
-    value: Object
+    value: [Number, Object]
   },
-  data() {
-    return {
-      options: [],
-      identifyLabel: this.field.identify || 'name',
-      selectedOption: ''
-    }
-  },
-  async mounted() {
-    const listResponse = await axios.get(`/api/vpanel/pointer`,
-        {
-          params: {
-            'model': this.field.model
-          }
-        })
-    this.options = listResponse.data
+  emits: ['set-value'],
+  setup(props, {emit}) {
+    const options = ref([])
+    const identifyLabel = ref(props.field.identify || 'name')
+    const selectedOption = ref({})
 
-    this.selectedOption = (this.options.find(option => option.id === this.value))[this.identifyLabel]
-  },
-  methods: {
-    async fetchData(search, loading) {
-      /*try {
-        loading(true)
-        const searchModel = this.field?.search_model || ''
-        if (searchModel) {
-          const resultSearch = await axios.get(`/api/core/${searchModel}/search/`, {
-            params: {
-              'search_string': search
-            }
-          })
-          this.options = resultSearch.data.data
+    onMounted(async () => {
+      const listResponse = await axios.get(`/api/vpanel/pointer`, {
+        params: {
+          'model': props.field.model
         }
-        loading(false)
-      } catch (error) {
-        console.error(error)
-      }*/
-    },
-    handleInput() {
-      this.$emit('set-value', this.field.name, this.selectedOption)
+      })
+      options.value = listResponse.data
+
+      if (options.value) {
+        const currentOption = (options.value.find(option => option.id === props.value))
+        if (currentOption) {
+          selectedOption.value = currentOption[identifyLabel.value]
+        }
+      }
+    });
+
+    // TODO: autocomplete
+    const fetchData = (search, loading) => {
+    }
+
+    const handleInput = () => {
+      emit('set-value', props.field.name, selectedOption.value)
+    }
+
+    return {
+      options,
+      identifyLabel,
+      selectedOption,
+      handleInput,
+      fetchData
     }
   }
-}
+})
 </script>
 
 <style scoped>

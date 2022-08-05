@@ -12,27 +12,30 @@
   />
 </template>
 
-<script>
-import moment from 'moment'
-
-export default {
+<script lang="ts">
+import {defineComponent, ref} from "vue";
+import moment from "moment";
+export default defineComponent({
   name: 'DateField',
   props: {
     field: Object,
-    value: ''
+    value: String
   },
-  data() {
-    return {
-      initialValue: this.value || this.field.default
+  emits: ['set-value'],
+  setup(props, {emit}) {
+    const initialValue = ref(props.value || props.field.default)
+
+    const handleInput = (val) => {
+      val = moment(val).format('YYYY-MM-DD HH:mm')
+      emit('set-value', props.field.name, val)
     }
-  },
-  methods: {
-    handleInput(value) {
-      value = moment(value).format('YYYY-MM-DD HH:mm')
-      this.$emit('set-value', this.field.name, value)
+
+    return {
+      initialValue,
+      handleInput
     }
   }
-}
+})
 </script>
 
 <style scoped>

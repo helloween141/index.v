@@ -11,23 +11,29 @@
 </template>
 
 <script>
-export default {
+
+import {defineComponent, ref} from "vue";
+
+export default defineComponent({
   name: 'TextField',
   props: {
     field: Object,
-    value: ''
+    value: [String, Number]
   },
-  data() {
-    return {
-      currentValue: this.value || this.field.default
+  emits: ['set-value'],
+  setup(props, {emit}) {
+    const currentValue = ref(props.value || props.field.default)
+
+    const handleInput = () => {
+      emit('set-value', props.field.name, currentValue.value)
     }
-  },
-  methods: {
-    handleInput() {
-      this.$emit('set-value', this.field.name, this.currentValue)
+
+    return {
+      currentValue,
+      handleInput
     }
   }
-}
+})
 </script>
 
 <style scoped>

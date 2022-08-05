@@ -115,7 +115,7 @@ export default defineComponent({
     }
 
     const onBack = () => {
-      router.back()
+      router.push({name: 'module', params: {'module': moduleName, 'model': modelName}})
     }
 
     const setValue = (fieldName, fieldValue) => {

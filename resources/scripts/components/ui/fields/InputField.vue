@@ -10,31 +10,28 @@
 </template>
 
 <script>
-export default {
+import {defineComponent, ref} from "vue";
+
+export default defineComponent({
   name: 'InputField',
   props: {
     field: Object,
     value: [String, Number]
   },
-  data() {
+  emits: ['set-value'],
+  setup(props, {emit}) {
+    const currentValue = ref(props.value || props.field.default)
+
+    const handleInput = () => {
+      emit('set-value', props.field.name, currentValue.value)
+    }
+
     return {
-      currentValue: this.value || this.field.default
-    }
-  },
-  methods: {
-    handleInput() {
-      this.$emit('set-value', this.field.name, this.currentValue)
-    }
-  },
-  watch: {
-    value: {
-      immediate: true,
-      handler (val, oldVal) {
-        this.currentValue = val
-      }
+      currentValue,
+      handleInput
     }
   }
-}
+})
 </script>
 
 <style scoped>
