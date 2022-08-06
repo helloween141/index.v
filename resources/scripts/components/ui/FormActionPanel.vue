@@ -1,35 +1,26 @@
 <template>
-  <div class="mb-3 flex justify-between items-center">
-    <div>
-      <h1 class="dark:text-white text-2xl">
-        <span>
-          Редактировать {{ model.recordTitle }}
-        </span>
-      </h1>
-    </div>
-
-    <div>
-      <button @click.prevent="onBack" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-3">
-          <span class="text-white">
-            Назад
-          </span>
-      </button>
-      <button @click.prevent="onDelete" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-3">
-          <span class="text-white">
-            Удалить
-          </span>
-      </button>
-      <button @submit.prevent="onSave" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-3">
-          <span class="text-white">
-            Сохранить
-          </span>
-      </button>
-    </div>
+  <div>
+    <button @click.prevent="onBack" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+      <span class="text-white">
+        <i class="fa-solid fa-arrow-rotate-back"></i>
+        Назад
+      </span>
+    </button>
+    <button @click.prevent="onDelete" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-3">
+      <span class="text-white">
+        Удалить
+      </span>
+    </button>
+    <button @submit.prevent="onSave" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-3">
+      <span class="text-white">
+        Сохранить
+      </span>
+    </button>
   </div>
 </template>
 
 <script lang="ts">
-import {defineComponent, ref} from "vue";
+import {defineComponent} from "vue";
 
 export default defineComponent({
   name: 'FormActionPanel',
@@ -38,7 +29,7 @@ export default defineComponent({
   },
   emits: ['on-save', 'on-delete', 'on-back'],
   setup(props, {emit}) {
-    const onSave= () => {
+    const onSave = () => {
       emit('on-save')
     }
 

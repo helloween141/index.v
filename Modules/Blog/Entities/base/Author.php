@@ -29,7 +29,7 @@ class Author extends BaseModel
         return static::createStructure()
             ->addField(Field::create('string')->setName('name')->setTitle('Имя')->required())
             ->setModelTitle('Автор')
-            ->setRecordTitle('Автор')
+            ->setRecordTitle('автор')
             ->setAccusativeRecordTitle('автора');
     }
 }

@@ -1,13 +1,23 @@
 <template>
-  <div class="relative overflow-x-auto" >
-    <span class="text-white">{{values}}</span>
+  <div class="relative overflow-x-auto">
+    <!--<span class="text-white">{{values}}</span>-->
     <form @submit.prevent="onSave">
-      <FormActionPanel
-          :model="model"
-          @on-save="onSave"
-          @on-delete="onDelete"
-          @on-back="onBack"
-      />
+      <div class="mb-3 flex justify-between items-center flex-wrap">
+        <h1 class="dark:text-white text-2xl">
+          <span v-if="values.id">
+            Редактировать {{ model.accusativeRecordTitle }}
+          </span>
+          <span v-else>
+            Создать {{ model.accusativeRecordTitle }}
+          </span>
+        </h1>
+        <FormActionPanel
+            :model="model"
+            @on-save="onSave"
+            @on-delete="onDelete"
+            @on-back="onBack"
+        />
+      </div>
       <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <tbody>
         <tr
@@ -58,6 +68,14 @@
         </tr>
         </tbody>
       </table>
+      <div class="mt-3 flex justify-end">
+        <FormActionPanel
+            :model="model"
+            @on-save="onSave"
+            @on-delete="onDelete"
+            @on-back="onBack"
+        />
+      </div>
     </form>
   </div>
 </template>
@@ -68,10 +86,10 @@ import TextField from "@/components/ui/fields/TextField.vue";
 import SelectField from "@/components/ui/fields/SelectField.vue";
 import PointerField from "@/components/ui/fields/PointerField.vue";
 import DateField from "@/components/ui/fields/DateField.vue";
-import {defineComponent, ref} from "vue";
 import FormActionPanel from "@/components/ui/FormActionPanel.vue";
-import {useRoute} from "vue-router";
 import router from "@/router";
+import {defineComponent, ref} from "vue";
+import {useRoute} from "vue-router";
 import {saveRecord, deleteRecord} from "@/api/actionForm";
 
 export default defineComponent({

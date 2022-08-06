@@ -1,16 +1,19 @@
 <template>
   <div>
-    <EditorActionPanel
-        @on-create="createRecord"
-        :model="incModel"
-    />
+    <div class="mb-3 flex justify-between items-center">
+      <h1 class="dark:text-white text-2xl">{{ incModel.title }}</h1>
+
+      <EditorActionPanel
+          @on-create="createRecord"
+          :model="incModel"
+      />
+    </div>
 
     <DefaultTable
         @select-record="selectRecord"
         :model="incModel"
         :values="incValues"
     />
-
   </div>
 </template>
 
