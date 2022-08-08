@@ -23,8 +23,8 @@ export default defineComponent({
 
     // TODO: Refactoring
     watch(route, async (to) => {
-      const moduleName = route.params.module
-      const modelName = route.params.model
+      const moduleName = (route.params.module).toString()
+      const modelName = (route.params.model).toString()
       const recordId = route.params?.id || ''
 
       try {
@@ -35,23 +35,30 @@ export default defineComponent({
         if (recordId) {
           const recordResponse = await axios.get(`/api/vpanel/record/${moduleName}/${modelName}/${recordId}`)
           modelValues.value = recordResponse.data
-          targetComponent.value = loadFormComponent(interfaceData.formComponent)
+          targetComponent.value = loadFormComponent(interfaceData.formComponent, moduleName)
         } else {
           const listResponse = await axios.get(`/api/vpanel/list/${moduleName}/${modelName}`)
           modelValues.value = listResponse.data
-          targetComponent.value = loadEditorComponent(interfaceData.editorComponent)
+          targetComponent.value = loadEditorComponent(interfaceData.editorComponent, moduleName)
         }
+
       } catch (error) {
         console.error(error)
       }
     }, {flush: 'pre', immediate: true, deep: true})
 
-    const loadEditorComponent = (name: string) => {
-      return defineAsyncComponent(() => import('../components/editors/' + name + '.vue'))
+    const loadEditorComponent = (component: string, moduleName: string) => {
+      if (component) {
+        return defineAsyncComponent(() => import('../../../Modules/' + moduleName + '/Resources/scripts/components/' + component + '.vue'))
+      }
+      return defineAsyncComponent(() => import('../components/editors/DefaultModelEditor.vue'))
     }
 
-    const loadFormComponent = (name: string) => {
-      return defineAsyncComponent(() => import('../components/forms/' + name + '.vue'))
+    const loadFormComponent = (component: string, moduleName: string) => {
+      if (component) {
+        return defineAsyncComponent(() => import('../../../Modules/' + moduleName + '/Resources/scripts/components/' + component + '.vue'))
+      }
+      return defineAsyncComponent(() => import('../components/forms/DefaultModelForm.vue'))
     }
 
     return {

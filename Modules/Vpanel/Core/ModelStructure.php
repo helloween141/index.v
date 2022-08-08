@@ -3,6 +3,7 @@
 namespace Modules\Vpanel\Core;
 
 use Modules\Vpanel\Core\Fields\Field;
+use Nwidart\Modules\Facades\Module;
 
 class ModelStructure
 {
@@ -16,9 +17,9 @@ class ModelStructure
 
     protected string $accusativeRecordTitle = '';
 
-    protected string $editorComponent = 'DefaultModelEditor';
+    protected string $editorComponent = '';
 
-    protected string $formComponent = 'DefaultModelForm';
+    protected string $formComponent = '';
 
     public function addField(Field $field): ModelStructure
     {
@@ -117,9 +118,8 @@ class ModelStructure
         $vars = get_object_vars($this);
         $array = array();
         foreach ($vars as $key => $value) {
-            $array [ltrim($key, '_')] = $value;
+            $array[ltrim($key, '_')] = $value;
         }
-
         return $array;
     }
 }

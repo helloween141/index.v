@@ -7,7 +7,7 @@
       </div>
       <ul v-if="menu.length > 0">
         <li v-for="(item, key) in menu" :key="key">
-          <div v-if="item.list.length > 0">
+          <div v-if="item.list">
             <button @click="onCollapse(key)" type="button" class="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
               <i :class="[item.icon, 'text-gray-500 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white dark:text-gray-400']"></i>
               <span class="flex-1 ml-3 text-left whitespace-nowrap" data-sidebar-toggle-item>{{ item.title }}</span>

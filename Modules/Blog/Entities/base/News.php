@@ -31,7 +31,7 @@ class News extends BaseModel
             ->addField(Field::create('date')->setName('date')->setTitle('Дата'))
             ->addField(Field::create('pointer')->setName('author_id')->setModel(Author::class)->setTitle('Автор')->required())
             ->addField(Field::create('text')->setName('short_text')->setTitle('Краткое описание'))
-            ->addField(Field::create('text')->setName('full_text')->setTitle('Полное описание'))
+            ->addField(Field::create('html')->setName('full_text')->setTitle('Полное описание'))
             ->setModelTitle('Новости')
             ->setRecordTitle('новость')
             ->setAccusativeRecordTitle('новость');

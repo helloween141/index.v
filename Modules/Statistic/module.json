@@ -1,0 +1,20 @@
+{
+    "name": "Statistic",
+    "menu": {
+        "title": "Статистика",
+        "icon": "fa-solid fa-newspaper",
+        "module": "Statistic",
+        "model": "Statistic",
+        "title": "Статистика"
+    },
+    "alias": "statistic",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Statistic\\Providers\\StatisticServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

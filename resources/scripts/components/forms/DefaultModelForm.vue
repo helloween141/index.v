@@ -1,6 +1,6 @@
 <template>
   <div class="relative overflow-x-auto">
-    <!--<span class="text-white">{{values}}</span>-->
+    <span class="text-white">{{values}}</span>
     <form @submit.prevent="onSave">
       <div class="mb-3 flex justify-between items-center flex-wrap">
         <h1 class="dark:text-white text-2xl">
@@ -39,6 +39,13 @@
 
             <TextField
                 v-else-if="field.type === 'text'"
+                :field="field"
+                :value="values[field.name]"
+                @set-value="setValue"
+            />
+
+            <HtmlField
+                v-else-if="field.type === 'html'"
                 :field="field"
                 :value="values[field.name]"
                 @set-value="setValue"
@@ -91,10 +98,11 @@ import router from "@/router";
 import {defineComponent, ref} from "vue";
 import {useRoute} from "vue-router";
 import {saveRecord, deleteRecord} from "@/api/actionForm";
+import HtmlField from "@/components/ui/fields/HtmlField.vue";
 
 export default defineComponent({
   name: 'ModuleForm',
-  components: {FormActionPanel, TextField, DateField, PointerField, SelectField, InputField},
+  components: {HtmlField, FormActionPanel, TextField, DateField, PointerField, SelectField, InputField},
   props: {
     incModel: Object,
     incValues: Object
