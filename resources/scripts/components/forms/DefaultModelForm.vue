@@ -136,7 +136,8 @@ export default defineComponent({
     }
 
     const onDelete = async () => {
-      const id = model.value.id || 0
+      const id = route.params?.id || 0
+      console.log(id)
       await deleteRecord(moduleName, modelName, id)
     }
 

@@ -6,7 +6,7 @@
       :required="field.required"
       @search="fetchData"
       @update:modelValue="handleInput"
-      class="py-2 bg-gray-200 text-gray-700 h-64 rounded leading-tight focus:outline-none focus:bg-white focus:border-purple-500 custom-fx"
+      class="py-2 bg-gray-200 text-gray-700 rounded leading-tight focus:outline-none focus:bg-white focus:border-purple-500 custom-fx"
   />
 </template>
 

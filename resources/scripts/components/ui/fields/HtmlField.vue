@@ -22,7 +22,7 @@ export default defineComponent({
   },
   emits: ['set-value'],
   setup(props, {emit}) {
-    const currentValue = ref(props.value || props.field.default)
+    const currentValue = ref(props.value || props.field.default || '')
 
     const handleInput = () => {
       emit('set-value', props.field.name, currentValue.value)

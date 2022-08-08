@@ -1,3 +1,3 @@
 export const APISettings = {
-    baseURL: '/api/vpanel/',
+    baseURL: '/api/vpanel',
 }

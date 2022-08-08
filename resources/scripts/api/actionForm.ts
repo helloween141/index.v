@@ -6,7 +6,7 @@ const toast = useToast()
 
 export const saveRecord = async (moduleName: string, modelName: string, formData: object) => {
     try {
-        const response = await axios.post(APISettings.baseURL + `${moduleName}/${modelName}/save`, formData)
+        const response = await axios.post(APISettings.baseURL + `/${moduleName}/${modelName}/save`, formData)
         const id = response.data?.id
         if (id) {
             toast.success('Данные сохранены!')
@@ -19,9 +19,9 @@ export const saveRecord = async (moduleName: string, modelName: string, formData
     }
 }
 
-export const deleteRecord = async (moduleName: string, modelName: string, id: number) => {
+export const deleteRecord = async (moduleName: string, modelName: string, id: number|string) => {
     try {
-        const response = await axios.post(`/api/vpanel/${moduleName}/${modelName}/delete/${id}`)
+        const response = await axios.post(APISettings.baseURL + `/${moduleName}/${modelName}/delete/${id}`)
         const success = response.data?.success
 
         if (success) {
