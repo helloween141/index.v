@@ -1,6 +1,6 @@
 <template>
-  <aside class="w-96 h-screen bg-white border-r dark:border-gray-700 dark:border-primary-darker dark:bg-gray-900 md:block" aria-label="Sidebar">
-    <div class="overflow-y-auto h-screen py-4 px-3 bg-gray-50 rounded dark:bg-gray-800">
+  <aside class="w-96 bg-white min-h-screen border-r dark:border-gray-700 dark:border-primary-darker dark:bg-gray-900 md:block" aria-label="Sidebar">
+    <div class="overflow-y-auto h-full py-4 px-3 bg-gray-50 rounded dark:bg-gray-800">
       <div class="flex justify-between items-center mb-5">
         <Logo />
         <ThemeToggleButton @on-click="onToggle"/>
