@@ -2,18 +2,14 @@
 
 namespace Modules\Blog\Tests\Feature;
 
+use Modules\Blog\Entities\Author;
 use Modules\Blog\Entities\News;
-use Modules\Vpanel\Entities\User;
 use Tests\TestCase;
 
 class BlogControllerTest extends TestCase
 {
     public function testGetList(): void
     {
-        $user = User::factory()->create();
-        $this->be($user);
-        $user->delete();
-
         $this->get('/api/vpanel/list/Blog/News')->assertOk();
     }
 
@@ -26,16 +22,19 @@ class BlogControllerTest extends TestCase
 
     public function testSaveAndDeleteRecord(): void
     {
+        $author = Author::factory()->create();
+
         $response = $this->post('/api/vpanel/Blog/News/save/', [
             'title' => 'Test title',
             'date' => now(),
-            'author_id' => 1,
+            'author_id' => $author->id,
             'short_text' => 'test',
             'full_text' => 'test'
         ])->assertOk();
 
         $id = $response['id'];
         $this->get('/api/vpanel/Blog/News/delete/' . $id)->assertOk();
+        $author->delete();
     }
 
     public function testDeleteRecord(): void

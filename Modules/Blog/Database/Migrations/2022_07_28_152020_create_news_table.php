@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('news', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('title')->default('');
             $table->timestamp('date');
-            $table->text('short_text');
-            $table->longText('full_text');
+            $table->text('short_text')->default('');
+            $table->longText('full_text')->default('');
             $table->foreignId('author_id')->constrained('authors');
         });
     }
