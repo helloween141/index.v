@@ -1,13 +1,11 @@
 <?php
 
-namespace Modules\Vpanel\Http\Requests;
+namespace Modules\Vpanel\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
-use Modules\Vpanel\Core\BaseModel;
+use Modules\Vpanel\Core\Utils;
 use Nwidart\Modules\Facades\Module;
 
 class MainRequestController extends Controller
@@ -32,7 +30,7 @@ class MainRequestController extends Controller
             throw new \Error('Модель не найдена!');
         }
 
-        return ($model::getStructure())->toArray();
+        return Utils::toArray($model::getStructure());
     }
 
     public function getList(Request $request, string $moduleName = '', string $modelName = '')

@@ -5,17 +5,17 @@ namespace Modules\Vpanel\Core\Fields;
 
 class Field
 {
-    public string $name;
+    protected string $name;
 
-    public string $title;
+    protected string $title;
 
-    public bool $required = false;
+    protected bool $required = false;
 
-    public bool $identify = false;
+    protected bool $identify = false;
 
-    public bool $readonly = false;
+    protected bool $readonly = false;
 
-    public mixed $defaultValue;
+    protected mixed $defaultValue;
 
     public static function create($type = '')
     {

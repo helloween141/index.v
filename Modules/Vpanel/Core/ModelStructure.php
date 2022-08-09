@@ -3,7 +3,6 @@
 namespace Modules\Vpanel\Core;
 
 use Modules\Vpanel\Core\Fields\Field;
-use Nwidart\Modules\Facades\Module;
 
 class ModelStructure
 {
@@ -105,22 +104,12 @@ class ModelStructure
             if ($field->isRequired()) {
                 $required = [
                     ...$required,
-                    $field->name => 'required'
+                    $field->getName() => 'required'
                 ];
             }
         }
 
         return $required;
-    }
-
-    public function toArray(): array
-    {
-        $vars = get_object_vars($this);
-        $array = array();
-        foreach ($vars as $key => $value) {
-            $array[ltrim($key, '_')] = $value;
-        }
-        return $array;
     }
 }
 

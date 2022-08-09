@@ -26,6 +26,7 @@ class BaseModel extends Model
         foreach (static::getStructure()->getFields() as $field) {
             $orderedKeys[] = $field->getName();
         }
+
         $list->getCollection()->transform(function ($value) use ($orderedKeys) {
             $value->attributes = array_replace(array_flip($orderedKeys), $value->attributes);
             return $value;

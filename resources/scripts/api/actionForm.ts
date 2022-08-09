@@ -21,7 +21,7 @@ export const saveRecord = async (moduleName: string, modelName: string, formData
 
 export const deleteRecord = async (moduleName: string, modelName: string, id: number|string) => {
     try {
-        const response = await axios.post(APISettings.baseURL + `/${moduleName}/${modelName}/delete/${id}`)
+        const response = await axios.get(APISettings.baseURL + `/${moduleName}/${modelName}/delete/${id}`)
         const success = response.data?.success
 
         if (success) {

@@ -18,10 +18,10 @@
         </include>
     </coverage>
     <php>
-        <env name="APP_ENV" value="vienna_crm"/>
+        <env name="APP_ENV" value="index.v"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="CACHE_DRIVER" value="array"/>
-        <env name="DB_DATABASE" value="vienna_crm"/>
+        <env name="DB_DATABASE" value="index.v"/>
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
