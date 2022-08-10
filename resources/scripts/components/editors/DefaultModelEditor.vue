@@ -9,23 +9,24 @@
       />
     </div>
 
-    <DefaultTable
+    <DefaultEditorTable
         @select-record="selectRecord"
         :model="incModel"
         :values="incValues"
     />
+
   </div>
 </template>
 
 <script lang="ts">
 import {defineComponent} from "vue";
-import DefaultTable from "@/components/ui/tables/DefaultTable.vue";
+import DefaultEditorTable from "@/components/ui/tables/DefaultEditorTable.vue";
 import router from "@/router";
 import EditorActionPanel from "@/components/ui/EditorActionPanel.vue";
 
 export default defineComponent({
   name: 'DefaultModelEditor',
-  components: {EditorActionPanel, DefaultTable},
+  components: {EditorActionPanel, DefaultEditorTable},
   props: {
     incModel: Object,
     incValues: Object

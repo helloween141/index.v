@@ -14,11 +14,6 @@ class Author extends BaseModel
 {
     use HasFactory;
 
-    /**
-     * Create a new factory instance for the model.
-     *
-     * @return Factory
-     */
     protected static function newFactory(): Factory
     {
         return new AuthorFactory();
@@ -26,8 +21,12 @@ class Author extends BaseModel
 
     public static function getStructure(): ModelStructure
     {
-        return static::createStructure()
-            ->addField(Field::create('string')->setName('name')->setTitle('Имя')->required())
+        return static::setStructure()
+            ->addField(Field::create('string')
+                ->setName('name')
+                ->setTitle('Имя')
+                ->identify()
+                ->required())
             ->setModelTitle('Авторы')
             ->setRecordTitle('автор')
             ->setAccusativeRecordTitle('автора');

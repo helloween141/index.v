@@ -7,7 +7,7 @@ class PointerField extends Field
 
     public function __construct(public string $type = 'pointer') {}
 
-    public function setModel(string $model) {
+    public function setModel(string $model): Field {
         $this->model = $model;
         return $this;
     }

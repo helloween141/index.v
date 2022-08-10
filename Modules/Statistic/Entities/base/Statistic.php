@@ -10,7 +10,7 @@ class Statistic extends BaseModel
 
     public static function getStructure(): ModelStructure
     {
-        return static::createStructure()
+        return static::setStructure()
             ->setEditorComponent('StatisticModelEditor')
             ->setModelTitle('Статистика')
             ->setAccusativeRecordTitle('статистику');

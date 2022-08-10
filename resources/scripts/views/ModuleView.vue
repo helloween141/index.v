@@ -18,7 +18,7 @@ export default defineComponent({
   name: 'ModuleView',
   setup() {
     const modelInterface = ref({})
-    const modelValues = ref([])
+    const modelValues = ref({})
     const targetComponent = shallowRef('')
     const route = useRoute()
 

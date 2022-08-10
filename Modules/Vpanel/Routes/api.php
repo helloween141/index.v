@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Vpanel\Http\Controllers\MainRequestController;
 
-Route::group(['prefix' => 'vpanel'], function () {
+Route::group(['prefix' => 'vpanel', 'middleware' => 'auth'], function () {
     Route::get('/menu', [MainRequestController::class, 'getMenu']);
     Route::get('/interface/{moduleName}/{modelName}', [MainRequestController::class, 'getInterface']);
     Route::get('/list/{moduleName?}/{modelName?}', [MainRequestController::class, 'getList']);

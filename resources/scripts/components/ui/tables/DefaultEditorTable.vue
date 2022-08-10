@@ -34,7 +34,7 @@ import {defineComponent, ref} from "vue";
 import Pagination from "@/components/ui/Pagination.vue";
 
 export default defineComponent({
-  name: 'DefaultTable',
+  name: 'DefaultEditorTable',
   components: {Pagination},
   emits: ['select-record'],
   props: {

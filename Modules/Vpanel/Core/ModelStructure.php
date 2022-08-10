@@ -111,5 +111,16 @@ class ModelStructure
 
         return $required;
     }
+
+    public function addUrl(): ModelStructure
+    {
+        return $this->addField(Field::create('string')->setName('url')->setTitle('URL'));
+    }
+
+    public function addMeta(): ModelStructure
+    {
+        return $this->addField(Field::create('string')->setName('meta_title')->setTitle('Meta title'))
+                    ->addField(Field::create('text')->setName('meta_description')->setTitle('Meta description'));
+    }
 }
 

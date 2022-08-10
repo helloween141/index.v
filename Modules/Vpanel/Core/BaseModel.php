@@ -11,9 +11,14 @@ class BaseModel extends Model
 
     protected $guarded = [];
 
-    public static function createStructure(): ModelStructure
+    public static function setStructure(): ModelStructure
     {
         return new ModelStructure();
+    }
+
+    public static function boot()
+    {
+        parent::boot();
     }
 
     public static function getList()
@@ -46,5 +51,4 @@ class BaseModel extends Model
             ->where('id', '=', $id)
             ->first();
     }
-
 }

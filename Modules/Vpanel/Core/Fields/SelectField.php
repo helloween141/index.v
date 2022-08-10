@@ -7,7 +7,7 @@ class SelectField extends Field
 
     public function __construct(public string $type = 'select') {}
 
-    public function setOptions($options) {
+    public function setOptions($options): Field {
         $this->options = $options;
         return $this;
     }
