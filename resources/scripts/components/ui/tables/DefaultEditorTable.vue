@@ -3,7 +3,7 @@
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
       <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
       <tr>
-        <th v-for="field in model.fields" scope="col" class="py-3 px-6">
+        <th v-for="field in model.fields" scope="col" class="py-3 px-6" v-show="field.inEditor">
           {{ field.title }}
         </th>
       </tr>
@@ -11,14 +11,14 @@
       <tbody>
       <tr v-for="(item, index) in values.data"
           :key="index"
-          class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer"
           @click="onClick(item.id)"
+          class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer"
       >
         <td class="py-4 px-6" v-for="(value, key, index) in item"
             :key="index"
             v-show="fieldNames.includes(key)"
         >
-          {{value}}
+          <span>{{value}}</span>
         </td>
       </tr>
       </tbody>

@@ -114,13 +114,13 @@ class ModelStructure
 
     public function addUrl(): ModelStructure
     {
-        return $this->addField(Field::create('string')->setName('url')->setTitle('URL'));
+        return $this->addField(Field::create('string')->setName('url')->setTitle('URL')->hideFromEditor());
     }
 
     public function addMeta(): ModelStructure
     {
-        return $this->addField(Field::create('string')->setName('meta_title')->setTitle('Meta title'))
-                    ->addField(Field::create('text')->setName('meta_description')->setTitle('Meta description'));
+        return $this->addField(Field::create('string')->setName('meta_title')->setTitle('Meta title')->hideFromEditor())
+                    ->addField(Field::create('text')->setName('meta_description')->setTitle('Meta description')->hideFromEditor());
     }
 }
 

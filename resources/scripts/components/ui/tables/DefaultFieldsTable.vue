@@ -59,7 +59,6 @@
 </template>
 
 <script lang="ts">
-
 import {defineComponent} from "vue";
 import InputField from "@/components/ui/fields/InputField.vue";
 import TextField from "@/components/ui/fields/TextField.vue";

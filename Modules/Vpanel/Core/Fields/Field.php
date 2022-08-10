@@ -15,6 +15,10 @@ class Field
 
     protected bool $readonly = false;
 
+    protected bool $inEditor = true;
+
+    protected bool $inForm = true;
+
     protected mixed $defaultValue;
 
     public static function create($type = '')
@@ -70,9 +74,29 @@ class Field
         return $this;
     }
 
+    public function hideFromEditor(): Field {
+        $this->inEditor = false;
+        return $this;
+    }
+
+    public function hideFromForm(): Field {
+        $this->inForm = false;
+        return $this;
+    }
+
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function getDefaultValue(): mixed
+    {
+        return $this->defaultValue;
     }
 
     public function isRequired(): bool
@@ -88,5 +112,15 @@ class Field
     public function isReadonly(): bool
     {
         return $this->readonly;
+    }
+
+    public function isInEditor(): bool
+    {
+        return $this->inEditor;
+    }
+
+    public function isInForm(): bool
+    {
+        return $this->inForm;
     }
 }

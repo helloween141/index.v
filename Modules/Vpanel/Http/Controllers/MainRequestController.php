@@ -57,7 +57,7 @@ class MainRequestController extends Controller
             throw new \Error('Модель не найдена!');
         }
 
-        return $model::getPointer();
+        return $model::all();
     }
 
     public function getRecord(string $moduleName, string $modelName, int $id = 0)
@@ -67,7 +67,7 @@ class MainRequestController extends Controller
             throw new \Error('Модель не найдена!');
         }
 
-        return $model::getRecord($id);
+        return $model::find($id);
     }
 
     public function saveRecord(Request $request, string $moduleName, string $modelName)

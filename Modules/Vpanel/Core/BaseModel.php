@@ -4,6 +4,7 @@ namespace Modules\Vpanel\Core;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Vpanel\Core\Fields\Field;
 
 class BaseModel extends Model
 {
@@ -16,39 +17,40 @@ class BaseModel extends Model
         return new ModelStructure();
     }
 
-    public static function boot()
-    {
-        parent::boot();
-    }
-
     public static function getList()
     {
+        $select = ['id'];
+        $pointerFields = [];
+
+        $fields = static::getStructure()->getFields();
+        foreach ($fields as $field) {
+            if ($field->isInEditor()) {
+                $select[] = $field->getName();
+            }
+            if ($field->type === 'pointer') {
+                $pointerFields[$field->getName()] = $field->model;
+            }
+        }
+
         $list = static::query()
+            ->select($select)
             ->orderBy('id', 'DESC')
             ->paginate();
 
-        $orderedKeys = [];
-        foreach (static::getStructure()->getFields() as $field) {
-            $orderedKeys[] = $field->getName();
-        }
+        $collection = $list->getCollection();
 
-        $list->getCollection()->transform(function ($value) use ($orderedKeys) {
-            $value->attributes = array_replace(array_flip($orderedKeys), $value->attributes);
-            return $value;
+        // Цепляем pointer
+        $collection->transform(function ($item) use ($pointerFields) {
+            foreach ($item->attributes as $key => $value) {
+                $modelClass = $pointerFields[$key] ?? null;
+                if ($modelClass) {
+                    $model = new $modelClass();
+                    $item[$key] = $model::find($value);
+                }
+            }
+            return $item;
         });
 
         return $list;
-    }
-
-    public static function getPointer(): Collection
-    {
-        return static::all();
-    }
-
-    public static function getRecord($id)
-    {
-        return static::query()
-            ->where('id', '=', $id)
-            ->first();
     }
 }
