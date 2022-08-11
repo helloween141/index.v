@@ -112,6 +112,32 @@ class ModelStructure
         return $required;
     }
 
+    public function getPointerFields(): array
+    {
+        $pointers = [];
+        foreach ($this->getFields() as $field) {
+            if ($field->isPointer()) {
+                $pointers = [
+                    ...$pointers,
+                    $field->getName() => $field->model
+                ];
+            }
+        }
+
+        return $pointers;
+    }
+
+    public function getIdentifyField(): ?Field
+    {
+        foreach ($this->getFields() as $field) {
+            if ($field->isIdentify()) {
+                return $field;
+            }
+        }
+
+        return null;
+    }
+
     public function addUrl(): ModelStructure
     {
         return $this->addField(Field::create('string')->setName('url')->setTitle('URL')->hideFromEditor());

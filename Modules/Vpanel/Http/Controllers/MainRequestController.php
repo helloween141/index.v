@@ -35,12 +35,7 @@ class MainRequestController extends Controller
 
     public function getList(Request $request, string $moduleName = '', string $modelName = '')
     {
-        $pointerModel = $request->get('model');
-        if ($pointerModel) {
-            $model = $pointerModel;
-        } else {
-            $model = 'Modules\\' . $moduleName . '\\Entities\\' . ucfirst($modelName);
-        }
+        $model = 'Modules\\' . $moduleName . '\\Entities\\' . ucfirst($modelName);
 
         if (!class_exists($model)) {
             throw new \Error('Модель не найдена!');
