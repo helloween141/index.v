@@ -9,8 +9,9 @@ trait UrlBehavior
     public static function boot()
     {
         static::saving(function ($model) {
-            if (isset($model->url) && isset($model->title)) {
-                $model->url = Utils::translitUrl($model->title);
+            $identifyField = $model::getStructure()->getIdentifyField();
+            if ($identifyField) {
+                $model->url = Utils::translitUrl($model->$identifyField);
             }
         });
 

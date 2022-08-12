@@ -127,15 +127,15 @@ class ModelStructure
         return $pointers;
     }
 
-    public function getIdentifyField(): ?Field
+    public function getIdentifyField(): string
     {
         foreach ($this->getFields() as $field) {
             if ($field->isIdentify()) {
-                return $field;
+                return $field->getName();
             }
         }
 
-        return null;
+        return '';
     }
 
     public function addUrl(): ModelStructure

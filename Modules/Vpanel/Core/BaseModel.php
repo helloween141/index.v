@@ -45,7 +45,7 @@ class BaseModel extends Model
                 $modelClass = $pointerFields[$key] ?? null;
                 if ($modelClass) {
                     $model = new $modelClass();
-                    $identifyField = ($model::getStructure()->getIdentifyField())->getName() ?? null;
+                    $identifyField = $model::getStructure()->getIdentifyField() ?? '';
 
                     if ($identifyField) {
                         $record = $model::find($value);

@@ -23,7 +23,7 @@ class News extends BaseModel
     public static function getStructure(): ModelStructure
     {
         return static::setStructure()
-            ->addField(Field::create('string')->setName('title')->setTitle('Название')->required())
+            ->addField(Field::create('string')->setName('title')->setTitle('Название')->identify()->required())
             ->addField(Field::create('date')->setName('date')->setTitle('Дата'))
             ->addField(Field::create('pointer')->setName('author_id')->setModel(Author::class)->setTitle('Автор')->required())
             ->addField(Field::create('text')->setName('short_text')->setTitle('Краткое описание'))
