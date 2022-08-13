@@ -86,27 +86,21 @@ export default defineComponent({
         const formData = prepareFormData()
         const response = await saveRecord(moduleName, modelName, formData)
         const id = response.data.id
-        if (id) {
-          toast.success('Данные сохранены!')
-          await router.push({name: 'module', params: {'module': moduleName, 'model': modelName, id}})
-        } else {
-          toast.error('Ошибка сохранения!');
-        }
+        toast.success('Данные сохранены!')
+        await router.push({name: 'module', params: {'module': moduleName, 'model': modelName, id}})
       } catch (error) {
+        toast.error('Ошибка сохранения!')
         console.error(error)
       }
     }
 
     const onDelete = async () => {
       try {
-        const response = await deleteRecord(moduleName, modelName, recordId)
-        if (response.data.success) {
-          toast.success('Запись удалена!');
-          await router.push({name: 'module', params: {'module': moduleName, 'model': modelName}})
-        } else {
-          toast.error('Ошибка удаления записи!');
-        }
+        await deleteRecord(moduleName, modelName, recordId)
+        toast.success('Запись удалена!');
+        await router.push({name: 'module', params: {'module': moduleName, 'model': modelName}})
       } catch (error) {
+        toast.error('Ошибка удаления!')
         console.error(error)
       }
     }
