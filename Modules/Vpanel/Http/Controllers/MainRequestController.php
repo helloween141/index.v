@@ -77,7 +77,9 @@ class MainRequestController extends Controller
             throw new \Error(ApiError::MODEL_NOT_FOUND);
         }
 
-        $validator = Validator::make($request->post(), $model::getStructure()->getRequiredFields());
+        $requiredFields = $model::getStructure()->getRequiredFields();
+
+        $validator = Validator::make($request->post(), $requiredFields);
         if ($validator->fails()) {
             return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
