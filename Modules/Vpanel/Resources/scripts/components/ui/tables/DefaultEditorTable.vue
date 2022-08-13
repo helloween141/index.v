@@ -44,11 +44,8 @@ export default defineComponent({
   setup(props, { emit }) {
     const fieldNames = ref([])
 
-    console.log(props.values)
-
     props.model.fields.forEach(header => {
       fieldNames.value.push(header['name'])
-
     })
 
     const onClick = (recordId: number) => {

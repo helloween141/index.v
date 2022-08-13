@@ -19,13 +19,4 @@ export const loadList = async (moduleName: string, modelName: string) => {
     }
 }
 
-export const loadRecord = async (moduleName: string, modelName: string, recordId: string|number) => {
-    try {
-        const response = await axios.get(APISettings.baseURL + `/record/${moduleName}/${modelName}/${recordId}`)
-        return response.data
-    } catch (error) {
-        console.error(error)
-    }
-}
-
 

@@ -45,6 +45,9 @@ import {defineComponent, ref} from "vue";
 import {useRoute} from "vue-router";
 import {saveRecord, deleteRecord} from "@/api/actionForm";
 import DefaultFieldsTable from "@/components/ui/tables/DefaultFieldsTable.vue";
+import axios from "axios";
+import {APISettings} from "@/api/config";
+import {useToast} from "vue-toastification";
 
 export default defineComponent({
   name: 'ModuleForm',
@@ -54,12 +57,14 @@ export default defineComponent({
     incValues: Object
   },
   setup(props) {
+    const toast = useToast()
     const route = useRoute()
     const model = ref(props.incModel || {})
     const values = ref(props.incValues || {})
 
     const moduleName = route.params.module.toString()
     const modelName = route.params.model.toString()
+    const recordId = parseInt((route.params?.id).toString()) || 0
 
     const prepareFormData = () => {
       const data = new FormData()
@@ -77,13 +82,33 @@ export default defineComponent({
     }
 
     const onSave = async () => {
-      const formData = prepareFormData()
-      await saveRecord(moduleName, modelName, formData)
+      try {
+        const formData = prepareFormData()
+        const response = await saveRecord(moduleName, modelName, formData)
+        const id = response.data.id
+        if (id) {
+          toast.success('Данные сохранены!')
+          await router.push({name: 'module', params: {'module': moduleName, 'model': modelName, id}})
+        } else {
+          toast.error('Ошибка сохранения!');
+        }
+      } catch (error) {
+        console.error(error)
+      }
     }
 
     const onDelete = async () => {
-      const id = route.params?.id || 0
-      await deleteRecord(moduleName, modelName, id)
+      try {
+        const response = await deleteRecord(moduleName, modelName, recordId)
+        if (response.data.success) {
+          toast.success('Запись удалена!');
+          await router.push({name: 'module', params: {'module': moduleName, 'model': modelName}})
+        } else {
+          toast.error('Ошибка удаления записи!');
+        }
+      } catch (error) {
+        console.error(error)
+      }
     }
 
     const onBack = () => {
@@ -102,7 +127,7 @@ export default defineComponent({
       model,
       values
     }
-  }
+  },
 })
 </script>
 

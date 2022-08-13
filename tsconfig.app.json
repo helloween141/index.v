@@ -1,12 +1,12 @@
 {
     "include": [
         "env.d.ts",
-        "resources/scripts/**/*",
-        "resources/scripts/**/*.vue",
-        "resources/scripts/**/*.json"
+        "Modules/Vpanel/Resources/scripts/**/*",
+        "Modules/Vpanel/Resources/scripts/**/*.vue",
+        "Modules/Vpanel/Resources/scripts/**/*.json"
     ],
     "exclude": [
-        "resources/scripts/**/__tests__/*"
+        "Modules/Vpanel/Resources/scripts/**/__tests__/*"
     ],
     "compilerOptions": {
         "composite": true,
@@ -16,7 +16,7 @@
         "baseUrl": ".",
         "paths": {
             "@/*": [
-                "./resources/scripts/*"
+                "./Modules/Vpanel/Resources/scripts/*"
             ]
         },
       "allowSyntheticDefaultImports": true

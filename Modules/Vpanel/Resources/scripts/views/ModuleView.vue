@@ -10,9 +10,9 @@
 
 <script lang="ts">
 import {defineAsyncComponent, defineComponent, ref, shallowRef, watch} from "vue";
-import axios from "axios";
 import {useRoute} from "vue-router";
-import {loadInterface, loadList, loadRecord} from "@/api/actionEditor";
+import {loadInterface, loadList} from "@/api/actionEditor";
+import {loadRecord} from "@/api/actionForm";
 
 export default defineComponent({
   name: 'ModuleView',
@@ -44,7 +44,7 @@ export default defineComponent({
     }, {flush: 'pre', immediate: true, deep: true})
 
     const loadCustomComponent = (component: string, moduleName: string) => {
-      return defineAsyncComponent(() => import('../../../Modules/' + moduleName + '/Resources/scripts/components/' + component + '.vue'))
+      return defineAsyncComponent(() => import('/Modules/' + moduleName + '/Resources/scripts/components/' + component + '.vue'))
     }
 
     const loadEditorComponent = () => {

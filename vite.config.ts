@@ -18,7 +18,7 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            '@': fileURLToPath(new URL('./resources/scripts/', import.meta.url))
+            '@': fileURLToPath(new URL('./Modules/Vpanel/Resources/scripts/', import.meta.url))
         }
     }
 })

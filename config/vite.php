@@ -13,11 +13,10 @@ return [
     'configs' => [
         'default' => [
             'entrypoints' => [
-                'ssr' => 'resources/scripts/ssr.ts',
+                'ssr' => 'Modules/Vpanel/Resources/scripts/ssr.ts',
                 'paths' => [
-                    'resources/css/tailwind.css',
-                    'resources/css/font-awesome.css',
-                    'resources/scripts/main.ts',
+                    'Modules/Vpanel/Resources/css/tailwind.css',
+                    'Modules/Vpanel/Resources/scripts/main.ts',
                 ],
                 'ignore' => '/\\.(d\\.ts|json)$/',
             ],
@@ -34,9 +33,9 @@ return [
         ],
         'auth' => [
             'entrypoints' => [
-                'ssr' => 'resources/scripts/ssr.ts',
+                'ssr' => 'Modules/Vpanel/Resources/scripts/ssr.ts',
                 'paths' => [
-                    'resources/css/tailwind-bundle.css'
+                    'Modules/Vpanel/Resources/css/tailwind-bundle.css'
                 ],
                 'ignore' => '/\\.(d\\.ts|json)$/',
             ],
@@ -63,7 +62,7 @@ return [
     | https://laravel-vite.dev/configuration/laravel-package.html#aliases
     */
     'aliases' => [
-        '@' => 'resources',
+        '@' => 'Modules/Vpanel/Resources',
     ],
 
     /*
