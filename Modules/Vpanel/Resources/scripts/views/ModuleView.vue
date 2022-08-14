@@ -3,7 +3,6 @@
     <component
         :is="targetComponent"
         :inc-model="modelInterface"
-        :inc-values="modelValues"
     />
   </div>
 </template>
@@ -18,7 +17,6 @@ export default defineComponent({
   name: 'ModuleView',
   setup() {
     const modelInterface = ref({})
-    const modelValues = ref({})
     const targetComponent = shallowRef('')
     const route = useRoute()
 
@@ -33,11 +31,9 @@ export default defineComponent({
 
         if (recordId) {
           const formComponent = modelInterface.value['formComponent']
-          modelValues.value = await loadRecord(moduleName, modelName, recordId)
           targetComponent.value = formComponent ? loadCustomComponent(formComponent, moduleName) : loadFormComponent()
         } else {
           const editorComponent = modelInterface.value['editorComponent']
-          modelValues.value = await loadList(moduleName, modelName)
           targetComponent.value = editorComponent ? loadCustomComponent(editorComponent, moduleName) : loadEditorComponent()
         }
       }
@@ -57,8 +53,7 @@ export default defineComponent({
 
     return {
       targetComponent,
-      modelInterface,
-      modelValues,
+      modelInterface
     }
   }
 })

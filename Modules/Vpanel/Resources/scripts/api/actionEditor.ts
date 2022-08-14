@@ -1,5 +1,6 @@
 import axios from "axios";
 import {APISettings} from "./config.js"
+import {APIMessage} from './messages.js'
 import {useToast} from "vue-toastification";
 const toast = useToast()
 
@@ -8,7 +9,7 @@ export const loadInterface = async (moduleName: string, modelName: string) => {
         const response = await axios.get(APISettings.baseURL + `/interface/${moduleName}/${modelName}`)
         return response.data
     } catch (error) {
-        toast.error('Ошибка загрузки интерфейса!')
+        toast.error(APIMessage.ERROR_LOAD_INTERFACE)
         console.error(error)
     }
 }
@@ -18,7 +19,7 @@ export const loadList = async (moduleName: string, modelName: string) => {
         const response = await axios.get(APISettings.baseURL + `/list/${moduleName}/${modelName}`)
         return response.data
     } catch (error) {
-        toast.error('Ошибка загрузки данных!')
+        toast.error(APIMessage.ERROR_LOAD_INTERFACE)
         console.error(error)
     }
 }

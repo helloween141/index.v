@@ -2,9 +2,7 @@
 
 namespace Modules\Vpanel\Providers;
 
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
-use Modules\Vpanel\Core\ModelStructure;
 
 class BootModelServiceProvider extends ServiceProvider
 {
