@@ -3,8 +3,8 @@
 namespace Modules\Blog\Http\Controllers;
 
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Blog\Entities\News;
 
 class BlogController extends Controller
 {
@@ -14,6 +14,17 @@ class BlogController extends Controller
      */
     public function index()
     {
-        return view('blog::index');
+        return view('blog::index', [
+            'posts' => News::all()
+        ]);
+    }
+
+    public function post($url)
+    {
+        $post = News::query()->where('url', '=', $url)->first();
+
+        return view('blog::post', [
+            'post' => $post
+        ]);
     }
 }

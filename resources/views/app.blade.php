@@ -9,14 +9,5 @@
 </head>
 <body>
 <h1>{{env('APP_NAME')}}</h1>
-<ul>
-    @forelse ($posts as $post)
-        <li>
-            {{ $post->title }}
-        </li>
-    @empty
-        <p>Новости не найдены!</p>
-    @endforelse
-</ul>
 </body>
 </html>
