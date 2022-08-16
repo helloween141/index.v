@@ -53,7 +53,5 @@ class BlogControllerTest extends TestCase
 
         $record = News::factory()->create();
         $this->get('/api/vpanel/Blog/News/delete/' . $record->id)->assertOk();
-
-
     }
 }

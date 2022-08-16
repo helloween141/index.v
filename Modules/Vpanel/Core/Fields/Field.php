@@ -3,7 +3,7 @@
 namespace Modules\Vpanel\Core\Fields;
 
 
-class Field
+abstract class Field
 {
     protected string $name;
 
@@ -21,21 +21,9 @@ class Field
 
     protected mixed $defaultValue;
 
-    public static function create($type = '')
+    public static function create(): Field
     {
-        return match ($type) {
-            'string' => new StringField(),
-            'bool' => new BoolField(),
-            'date' => new DateField(),
-            'file' => new FileField(),
-            'html' => new HtmlField(),
-            'int' => new IntField(),
-            'float' => new FloatField(),
-            'pointer' => new PointerField(),
-            'select' => new SelectField(),
-            'text' => new TextField(),
-            default => throw new \Error("Field type ${$type} doesn't exists"),
-        };
+        return new static();
     }
 
     public function setName(string $value): Field
@@ -82,6 +70,11 @@ class Field
     public function hideFromForm(): Field {
         $this->inForm = false;
         return $this;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
     }
 
     public function getName(): string

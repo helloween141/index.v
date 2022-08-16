@@ -27,8 +27,9 @@ class BaseModel extends Model
             if ($field->isInEditor()) {
                 $select[] = $field->getName();
             }
-            if ($field->type === 'pointer') {
-                $pointerFields[$field->getName()] = $field->model;
+
+            if ($field->getType() === 'pointer') {
+                $pointerFields[$field->getName()] = $field->getModel();
             }
         }
 

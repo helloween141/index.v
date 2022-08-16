@@ -3,9 +3,13 @@ namespace Modules\Vpanel\Core\Fields;
 
 class PointerField extends Field
 {
-    public string $model;
+    protected string $model;
 
-    public function __construct(public string $type = 'pointer') {}
+    public function __construct(protected string $type = 'pointer') {}
+
+    public function getModel(): string {
+        return $this->model;
+    }
 
     public function setModel(string $model): Field {
         $this->model = $model;

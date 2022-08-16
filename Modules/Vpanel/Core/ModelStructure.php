@@ -3,6 +3,8 @@
 namespace Modules\Vpanel\Core;
 
 use Modules\Vpanel\Core\Fields\Field;
+use Modules\Vpanel\Core\Fields\StringField;
+use Modules\Vpanel\Core\Fields\TextField;
 
 class ModelStructure
 {
@@ -140,13 +142,13 @@ class ModelStructure
 
     public function addUrl(): ModelStructure
     {
-        return $this->addField(Field::create('string')->setName('url')->setTitle('URL')->hideFromEditor());
+        return $this->addField(StringField::create()->setName('url')->setTitle('URL')->hideFromEditor());
     }
 
     public function addMeta(): ModelStructure
     {
-        return $this->addField(Field::create('string')->setName('meta_title')->setTitle('Meta title')->hideFromEditor())
-                    ->addField(Field::create('text')->setName('meta_description')->setTitle('Meta description')->hideFromEditor());
+        return $this->addField(StringField::create()->setName('meta_title')->setTitle('Meta title')->hideFromEditor())
+                    ->addField(TextField::create()->setName('meta_description')->setTitle('Meta description')->hideFromEditor());
     }
 }
 

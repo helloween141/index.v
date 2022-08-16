@@ -22,7 +22,7 @@ class Author extends BaseModel
     public static function getStructure(): ModelStructure
     {
         return static::setStructure()
-            ->addField(Field::create('string')
+            ->addField(StringField::create()
                 ->setName('name')
                 ->setTitle('Имя')
                 ->identify()
