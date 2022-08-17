@@ -24,6 +24,7 @@ import EditorActionPanel from "@/components/ui/EditorActionPanel.vue";
 import {loadRecord} from "@/api/actionForm";
 import {useRoute} from "vue-router";
 import {loadList} from "@/api/actionEditor";
+import {getRouteParameters} from "@/utils/utils";
 
 export default defineComponent({
   name: 'DefaultModelEditor',
@@ -35,8 +36,7 @@ export default defineComponent({
     const route = useRoute()
     const values = ref()
 
-    const moduleName = route.params.module.toString()
-    const modelName = route.params.model.toString()
+    const {moduleName, modelName} = getRouteParameters(route)
 
     onMounted(async () => {
       values.value = await loadList(moduleName, modelName)

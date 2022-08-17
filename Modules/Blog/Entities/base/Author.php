@@ -19,9 +19,11 @@ class Author extends BaseModel
         return new AuthorFactory();
     }
 
-    public static function getStructure(): ModelStructure
+    protected static ModelStructure $structure;
+
+    public static function setStructure()
     {
-        return static::setStructure()
+        self::$structure = (new ModelStructure)
             ->addField(StringField::create()
                 ->setName('name')
                 ->setTitle('Имя')

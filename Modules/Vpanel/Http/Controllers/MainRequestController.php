@@ -66,8 +66,12 @@ class MainRequestController extends Controller
             throw new \Error(ApiError::MODEL_NOT_FOUND);
         }
 
-        $record = $model::find($id);
-        return response()->json($record, $record ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
+        if ($id > 0) {
+            $record = $model::find($id);
+            return response()->json($record, $record ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
+        }
+
+        return response()->json(null, Response::HTTP_OK);
     }
 
     public function saveRecord(Request $request, string $moduleName, string $modelName)

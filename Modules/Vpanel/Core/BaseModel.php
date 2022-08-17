@@ -12,9 +12,9 @@ class BaseModel extends Model
 
     protected $guarded = [];
 
-    public static function setStructure(): ModelStructure
+    public static function getStructure(): ModelStructure
     {
-        return new ModelStructure();
+        return static::$structure;
     }
 
     public static function getList()

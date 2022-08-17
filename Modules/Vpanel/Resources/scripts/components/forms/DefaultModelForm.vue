@@ -47,7 +47,7 @@ import {saveRecord, deleteRecord, loadRecord} from "@/api/actionForm";
 import DefaultFieldsTable from "@/components/ui/tables/DefaultFieldsTable.vue";
 import {useToast} from "vue-toastification";
 import {APIMessage} from "@/api/messages";
-import {prepareFormData} from "@/utils/utils";
+import {getRouteParameters, prepareFormData} from "@/utils/utils";
 
 export default defineComponent({
   name: 'ModuleForm',
@@ -60,12 +60,16 @@ export default defineComponent({
     const route = useRoute()
     const values = ref()
 
-    const moduleName = route.params.module.toString()
-    const modelName = route.params.model.toString()
-    const recordId = parseInt((route.params?.id).toString()) || 0
+    const {moduleName, modelName, recordId} = getRouteParameters(route)
 
     onMounted(async () => {
-      values.value = await loadRecord(moduleName, modelName, recordId)
+      try {
+        const response = await loadRecord(moduleName, modelName, recordId)
+        values.value = response.data
+      } catch (error) {
+        toast.error(APIMessage.ERROR_LOAD_DATA)
+        console.error(error)
+      }
     })
 
     const onSave = async () => {

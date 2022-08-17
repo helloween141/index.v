@@ -7,10 +7,11 @@ use Modules\Vpanel\Core\ModelStructure;
 
 class Statistic extends BaseModel
 {
+    protected static ModelStructure $structure;
 
-    public static function getStructure(): ModelStructure
+    public static function setStructure()
     {
-        return static::setStructure()
+        self::$structure = (new ModelStructure)
             ->setEditorComponent('StatisticModelEditor')
             ->setModelTitle('Статистика')
             ->setAccusativeRecordTitle('статистику');

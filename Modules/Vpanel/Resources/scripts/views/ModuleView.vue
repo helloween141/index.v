@@ -10,8 +10,8 @@
 <script lang="ts">
 import {defineAsyncComponent, defineComponent, ref, shallowRef, watch} from "vue";
 import {useRoute} from "vue-router";
-import {loadInterface, loadList} from "@/api/actionEditor";
-import {loadRecord} from "@/api/actionForm";
+import {loadInterface} from "@/api/actionEditor";
+import {getRouteParameters} from "@/utils/utils";
 
 export default defineComponent({
   name: 'ModuleView',
@@ -20,11 +20,8 @@ export default defineComponent({
     const targetComponent = shallowRef('')
     const route = useRoute()
 
-    // TODO: Refactoring
     watch(route, async (to) => {
-      const moduleName = (route.params.module || '').toString()
-      const modelName = (route.params.model || '').toString()
-      const recordId = (route.params?.id || '').toString()
+      const {moduleName, modelName, recordId} = getRouteParameters(route)
 
       if (moduleName && modelName) {
         modelInterface.value = await loadInterface(moduleName, modelName)

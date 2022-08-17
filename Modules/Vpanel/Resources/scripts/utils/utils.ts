@@ -12,3 +12,11 @@ export const prepareFormData = (values: object) => {
     })
     return data
 }
+
+export const getRouteParameters = (route) => {
+    return {
+        moduleName: (route.params.module || '').toString(),
+        modelName: (route.params.model || '').toString(),
+        recordId: (route.params?.id || '').toString()
+    }
+}

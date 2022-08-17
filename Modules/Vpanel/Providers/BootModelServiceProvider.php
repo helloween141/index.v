@@ -2,36 +2,31 @@
 
 namespace Modules\Vpanel\Providers;
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
 
 class BootModelServiceProvider extends ServiceProvider
 {
-
     /**
-     * Создание таблиц по полям модели
+     * Get the services provided by the provider.
      *
      * @return array
      */
     public function boot(): void
     {
-        /*$modules = $this->app['modules']->all();
+        $modules = $this->app['modules']->all();
         foreach ($modules as $module) {
-            $allModelsFiles = File::glob($module->getPath() . '/Entities/*.php');
+            /** @var File $allFiles */
+            $allFiles = File::glob($module->getPath() . '/Entities/*.php');
 
-            foreach ($allModelsFiles as $modelFile) {
-                $fileName = pathinfo($modelFile, PATHINFO_FILENAME);
-                $model = 'Modules\\' . $module->getName() . '\\Entities\\' . ucfirst($fileName);
+            foreach ($allFiles as $entity) {
+                $model = pathinfo($entity, PATHINFO_FILENAME);
+                $modelClass = 'Modules\\' . $module->getName() . '\\Entities\\' . ucfirst($model);
 
-                $fields = $model::getStructure()->getFields();
-                foreach ($fields as $field) {
-
+                if (method_exists($modelClass, 'setStructure')) {
+                    $modelClass::setStructure();
                 }
             }
-        }*/
-    }
-
-    private function checkStructure()
-    {
-
+        }
     }
 }
