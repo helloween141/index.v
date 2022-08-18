@@ -28,7 +28,7 @@ class MainRequestController extends Controller
 
     public function getInterface(string $moduleName, string $modelName)
     {
-        $model = $this->getModelClass($moduleName, $modelName);
+        $model = Utils::getModelClass($moduleName, $modelName);
         if (!class_exists($model)) {
             throw new \Error(ApiError::MODEL_NOT_FOUND);
         }
@@ -37,9 +37,9 @@ class MainRequestController extends Controller
         return response()->json($structure, Response::HTTP_OK);
     }
 
-    public function getList(Request $request, string $moduleName = '', string $modelName = '')
+    public function getList(string $moduleName = '', string $modelName = '')
     {
-        $model = $this->getModelClass($moduleName, $modelName);
+        $model = Utils::getModelClass($moduleName, $modelName);
         if (!class_exists($model)) {
             throw new \Error(ApiError::MODEL_NOT_FOUND);
         }
@@ -61,7 +61,8 @@ class MainRequestController extends Controller
 
     public function getRecord(string $moduleName, string $modelName, int $id = 0)
     {
-        $model = $this->getModelClass($moduleName, $modelName);
+
+        $model = Utils::getModelClass($moduleName, $modelName);
         if (!class_exists($model)) {
             throw new \Error(ApiError::MODEL_NOT_FOUND);
         }
@@ -76,7 +77,7 @@ class MainRequestController extends Controller
 
     public function saveRecord(Request $request, string $moduleName, string $modelName)
     {
-        $model = $this->getModelClass($moduleName, $modelName);
+        $model = Utils::getModelClass($moduleName, $modelName);
         if (!class_exists($model)) {
             throw new \Error(ApiError::MODEL_NOT_FOUND);
         }
@@ -100,7 +101,7 @@ class MainRequestController extends Controller
 
     public function deleteRecord(string $moduleName, string $modelName, int $id)
     {
-        $model = $this->getModelClass($moduleName, $modelName);
+        $model = Utils::getModelClass($moduleName, $modelName);
         if (!class_exists($model)) {
             throw new \Error(ApiError::MODEL_NOT_FOUND);
         }
@@ -108,10 +109,5 @@ class MainRequestController extends Controller
         $result = $model::where('id', $id)->delete();
 
         return response()->json(null, $result ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
-    }
-
-    private function getModelClass(string $moduleName, string $modelName)
-    {
-        return 'Modules\\' . $moduleName . '\\Entities\\' . ucfirst($modelName);
     }
 }

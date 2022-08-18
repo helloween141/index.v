@@ -4,6 +4,7 @@ namespace Modules\Vpanel\Providers;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
+use Modules\Vpanel\Core\Utils;
 
 class BootModelServiceProvider extends ServiceProvider
 {
@@ -21,7 +22,7 @@ class BootModelServiceProvider extends ServiceProvider
 
             foreach ($allFiles as $entity) {
                 $model = pathinfo($entity, PATHINFO_FILENAME);
-                $modelClass = 'Modules\\' . $module->getName() . '\\Entities\\' . ucfirst($model);
+                $modelClass = Utils::getModelClass($module->getName(), $model);
 
                 if (method_exists($modelClass, 'setStructure')) {
                     $modelClass::setStructure();

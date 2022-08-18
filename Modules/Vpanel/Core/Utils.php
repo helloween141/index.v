@@ -45,4 +45,9 @@ class Utils
 
         return $value;
     }
+
+    public static function getModelClass(string $moduleName, string $modelName)
+    {
+        return 'Modules\\' . $moduleName . '\\Entities\\' . ucfirst($modelName);
+    }
 }
