@@ -21,7 +21,7 @@ abstract class Field
 
     protected mixed $defaultValue;
 
-    public static function create(): Field
+    public static function create(): static
     {
         return new static();
     }

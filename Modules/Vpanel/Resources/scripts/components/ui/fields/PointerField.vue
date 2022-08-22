@@ -4,6 +4,7 @@
       :label="identifyLabel"
       :options="options"
       :required="field.required"
+      @click="handleClick"
       @search="fetchData"
       @update:modelValue="handleInput"
       class="py-2 bg-gray-200 text-gray-700 rounded leading-tight focus:outline-none focus:bg-white focus:border-purple-500 custom-fx"
@@ -13,6 +14,11 @@
 <script lang="ts">
 import {defineComponent, onMounted, ref} from "vue";
 import axios from "axios";
+import {$vfm} from "vue-final-modal";
+import VModal from "@/components/ui/modal/VModal.vue";
+import VTitle from "@/components/ui/modal/VTitle.vue";
+import DefaultModelEditor from "@/components/editors/DefaultModelEditor.vue";
+import VContent from "@/components/ui/modal/VContent.vue";
 
 export default defineComponent({
   name: 'PointerField',
@@ -26,13 +32,17 @@ export default defineComponent({
     const identifyLabel = ref(props.field.identify || 'name')
     const selectedOption = ref({})
 
+    let incModel = ref()
+
     onMounted(async () => {
       const listResponse = await axios.get(`/api/vpanel/pointer`, {
         params: {
           'model': props.field.model
         }
       })
-      options.value = listResponse.data
+      incModel.value = listResponse.data
+
+      options.value = listResponse.data.data
 
       if (options.value) {
         const currentOption = (options.value.find(option => option.id === props.value))
@@ -40,10 +50,30 @@ export default defineComponent({
           selectedOption.value = currentOption[identifyLabel.value]
         }
       }
+
     });
 
     // TODO: autocomplete
     const fetchData = (search, loading) => {
+    }
+
+    const handleClick = () => {
+      $vfm.show({
+        component: VModal,
+        on: {
+          confirm(close) {
+            close()
+          },
+        },
+        slots: {
+          content: {
+            component: DefaultModelEditor,
+            bind: {
+              incModel
+            }
+          }
+        }
+      })
     }
 
     const handleInput = () => {
@@ -55,6 +85,7 @@ export default defineComponent({
       identifyLabel,
       selectedOption,
       handleInput,
+      handleClick,
       fetchData
     }
   }

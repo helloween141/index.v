@@ -10,7 +10,7 @@
       <slot name="title"></slot>
     </span>
     <div class="flex-grow overflow-y-auto">
-      <slot v-bind:params="params"></slot>
+      <slot name="content"></slot>
     </div>
   </vue-final-modal>
 </template>

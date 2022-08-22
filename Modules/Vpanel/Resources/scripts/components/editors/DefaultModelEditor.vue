@@ -1,5 +1,5 @@
 <template>
-  <div v-if="values">
+  <div v-if="incModel">
     <div class="mb-3 flex justify-between items-center">
       <h1 class="dark:text-white text-2xl">{{ incModel.title }}</h1>
       <EditorActionPanel
@@ -8,11 +8,14 @@
       />
     </div>
 
-    <DefaultEditorTable
-        @select-record="selectRecord"
-        :model="incModel"
-        :values="values"
-    />
+    <div v-if="incValues">
+      <DefaultEditorTable
+          @select-record="selectRecord"
+          :model="incModel"
+          :values="incValues"
+      />
+    </div>
+
   </div>
 </template>
 
@@ -21,27 +24,15 @@ import {defineComponent, onMounted, ref} from "vue";
 import DefaultEditorTable from "@/components/ui/tables/DefaultEditorTable.vue";
 import router from "@/router";
 import EditorActionPanel from "@/components/ui/EditorActionPanel.vue";
-import {loadRecord} from "@/api/actionForm";
-import {useRoute} from "vue-router";
-import {loadList} from "@/api/actionEditor";
-import {getRouteParameters} from "@/utils/utils";
 
 export default defineComponent({
   name: 'DefaultModelEditor',
   components: {EditorActionPanel, DefaultEditorTable},
   props: {
-    incModel: Object
+    incModel: Object,
+    incValues: Object
   },
   setup() {
-    const route = useRoute()
-    const values = ref()
-
-    const {moduleName, modelName} = getRouteParameters(route)
-
-    onMounted(async () => {
-      values.value = await loadList(moduleName, modelName)
-    })
-
     const selectRecord = (recordId) => {
       router.push({ name: 'module', params: { id: recordId } })
     }
@@ -52,8 +43,7 @@ export default defineComponent({
 
     return {
       selectRecord,
-      createRecord,
-      values
+      createRecord
     }
   }
 })

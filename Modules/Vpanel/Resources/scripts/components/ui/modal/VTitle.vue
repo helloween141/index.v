@@ -1,5 +1,5 @@
 <template>
-  <p class="text-white">Применить фильтр</p>
+  <p class="text-white">{{ text }}</p>
 </template>
 
 <script lang="ts">

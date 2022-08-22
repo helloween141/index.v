@@ -32,7 +32,7 @@ class News extends BaseModel
         self::$structure = (new ModelStructure)
             ->addField(StringField::create()->setName('title')->setTitle('Название')->identify()->required())
             ->addField(DateField::create()->setName('date')->setTitle('Дата'))
-            ->addField(PointerField::create()->setName('author_id')->setModel(Author::class)->setTitle('Автор')->required())
+            ->addField(PointerField::create()->setName('author_id')->setTitle('Автор')->required()->setModel(Author::class)->modal())
             ->addField(TextField::create()->setName('short_text')->setTitle('Краткое описание'))
             ->addField(HtmlField::create()->setName('full_text')->setTitle('Полное описание'))
             ->addUrl()

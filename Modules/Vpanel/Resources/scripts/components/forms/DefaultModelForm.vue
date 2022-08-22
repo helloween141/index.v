@@ -53,47 +53,29 @@ export default defineComponent({
   name: 'ModuleForm',
   components: {DefaultFieldsTable, FormActionPanel},
   props: {
-    incModel: Object
+    incModel: Object,
+    incValues: Object
   },
-  setup() {
+  setup(props) {
     const toast = useToast()
     const route = useRoute()
-    const values = ref()
+    const values = ref(props.incValues)
 
     const {moduleName, modelName, recordId} = getRouteParameters(route)
 
-    onMounted(async () => {
-      try {
-        const response = await loadRecord(moduleName, modelName, recordId)
-        values.value = response.data
-      } catch (error) {
-        toast.error(APIMessage.ERROR_LOAD_DATA)
-        console.error(error)
-      }
-    })
-
     const onSave = async () => {
-      try {
-        const formData = prepareFormData(values.value)
-        const response = await saveRecord(moduleName, modelName, formData)
-        const id = response.data.id
+      const formData = prepareFormData(values.value)
+      const newId = await saveRecord(moduleName, modelName, formData)
+      if (newId) {
         toast.success(APIMessage.SUCCESS_SAVE)
-        await router.push({name: 'module', params: {'module': moduleName, 'model': modelName, id}})
-      } catch (error) {
-        toast.error(APIMessage.ERROR_SAVE_DATA)
-        console.error(error)
+        await router.push({name: 'module', params: {'module': moduleName, 'model': modelName, id: newId}})
       }
     }
 
     const onDelete = async () => {
-      try {
-        await deleteRecord(moduleName, modelName, recordId)
-        toast.success(APIMessage.SUCCESS_DELETE);
-        await router.push({name: 'module', params: {'module': moduleName, 'model': modelName}})
-      } catch (error) {
-        toast.error(APIMessage.ERROR_DELETE)
-        console.error(error)
-      }
+      await deleteRecord(moduleName, modelName, recordId)
+      toast.success(APIMessage.SUCCESS_DELETE);
+      await router.push({name: 'module', params: {'module': moduleName, 'model': modelName}})
     }
 
     const onBack = () => {

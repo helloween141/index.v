@@ -55,7 +55,7 @@ class MainRequestController extends Controller
             throw new \Error(ApiError::MODEL_NOT_FOUND);
         }
 
-        $records = $model::all();
+        $records = $model::getList();
         return response()->json($records, Response::HTTP_OK);
     }
 
@@ -108,6 +108,6 @@ class MainRequestController extends Controller
 
         $result = $model::where('id', $id)->delete();
 
-        return response()->json(null, $result ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
+        return response()->json($result, $result ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
     }
 }
