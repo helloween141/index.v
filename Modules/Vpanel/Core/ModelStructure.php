@@ -22,6 +22,11 @@ class ModelStructure
 
     protected string $formComponent = '';
 
+    static function create(): ModelStructure
+    {
+        return new ModelStructure();
+    }
+
     public function addField(Field $field): ModelStructure
     {
         $this->fields[] = $field;
@@ -64,6 +69,9 @@ class ModelStructure
         return $this;
     }
 
+    /**
+     * @return Field[]
+     */
     public function getFields(): array
     {
         return $this->fields;
@@ -121,7 +129,7 @@ class ModelStructure
             if ($field->isPointer()) {
                 $pointers = [
                     ...$pointers,
-                    $field->getName() => $field->model
+                    $field->getName() => $field->getModel()
                 ];
             }
         }

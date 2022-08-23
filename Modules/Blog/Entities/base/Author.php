@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Blog\Database\factories\AuthorFactory;
 use Modules\Vpanel\Core\BaseModel;
-use Modules\Vpanel\Core\Fields\Field;
 use Modules\Vpanel\Core\Fields\StringField;
 use Modules\Vpanel\Core\ModelStructure;
 
@@ -19,16 +18,10 @@ class Author extends BaseModel
         return new AuthorFactory();
     }
 
-    protected static ModelStructure $structure;
-
-    public static function setStructure()
+    public static function defineStructure(): ModelStructure
     {
-        self::$structure = (new ModelStructure)
-            ->addField(StringField::create()
-                ->setName('name')
-                ->setTitle('Имя')
-                ->identify()
-                ->required())
+        return ModelStructure::create()
+            ->addField(StringField::create()->setName('name')->setTitle('Имя')->identify()->required())
             ->setModelTitle('Авторы')
             ->setRecordTitle('автор')
             ->setAccusativeRecordTitle('автора');

@@ -11,4 +11,9 @@ class SelectField extends Field
         $this->options = $options;
         return $this;
     }
+
+    public function getSelect(): array
+    {
+        return [];
+    }
 }

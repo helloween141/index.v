@@ -3,6 +3,8 @@
 namespace Modules\Vpanel\Core\Fields;
 
 
+use Modules\Vpanel\Core\BaseModel;
+
 abstract class Field
 {
     protected string $name;
@@ -20,6 +22,16 @@ abstract class Field
     protected bool $inForm = true;
 
     protected mixed $defaultValue;
+
+    abstract function getSelect(): array;
+
+    public function getWhere(array $filter): string {
+        return '';
+    }
+
+    public function getJoin(BaseModel|string $mainModel): string {
+        return '';
+    }
 
     public static function create(): static
     {

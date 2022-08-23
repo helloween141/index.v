@@ -25,7 +25,7 @@ class BootModelServiceProvider extends ServiceProvider
                 $modelClass = Utils::getModelClass($module->getName(), $model);
 
                 if (method_exists($modelClass, 'setStructure')) {
-                    $modelClass::setStructure();
+                    $modelClass::defineStructure();
                 }
             }
         }

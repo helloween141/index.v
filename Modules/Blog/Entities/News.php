@@ -7,8 +7,7 @@ class News extends \Modules\Blog\Entities\base\News
 {
     public static function boot()
     {
-        static::saving(function ($model) {
-        });
+        static::saving(function ($model) {});
 
         parent::boot();
     }
