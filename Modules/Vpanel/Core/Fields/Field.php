@@ -29,8 +29,8 @@ abstract class Field
         return '';
     }
 
-    public function getJoin(BaseModel|string $mainModel): string {
-        return '';
+    public function getJoin(BaseModel|string $mainModel): array {
+        return [];
     }
 
     public static function create(): static
@@ -119,7 +119,7 @@ abstract class Field
         return $this->readonly;
     }
 
-    public function isInEditor(): bool
+    public function showInEditor(): bool
     {
         return $this->inEditor;
     }

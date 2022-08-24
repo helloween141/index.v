@@ -17,10 +17,7 @@ abstract class BaseModel extends Model
 
     public static function getStructure(): ModelStructure
     {
-        if (!static::$structure) {
-            static::$structure = static::defineStructure();
-        }
-        return static::$structure;
+        return static::defineStructure();
     }
 
     public static function defineStructure(): ?ModelStructure
@@ -30,39 +27,43 @@ abstract class BaseModel extends Model
 
     public static function getList()
     {
-        $select = $where = $join = [];
+        $tableName = with(new static)->getTable();
+
+        $where = $join = $orderBy = [];
+
+        $list = static::query()->addSelect([$tableName . '.id']);
 
         $fields = static::getStructure()->getFields();
         foreach ($fields as $field) {
-            $select = array_merge($select, $field->getSelect());
+
+            if ($field->showInEditor()) {
+                $list->addSelect($field->getSelect());
+            }
 
             $temp = $field->getWhere([]);
             if ($temp) {
                 $where[] = $temp;
             }
 
-            $temp = $field->getJoin(static::class);
-            if ($temp) {
-                $join[] = $temp;
-            }
-
-            if ($field->isInEditor()) {
-                $select[] = $field->getName();
+            $join = $field->getJoin(static::class);
+            if (count($join) > 0) {
+                $list->leftJoin(...$join);
             }
         }
 
-        $select = implode(", ", $select);
-        $where = implode("AND ", $where);
-        $join = implode("", $join);
+//        $select = implode(", ", $select);
+//        $where = implode("AND ", $where);
+//        $join = implode("", $join);
+//        $orderBy = implode("ORDER BY id", $orderBy);
 
-        $list = DB::select(
-            'SELECT ' . $select . ' FROM ' . with(new static)->getTable() . ' ' . $join . ' ' . $where);
+//        $list = DB::select(
+//            "SELECT {$select} FROM "
+//            . with(new static)->getTable() . " "
+//            . $join . " "
+//            . $where . " "
+//            . $orderBy
+//        );
 
-        /*$list = static::query()
-            ->select($select)
-            ->orderBy('id', 'DESC')
-            ->paginate();*/
-
-        return $list;
+        return $list->orderBy($tableName . '.id', 'DESC');
     }
 }

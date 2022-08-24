@@ -16,9 +16,7 @@ import {defineComponent, onMounted, ref} from "vue";
 import axios from "axios";
 import {$vfm} from "vue-final-modal";
 import VModal from "@/components/ui/modal/VModal.vue";
-import VTitle from "@/components/ui/modal/VTitle.vue";
 import DefaultModelEditor from "@/components/editors/DefaultModelEditor.vue";
-import VContent from "@/components/ui/modal/VContent.vue";
 
 export default defineComponent({
   name: 'PointerField',
@@ -41,8 +39,7 @@ export default defineComponent({
         }
       })
       incModel.value = listResponse.data
-
-      options.value = listResponse.data.data
+      options.value = listResponse.data
 
       if (options.value) {
         const currentOption = (options.value.find(option => option.id === props.value))

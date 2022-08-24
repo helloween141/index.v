@@ -7,6 +7,8 @@ class DateField extends Field
 
     public function getSelect(): array
     {
-        return [];
+        return [
+            "{$this->name}"
+        ];
     }
 }

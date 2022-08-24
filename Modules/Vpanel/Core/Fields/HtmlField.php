@@ -7,6 +7,8 @@ class HtmlField extends Field
 
     public function getSelect(): array
     {
-        return [];
+        return [
+            "{$this->name}"
+        ];
     }
 }

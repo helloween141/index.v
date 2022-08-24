@@ -52,10 +52,10 @@ class PointerField extends Field
         if (key_exists($this->name, $filter)) {
             return "{$tableName}_{$this->name}.id in (" . implode(", ", $filter[$this->name]) . ")";
         }
-        return "";
+        return '';
     }
 
-    public function getJoin(BaseModel|string $mainModel): string
+    public function getJoin(BaseModel|string $mainModel): array
     {
         /** @var string|BaseModel */
         $model = $this->getModel();
@@ -63,6 +63,11 @@ class PointerField extends Field
         $tableName = with(new $model)->getTable();
         $mainTableMain = with(new $mainModel)->getTable();
 
-        return "LEFT JOIN {$tableName} {$tableName}_{$this->name} ON {$mainTableMain}.{$this->name} = {$tableName}_{$this->name}.id";
+        return [
+            "{$tableName} as {$tableName}_{$this->name}",
+            "{$tableName}_{$this->name}.id",
+            "=",
+            "{$mainTableMain}.{$this->name}"
+        ];
     }
 }

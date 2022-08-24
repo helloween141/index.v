@@ -44,7 +44,9 @@ class MainRequestController extends Controller
             throw new \Error(ApiError::MODEL_NOT_FOUND);
         }
 
-        $list = $model::getList();
+        $list = $model::getList()
+            ->paginate();
+
         return response()->json($list, Response::HTTP_OK);
     }
 
@@ -55,13 +57,12 @@ class MainRequestController extends Controller
             throw new \Error(ApiError::MODEL_NOT_FOUND);
         }
 
-        $records = $model::getList();
+        $records = $model::getList()->get();
         return response()->json($records, Response::HTTP_OK);
     }
 
     public function getRecord(string $moduleName, string $modelName, int $id = 0)
     {
-
         $model = Utils::getModelClass($moduleName, $modelName);
         if (!class_exists($model)) {
             throw new \Error(ApiError::MODEL_NOT_FOUND);

@@ -7,6 +7,8 @@ class FloatField extends Field
 
     public function getSelect(): array
     {
-        return [];
+        return [
+            "{$this->name}"
+        ];
     }
 }
