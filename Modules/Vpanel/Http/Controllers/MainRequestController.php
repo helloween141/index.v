@@ -44,8 +44,7 @@ class MainRequestController extends Controller
             throw new \Error(ApiError::MODEL_NOT_FOUND);
         }
 
-        $list = $model::getList()
-            ->paginate();
+        $list = $model::getList(withPagination: true);
 
         return response()->json($list, Response::HTTP_OK);
     }
@@ -57,7 +56,7 @@ class MainRequestController extends Controller
             throw new \Error(ApiError::MODEL_NOT_FOUND);
         }
 
-        $records = $model::getList()->get();
+        $records = $model::getList(withPagination: false);
         return response()->json($records, Response::HTTP_OK);
     }
 

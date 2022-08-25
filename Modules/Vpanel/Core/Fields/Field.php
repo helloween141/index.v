@@ -23,7 +23,13 @@ abstract class Field
 
     protected mixed $defaultValue;
 
-    abstract function getSelect(): array;
+    public function getSelect(BaseModel|string $mainModel): array {
+        $tableName = with(new $mainModel)->getTable();
+
+        return [
+            "{$tableName}.{$this->name} AS {$this->name}"
+        ];
+    }
 
     public function getWhere(array $filter): string {
         return '';

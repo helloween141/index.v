@@ -32,7 +32,7 @@ class PointerField extends Field
         return $this;
     }
 
-    public function getSelect(): array
+    public function getSelect(BaseModel|string $mainModel): array
     {
         /** @var string|BaseModel */
         $model = $this->getModel();
@@ -41,8 +41,8 @@ class PointerField extends Field
         $identifyFieldName = $model::getStructure()->getIdentifyField();
 
         return [
-            "{$tableName}_{$this->name}.id",
-            "{$tableName}_{$this->name}.{$identifyFieldName}"
+            "{$tableName}_{$this->name}.id AS {$this->name}.id",
+            "{$tableName}_{$this->name}.{$identifyFieldName} AS {$this->name}.value"
         ];
     }
 

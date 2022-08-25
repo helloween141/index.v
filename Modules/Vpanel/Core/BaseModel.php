@@ -25,19 +25,19 @@ abstract class BaseModel extends Model
         return null;
     }
 
-    public static function getList()
+    public static function getList($withPagination = false)
     {
         $tableName = with(new static)->getTable();
 
         $where = $join = $orderBy = [];
 
-        $list = static::query()->addSelect([$tableName . '.id']);
+        $query = static::query()->addSelect(["{$tableName}.id"]);
 
         $fields = static::getStructure()->getFields();
         foreach ($fields as $field) {
 
             if ($field->showInEditor()) {
-                $list->addSelect($field->getSelect());
+                $query->addSelect($field->getSelect(static::class));
             }
 
             $temp = $field->getWhere([]);
@@ -47,23 +47,33 @@ abstract class BaseModel extends Model
 
             $join = $field->getJoin(static::class);
             if (count($join) > 0) {
-                $list->leftJoin(...$join);
+                $query->leftJoin(...$join);
             }
         }
 
-//        $select = implode(", ", $select);
-//        $where = implode("AND ", $where);
-//        $join = implode("", $join);
-//        $orderBy = implode("ORDER BY id", $orderBy);
+        $query->orderBy($tableName . ".id", "DESC");
 
-//        $list = DB::select(
-//            "SELECT {$select} FROM "
-//            . with(new static)->getTable() . " "
-//            . $join . " "
-//            . $where . " "
-//            . $orderBy
-//        );
+        if ($withPagination) {
+            $paginatedList = $query->paginate();
+            return self::formatList($paginatedList);
+        }
 
-        return $list->orderBy($tableName . '.id', 'DESC');
+        return $query->get();
+    }
+
+    private static function formatList($list) {
+        $collection = $list->getCollection();
+        $collection->transform(function ($item) {
+            foreach ($item->attributes as $key => $value) {
+                if (str_contains($key, ".")) {
+                    $prefix = explode(".", $key);
+                    $item[$prefix[0]] = array_merge($item[$prefix[0]] ?? [], [$prefix[1] => $value]);
+                    unset($item[$key]);
+                }
+            }
+            return $item;
+        });
+
+        return $list;
     }
 }
