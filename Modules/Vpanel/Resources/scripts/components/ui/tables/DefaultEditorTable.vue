@@ -49,7 +49,7 @@ export default defineComponent({
     const fieldValues = []
 
     props.model.fields.forEach(field => {
-      if (field.inEditor){
+      if (field.inEditor) {
         fieldNames.push({name: field['name'], title: field['title']})
       }
     })

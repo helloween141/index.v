@@ -21,7 +21,15 @@ class Author extends BaseModel
     public static function defineStructure(): ModelStructure
     {
         return ModelStructure::create()
-            ->addField(StringField::create()->setName('name')->setTitle('Имя')->identify()->required())
+            ->addField(
+                StringField::create()
+                    ->setName('name')
+                    ->setTitle('Имя')
+                    ->identify()
+                    ->required()
+                    ->showInFilter()
+                    ->showInSearch()
+            )
             ->setModelTitle('Авторы')
             ->setRecordTitle('автор')
             ->setAccusativeRecordTitle('автора');

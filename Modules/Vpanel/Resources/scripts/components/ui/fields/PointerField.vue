@@ -29,8 +29,7 @@ export default defineComponent({
     const options = ref([])
     const identifyLabel = ref(props.field.identify || 'name')
     const selectedOption = ref({})
-
-    let incModel = ref()
+    let incValues = []
 
     onMounted(async () => {
       const listResponse = await axios.get(`/api/vpanel/pointer`, {
@@ -38,8 +37,11 @@ export default defineComponent({
           'model': props.field.model
         }
       })
-      incModel.value = listResponse.data
-      options.value = listResponse.data
+      incValues = listResponse.data
+
+      if (!props.field.isModal) {
+        options.value = listResponse.data
+      }
 
       if (options.value) {
         const currentOption = (options.value.find(option => option.id === props.value))
@@ -47,7 +49,6 @@ export default defineComponent({
           selectedOption.value = currentOption[identifyLabel.value]
         }
       }
-
     });
 
     // TODO: autocomplete
@@ -55,22 +56,25 @@ export default defineComponent({
     }
 
     const handleClick = () => {
-      $vfm.show({
-        component: VModal,
-        on: {
-          confirm(close) {
-            close()
+      if (props.field.isModal) {
+        $vfm.show({
+          component: VModal,
+          on: {
+            confirm(close) {
+              close()
+            },
           },
-        },
-        slots: {
-          content: {
-            component: DefaultModelEditor,
-            bind: {
-              incModel
+          slots: {
+            content: {
+              component: DefaultModelEditor,
+              bind: {
+                incValues,
+                incModel: []
+              }
             }
           }
-        }
-      })
+        })
+      }
     }
 
     const handleInput = () => {

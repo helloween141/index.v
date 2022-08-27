@@ -1,12 +1,17 @@
 <template>
   <div v-if="incModel">
-    <div class="mb-3 flex justify-between items-center">
-      <h1 class="dark:text-white text-2xl">{{ incModel.title }}</h1>
-      <EditorActionPanel
-          @on-create="createRecord"
-          :model="incModel"
-      />
-    </div>
+    <EditorActionPanel
+        @on-create="createRecord"
+        @on-show-filter="showFilterPanel"
+        @on-search="applyFilter"
+        :model="incModel"
+    />
+
+    <EditorFilterPanel
+        :fields="filterFields"
+        @on-filter="applyFilter"
+        v-show="showFilter"
+    />
 
     <div v-if="incValues">
       <DefaultEditorTable
@@ -20,19 +25,23 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, ref} from "vue";
+import {defineComponent, ref} from "vue";
 import DefaultEditorTable from "@/components/ui/tables/DefaultEditorTable.vue";
 import router from "@/router";
 import EditorActionPanel from "@/components/ui/EditorActionPanel.vue";
+import EditorFilterPanel from "@/components/ui/EditorFilterPanel.vue";
+import {getFieldsForFilter} from "@/utils/utils";
 
 export default defineComponent({
   name: 'DefaultModelEditor',
-  components: {EditorActionPanel, DefaultEditorTable},
+  components: {EditorFilterPanel, EditorActionPanel, DefaultEditorTable},
   props: {
     incModel: Object,
     incValues: Object
   },
-  setup() {
+  setup(props) {
+    const showFilter = ref(false)
+
     const selectRecord = (recordId) => {
       router.push({ name: 'module', params: { id: recordId } })
     }
@@ -41,9 +50,24 @@ export default defineComponent({
       router.push({ name: 'module', params: { id: 0 } })
     }
 
+    const applyFilter = () => {
+      alert('Get list')
+      // TODO: getList
+    }
+
+    const showFilterPanel = () => {
+      showFilter.value = !showFilter.value
+    }
+
+    const filterFields = getFieldsForFilter(props.incModel.fields)
+
     return {
       selectRecord,
-      createRecord
+      createRecord,
+      showFilterPanel,
+      applyFilter,
+      showFilter,
+      filterFields
     }
   }
 })

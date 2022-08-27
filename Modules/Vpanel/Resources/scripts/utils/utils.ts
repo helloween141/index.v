@@ -20,3 +20,11 @@ export const getRouteParameters = (route) => {
         recordId: (route.params?.id || '').toString()
     }
 }
+
+export const getFieldsForFilter = (fields) => {
+    return fields.filter(field => field.inFilter)
+}
+
+export const getPlaceholderForSearch = (fields) => {
+    return fields.filter(field => field.inSearch).map(field => field.title.toLowerCase()).join(', ')
+}
