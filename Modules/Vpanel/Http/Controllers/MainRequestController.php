@@ -44,7 +44,9 @@ class MainRequestController extends Controller
             throw new \Error(ApiError::MODEL_NOT_FOUND);
         }
 
-        $list = $model::getList(withPagination: true);
+        $filter = $request->get('filter', []);
+
+        $list = $model::getList(filter: $filter, withPagination: true);
 
         return response()->json($list, Response::HTTP_OK);
     }
@@ -56,7 +58,7 @@ class MainRequestController extends Controller
             throw new \Error(ApiError::MODEL_NOT_FOUND);
         }
 
-        $records = $model::getList(withPagination: false);
+        $records = $model::getList(filter: [], withPagination: false);
         return response()->json($records, Response::HTTP_OK);
     }
 

@@ -25,32 +25,31 @@ abstract class BaseModel extends Model
         return null;
     }
 
-    public static function getList($withPagination = false)
+    public static function getList($filter = [], $withPagination = false)
     {
         $tableName = with(new static)->getTable();
-
-        $where = $join = $orderBy = [];
 
         $query = static::query()->addSelect(["{$tableName}.id"]);
 
         $fields = static::getStructure()->getFields();
         foreach ($fields as $field) {
-
             if ($field->showInEditor()) {
                 $query->addSelect($field->getSelect(static::class));
-            }
-
-            $temp = $field->getWhere([]);
-            if ($temp) {
-                $where[] = $temp;
             }
 
             $join = $field->getJoin(static::class);
             if (count($join) > 0) {
                 $query->leftJoin(...$join);
             }
+
+            // TODO: getWhere to array
+            $where = $field->getWhere([]);
+            if ($where) {
+                $query->where($where);
+            }
         }
 
+        // TODO: add order by (id: default)
         $query->orderBy($tableName . ".id", "DESC");
 
         if ($withPagination) {

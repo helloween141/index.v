@@ -32,7 +32,7 @@ class PointerField extends Field
         return $this;
     }
 
-    public function getSelect(BaseModel|string $mainModel): array
+    public function getSelect(BaseModel|string $mainModel = ""): array
     {
         /** @var string|BaseModel */
         $model = $this->getModel();
@@ -48,11 +48,14 @@ class PointerField extends Field
 
     public function getWhere(array $filter): string
     {
-        $tableName = '';
+        /** @var string|BaseModel */
+        $model = $this->getModel();
+
+        $tableName = with(new $model)->getTable();
         if (key_exists($this->name, $filter)) {
-            return "{$tableName}_{$this->name}.id in (" . implode(", ", $filter[$this->name]) . ")";
+            return "{$tableName}_{$this->name}.id IN (" . implode(", ", $filter[$this->name]) . ")";
         }
-        return '';
+        return "";
     }
 
     public function getJoin(BaseModel|string $mainModel): array
@@ -64,7 +67,7 @@ class PointerField extends Field
         $mainTableMain = with(new $mainModel)->getTable();
 
         return [
-            "{$tableName} as {$tableName}_{$this->name}",
+            "{$tableName} AS {$tableName}_{$this->name}",
             "{$tableName}_{$this->name}.id",
             "=",
             "{$mainTableMain}.{$this->name}"

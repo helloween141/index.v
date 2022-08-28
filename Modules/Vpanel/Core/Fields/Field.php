@@ -34,7 +34,7 @@ abstract class Field
     }
 
     public function getWhere(array $filter): string {
-        return '';
+        return "";
     }
 
     public function getJoin(BaseModel|string $mainModel): array {
