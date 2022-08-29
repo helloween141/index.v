@@ -1,55 +1,39 @@
 <template>
   <div class="mb-5 inline-block justify-between p-6 w-full bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
     {{filter}}
+
     <div v-for="(field, index) in fields"
          :key="index"
          class="mb-3"
     >
-      <span class="dark:text-white mb-3">
-        {{ field.title }}
-      </span>
+      <StringFilterField
+          v-if="field.type === 'string' || field.type === 'pointer'"
+          :field="field"
+          v-model:value="values[field.name]"
+          @set-filter="setFilter"
+      />
 
-      <div v-if="field.type === 'string'">
-        <input type="text"
-               v-model="filter[field.name]"
-               class="bg-gray-200 appearance-none border-gray-200 rounded w-full text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
-      </div>
+      <DateRangeFilterField
+          v-if="field.type === 'date'"
+          :field="field"
+          v-model:value="values[field.name]"
+          @set-filter="setFilter"
+      />
 
-      <div v-if="field.type === 'int' || field.type === 'float'">
-        <div class="flex justify-between">
-          <input type="text"
-                 v-model="filter[`${field.name}_from`]"
-                 placeholder="от"
-                 class="bg-gray-200 appearance-none border-gray-200 rounded w-full text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
-          <input type="text"
-                 v-model="filter[`${field.name}_to`]"
-                 placeholder="до"
-                 class="bg-gray-200 appearance-none border-gray-200 rounded w-full text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
-        </div>
-      </div>
+      <NumberFilterField
+          v-if="field.type === 'int' || field.type === 'float'"
+          :field="field"
+          v-model:value="values[field.name]"
+          @set-filter="setFilter"
+      />
 
-      <div v-if="field.type === 'pointer'">
-        <input type="text"
-               v-model="filter[field.name]"
-               class="bg-gray-200 appearance-none border-gray-200 rounded w-full text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
-      </div>
+      <BooleanFilterField
+          v-if="field.type === 'boolean'"
+          :field="field"
+          v-model:value="values[field.name]"
+          @set-filter="setFilter"
+      />
 
-      <div v-if="field.type === 'date'">
-        <div class="flex justify-between">
-          <input type="text"
-                 v-model="filter[`${field.name}_from`]"
-                 placeholder="от"
-                 class="bg-gray-200 appearance-none border-gray-200 rounded w-full text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
-          <input type="text"
-                 v-model="filter[`${field.name}_to`]"
-                 placeholder="до"
-                 class="ml-3 bg-gray-200 appearance-none border-gray-200 rounded w-full text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
-        </div>
-      </div>
-
-      <div v-if="field.type === 'bool'">
-        <input type="text" class="bg-gray-200 appearance-none border-gray-200 rounded w-full text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
-      </div>
     </div>
 
     <div class="flex justify-end">
@@ -70,28 +54,48 @@
 
 <script lang="ts">
 import {defineComponent, ref} from "vue";
+import StringFilterField from "@/components/ui/filters/StringFilterField.vue";
+import DateRangeFilterField from "@/components/ui/filters/DateRangeFilterField.vue";
+import NumberFilterField from "@/components/ui/filters/NumberFilterField.vue";
+import BooleanFilterField from "@/components/ui/filters/BooleanFilterField.vue";
 
 export default defineComponent({
   name: 'EditorFilterPanel',
+  components: {BooleanFilterField, NumberFilterField, DateRangeFilterField, StringFilterField},
   props: {
     fields: Object
   },
   emits: ['on-filter'],
   setup(props, {emit}) {
-    const filter = ref({})
+    let filter = []
+    const values = ref({})
+
+    const setFilter = (fieldFilter) => {
+      values.value[fieldFilter.name] = fieldFilter.value
+
+      const filterIndex = filter.findIndex(item => (item.name === fieldFilter.name && item.comparsion === fieldFilter.comparsion))
+      if (filterIndex >= 0) {
+        filter[filterIndex] = fieldFilter
+      } else {
+        filter.push(fieldFilter)
+      }
+    }
 
     const onApplyFilter = () => {
-      emit('on-filter', filter.value)
+      emit('on-filter', filter)
     }
 
     const onResetFilter = () => {
-      filter.value = {}
+      values.value = {}
+      filter = []
     }
 
     return {
       filter,
+      values,
       onApplyFilter,
-      onResetFilter
+      onResetFilter,
+      setFilter
     }
   }
 })

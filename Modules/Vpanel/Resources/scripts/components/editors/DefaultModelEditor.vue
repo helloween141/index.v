@@ -30,7 +30,9 @@ import DefaultEditorTable from "@/components/ui/tables/DefaultEditorTable.vue";
 import router from "@/router";
 import EditorActionPanel from "@/components/ui/EditorActionPanel.vue";
 import EditorFilterPanel from "@/components/ui/EditorFilterPanel.vue";
-import {getFieldsForFilter} from "@/utils/utils";
+import {getFieldsForFilter, getRouteParameters} from "@/utils/utils";
+import {loadList} from "@/api/actionEditor";
+import {useRoute} from "vue-router";
 
 export default defineComponent({
   name: 'DefaultModelEditor',
@@ -40,6 +42,9 @@ export default defineComponent({
     incValues: Object
   },
   setup(props) {
+    const route = useRoute()
+    const {moduleName, modelName} = getRouteParameters(route)
+
     const showFilter = ref(false)
 
     const selectRecord = (recordId) => {
@@ -50,9 +55,8 @@ export default defineComponent({
       router.push({ name: 'module', params: { id: 0 } })
     }
 
-    const applyFilter = () => {
-      alert('Get list')
-      // TODO: getList
+    const applyFilter = (filter) => {
+      props.incValues.value = loadList(moduleName, modelName, filter)
     }
 
     const showFilterPanel = () => {

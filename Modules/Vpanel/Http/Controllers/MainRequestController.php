@@ -37,7 +37,7 @@ class MainRequestController extends Controller
         return response()->json($structure, Response::HTTP_OK);
     }
 
-    public function getList(string $moduleName = '', string $modelName = '')
+    public function getList(Request $request, string $moduleName = '', string $modelName = '')
     {
         $model = Utils::getModelClass($moduleName, $modelName);
         if (!class_exists($model)) {

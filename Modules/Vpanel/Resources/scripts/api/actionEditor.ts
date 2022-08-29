@@ -14,9 +14,11 @@ export const loadInterface = async (moduleName: string, modelName: string) => {
     }
 }
 
-export const loadList = async (moduleName: string, modelName: string) => {
+export const loadList = async (moduleName: string, modelName: string, filter: any = []) => {
     try {
-        const response = await axios.get(APISettings.baseURL + `/list/${moduleName}/${modelName}`)
+        const response = await axios.get(APISettings.baseURL + `/list/${moduleName}/${modelName}`, {
+            params: filter
+        })
         return response.data
     } catch (error) {
         toast.error(APIMessage.ERROR_LOAD_INTERFACE)
