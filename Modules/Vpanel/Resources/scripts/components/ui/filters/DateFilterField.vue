@@ -1,6 +1,6 @@
 <template>
   <Datepicker
-      :value="value"
+      v-model="currentValue"
       :format="'dd.MM.yyyy HH:mm'"
       @update:modelValue="handleInput"
       :placeholder="placeholder"
@@ -16,20 +16,23 @@ import moment from "moment";
 
 export default defineComponent({
   name: 'DateFilterField',
-  emits: ['set-value'],
   props: {
     field: Object,
     placeholder: String,
     value: String
   },
+  emits: ['set-value'],
   setup(props, {emit}) {
+    const currentValue = ref()
+
     const handleInput = (val) => {
       val = moment(val).format('YYYY-MM-DD HH:mm')
       emit('set-value', val)
     }
 
     return {
-      handleInput
+      handleInput,
+      currentValue
     }
   }
 })

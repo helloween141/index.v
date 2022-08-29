@@ -33,7 +33,6 @@
           v-model:value="values[field.name]"
           @set-filter="setFilter"
       />
-
     </div>
 
     <div class="flex justify-end">
