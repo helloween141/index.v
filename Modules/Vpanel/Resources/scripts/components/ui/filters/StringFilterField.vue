@@ -21,9 +21,7 @@ export default defineComponent({
   },
   setup(props, {emit}) {
     const onInput = (val) => {
-      emit('set-filter', {
-        [props.field.name]: val
-      })
+      emit('set-filter', {[props.field.name]: val}, props.field.name)
     }
 
     return {

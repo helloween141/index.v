@@ -29,12 +29,10 @@ export default defineComponent({
 
     const handleInput = (val) => {
       val = val ? moment(val).format('YYYY-MM-DD HH:mm') : ''
-
       emit('set-value', val, props.type)
     }
 
     watch(() => props.value, (current, previous) => {
-      console.log(props.value)
       if (!current) {
         currentValue.value = ''
       }

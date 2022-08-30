@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref} from "vue";
+import {defineComponent, onMounted, ref} from "vue";
 import DefaultEditorTable from "@/components/ui/tables/DefaultEditorTable.vue";
 import router from "@/router";
 import EditorActionPanel from "@/components/ui/EditorActionPanel.vue";
@@ -38,15 +38,18 @@ export default defineComponent({
   name: 'DefaultModelEditor',
   components: {EditorFilterPanel, EditorActionPanel, DefaultEditorTable},
   props: {
-    incModel: Object,
-    incValues: Object
+    incModel: Object
   },
   setup(props) {
     const route = useRoute()
     const {moduleName, modelName} = getRouteParameters(route)
-    const values = ref(props.incValues)
+    const values = ref({})
 
     const showFilter = ref(false)
+
+    onMounted(async () => {
+      values.value = await loadList(moduleName, modelName, [])
+    })
 
     const selectRecord = (recordId) => {
       router.push({ name: 'module', params: { id: recordId } })

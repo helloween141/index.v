@@ -22,12 +22,7 @@ export default defineComponent({
   },
   setup(props, {emit}) {
     const onClick = (val) => {
-      emit('set-filter', {
-        'name': props.field.name,
-        'comparsion': '=',
-        'value': val,
-        'type': props.field.type
-      })
+      emit('set-filter', {[props.field.name]: val}, props.field.name)
     }
 
     return {

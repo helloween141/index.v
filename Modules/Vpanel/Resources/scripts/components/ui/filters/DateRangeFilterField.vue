@@ -5,14 +5,14 @@
       <DateFilterField
           :placeholder="'От'"
           :type="'from'"
-          :value="valueFrom"
+          :value="value ? value[0].value : ''"
           @set-value="onInput"
           class="mr-3"
       />
       <DateFilterField
           :placeholder="'До'"
           :type="'to'"
-          :value="valueTo"
+          :value="value ? value[1].value : ''"
           @set-value="onInput"
       />
     </div>
@@ -29,12 +29,9 @@ export default defineComponent({
   emits: ['set-filter'],
   props: {
     field: Object,
-    value: String,
+    value: [Array, String],
   },
   setup(props, {emit}) {
-    const valueFrom = ref(props.value)
-    const valueTo = ref(props.value)
-
     let valFrom = ''
     let valTo = ''
 
@@ -42,21 +39,21 @@ export default defineComponent({
       valFrom = type === 'from' ? val : valFrom
       valTo = type === 'to' ? val : valTo
 
-      console.log(valFrom, valTo)
       emit('set-filter', {
-        [props.field.name]: [{
-          'comparsion': '>=',
-          'value': valFrom
-        }, {
-          'comparsion': '<=',
-          'value': valTo
-        }]
-      })
+        [props.field.name]: [
+            {
+             'comparsion': '>=',
+             'value': valFrom
+          },
+          {
+            'comparsion': '<=',
+            'value': valTo
+          }
+        ],
+      }, props.field.name)
     }
 
     return {
-      valueFrom,
-      valueTo,
       onInput
     }
   }

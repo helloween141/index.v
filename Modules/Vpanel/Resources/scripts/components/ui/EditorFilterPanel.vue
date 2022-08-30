@@ -1,7 +1,6 @@
 <template>
   <div class="mb-5 p-6 w-full bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
-    {{filter}}
-
+    {{values}}
     <div v-for="(field, index) in fields"
          :key="index"
          class="mb-3"
@@ -67,10 +66,11 @@ export default defineComponent({
   emits: ['on-filter'],
   setup(props, {emit}) {
     let filter = {}
-    const values = ref({})
+    let values = ref({})
 
-    const setFilter = (fieldFilter) => {
-      values.value[fieldFilter.name] = fieldFilter.value
+    const setFilter = (fieldFilter, fieldName) => {
+      values.value[fieldName] = fieldFilter[fieldName]
+
       filter = {...filter, ...fieldFilter}
     }
 
@@ -79,8 +79,8 @@ export default defineComponent({
     }
 
     const onResetFilter = () => {
+      filter = {}
       values.value = {}
-      filter = []
     }
 
     return {
