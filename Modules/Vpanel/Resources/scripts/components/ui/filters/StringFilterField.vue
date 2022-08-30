@@ -20,13 +20,9 @@ export default defineComponent({
     field: Object,
   },
   setup(props, {emit}) {
-
     const onInput = (val) => {
       emit('set-filter', {
-        'name': props.field.name,
-        'comparsion': 'eq',
-        'value': val,
-        'type': props.field.type
+        [props.field.name]: val
       })
     }
 

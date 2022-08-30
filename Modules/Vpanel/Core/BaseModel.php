@@ -42,11 +42,11 @@ abstract class BaseModel extends Model
                 $query->leftJoin(...$join);
             }
 
-            // TODO: getWhere to array
-            $where = $field->getWhere([]);
+            $where = $field->getWhere(static::class, $filter);
             if ($where) {
-                $query->where($where);
+                $query->whereRaw($where);
             }
+
         }
 
         // TODO: add order by (id: default)

@@ -2,7 +2,6 @@ import axios from "axios";
 import {APISettings} from "./config.js"
 import {APIMessage} from "@/api/messages";
 import {useToast} from "vue-toastification";
-import router from "@/router";
 
 const toast = useToast()
 

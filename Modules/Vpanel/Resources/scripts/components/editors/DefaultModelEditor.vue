@@ -13,11 +13,11 @@
         v-show="showFilter"
     />
 
-    <div v-if="incValues">
+    <div v-if="values">
       <DefaultEditorTable
           @select-record="selectRecord"
           :model="incModel"
-          :values="incValues"
+          :values="values"
       />
     </div>
 
@@ -44,6 +44,7 @@ export default defineComponent({
   setup(props) {
     const route = useRoute()
     const {moduleName, modelName} = getRouteParameters(route)
+    const values = ref(props.incValues)
 
     const showFilter = ref(false)
 
@@ -55,8 +56,8 @@ export default defineComponent({
       router.push({ name: 'module', params: { id: 0 } })
     }
 
-    const applyFilter = (filter) => {
-      props.incValues.value = loadList(moduleName, modelName, filter)
+    const applyFilter = async (filter) => {
+      values.value = await loadList(moduleName, modelName, filter)
     }
 
     const showFilterPanel = () => {
@@ -71,7 +72,8 @@ export default defineComponent({
       showFilterPanel,
       applyFilter,
       showFilter,
-      filterFields
+      filterFields,
+      values
     }
   }
 })

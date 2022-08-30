@@ -66,22 +66,12 @@ export default defineComponent({
   },
   emits: ['on-filter'],
   setup(props, {emit}) {
-    let filter = []
+    let filter = {}
     const values = ref({})
 
     const setFilter = (fieldFilter) => {
       values.value[fieldFilter.name] = fieldFilter.value
-
-      const filterIndex = filter.findIndex(item => (item.name === fieldFilter.name && item.comparsion === fieldFilter.comparsion))
-      if (filterIndex >= 0) {
-        if (!fieldFilter.value) {
-          filter.splice(filterIndex, 1)
-        } else {
-          filter[filterIndex] = fieldFilter
-        }
-      } else {
-        filter.push(fieldFilter)
-      }
+      filter = {...filter, ...fieldFilter}
     }
 
     const onApplyFilter = () => {

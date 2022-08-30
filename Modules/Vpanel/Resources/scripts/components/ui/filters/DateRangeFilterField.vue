@@ -22,6 +22,7 @@
 <script>
 import {defineComponent, ref} from "vue";
 import DateFilterField from "@/components/ui/filters/DateFilterField.vue";
+
 export default defineComponent({
   name: 'DateRangeFilterField',
   components: {DateFilterField},
@@ -34,12 +35,22 @@ export default defineComponent({
     const valueFrom = ref(props.value)
     const valueTo = ref(props.value)
 
+    let valFrom = ''
+    let valTo = ''
+
     const onInput = (val, type) => {
+      valFrom = type === 'from' ? val : valFrom
+      valTo = type === 'to' ? val : valTo
+
+      console.log(valFrom, valTo)
       emit('set-filter', {
-        'name': props.field.name,
-        'comparsion': type === 'from' ? '>=' : '<=',
-        'value': val,
-        'type': props.field.type
+        [props.field.name]: [{
+          'comparsion': '>=',
+          'value': valFrom
+        }, {
+          'comparsion': '<=',
+          'value': valTo
+        }]
       })
     }
 

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Modules\Vpanel\Core\ApiError;
+use Modules\Vpanel\Core\BaseModel;
 use Modules\Vpanel\Core\Utils;
 use Nwidart\Modules\Facades\Module;
 
@@ -44,8 +45,9 @@ class MainRequestController extends Controller
             throw new \Error(ApiError::MODEL_NOT_FOUND);
         }
 
-        $filter = $request->get('filter', []);
+        $filter = json_decode($request->get('filter', []), true);
 
+        /** @var $model BaseModel */
         $list = $model::getList(filter: $filter, withPagination: true);
 
         return response()->json($list, Response::HTTP_OK);
@@ -58,6 +60,7 @@ class MainRequestController extends Controller
             throw new \Error(ApiError::MODEL_NOT_FOUND);
         }
 
+        /** @var $model BaseModel */
         $records = $model::getList(filter: [], withPagination: false);
         return response()->json($records, Response::HTTP_OK);
     }
@@ -84,6 +87,7 @@ class MainRequestController extends Controller
             throw new \Error(ApiError::MODEL_NOT_FOUND);
         }
 
+        /** @var $model BaseModel */
         $requiredFields = $model::getStructure()->getRequiredFields();
 
         $validator = Validator::make($request->post(), $requiredFields);
@@ -108,6 +112,7 @@ class MainRequestController extends Controller
             throw new \Error(ApiError::MODEL_NOT_FOUND);
         }
 
+        /** @var $model BaseModel */
         $result = $model::where('id', $id)->delete();
 
         return response()->json($result, $result ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);

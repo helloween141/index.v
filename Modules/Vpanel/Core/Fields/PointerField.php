@@ -46,8 +46,10 @@ class PointerField extends Field
         ];
     }
 
-    public function getWhere(array $filter): string
+    public function getWhere(BaseModel|string $mainModel, array $filter): string
     {
+        return "";
+
         /** @var string|BaseModel */
         $model = $this->getModel();
 
