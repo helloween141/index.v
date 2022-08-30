@@ -15,6 +15,8 @@ return [
             'entrypoints' => [
                 'ssr' => 'Modules/Vpanel/Resources/scripts/ssr.ts',
                 'paths' => [
+                    'Modules/Vpanel/Resources/css/tailwind.css',
+                    'Modules/Vpanel/Resources/scripts/main.ts',
                 ],
                 'ignore' => '/\\.(d\\.ts|json)$/',
             ],

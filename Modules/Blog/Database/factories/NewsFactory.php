@@ -25,7 +25,8 @@ class NewsFactory extends Factory
             'date' => now(),
             'author_id' => Author::all()->random()->id,
             'short_text' => $this->faker->sentence(5),
-            'full_text' => $this->faker->text()
+            'full_text' => $this->faker->text(),
+            'show' => 1
         ];
     }
 }

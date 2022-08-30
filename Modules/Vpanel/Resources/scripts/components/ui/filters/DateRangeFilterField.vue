@@ -1,16 +1,19 @@
 <template>
   <div>
-    <span class="dark:text-white mb-3">{{ field.title }}</span>
+    <span class="dark:text-white">{{ field.title }}</span>
     <div class="flex">
       <DateFilterField
           :placeholder="'От'"
-          :value="value"
-          @set-value="onInputFrom"
+          :type="'from'"
+          :value="valueFrom"
+          @set-value="onInput"
+          class="mr-3"
       />
       <DateFilterField
           :placeholder="'До'"
-          :value="value"
-          @set-value="onInputTo"
+          :type="'to'"
+          :value="valueTo"
+          @set-value="onInput"
       />
     </div>
   </div>
@@ -28,28 +31,22 @@ export default defineComponent({
     value: String,
   },
   setup(props, {emit}) {
-    const onInputFrom = (val) => {
-      console.log(val)
-      emit('set-filter', {
-        'name': props.field.name,
-        'comparsion': '>=',
-        'value': val,
-        'type': props.field.type
-      })
-    }
+    const valueFrom = ref(props.value)
+    const valueTo = ref(props.value)
 
-    const onInputTo = (val) => {
+    const onInput = (val, type) => {
       emit('set-filter', {
         'name': props.field.name,
-        'comparsion': '<=',
+        'comparsion': type === 'from' ? '>=' : '<=',
         'value': val,
         'type': props.field.type
       })
     }
 
     return {
-      onInputFrom,
-      onInputTo
+      valueFrom,
+      valueTo,
+      onInput
     }
   }
 })

@@ -13,10 +13,10 @@
 import {defineComponent, ref} from "vue";
 
 export default defineComponent({
-  name: 'InputField',
+  name: 'StringField',
   props: {
     field: Object,
-    value: [String, Number]
+    value: String
   },
   emits: ['set-value'],
   setup(props, {emit}) {

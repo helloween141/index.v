@@ -5,6 +5,7 @@
       :required="field.required"
       :format="'dd.MM.yyyy HH:mm'"
       :clearable="false"
+      :textInput="true"
       @update:modelValue="handleInput"
       locale="ru"
       autoApply

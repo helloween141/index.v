@@ -2,8 +2,9 @@
   <Datepicker
       v-model="currentValue"
       :format="'dd.MM.yyyy HH:mm'"
-      @update:modelValue="handleInput"
       :placeholder="placeholder"
+      :textInput="true"
+      @update:modelValue="handleInput"
       locale="ru"
       autoApply
       inputClassName="appearance-none bg-gray-200 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
@@ -11,7 +12,7 @@
 </template>
 
 <script>
-import {defineComponent, ref} from "vue";
+import {defineComponent, ref, watch} from "vue";
 import moment from "moment";
 
 export default defineComponent({
@@ -19,16 +20,25 @@ export default defineComponent({
   props: {
     field: Object,
     placeholder: String,
-    value: String
+    value: String,
+    type: String
   },
   emits: ['set-value'],
   setup(props, {emit}) {
-    const currentValue = ref()
+    const currentValue = ref(props.value)
 
     const handleInput = (val) => {
-      val = moment(val).format('YYYY-MM-DD HH:mm')
-      emit('set-value', val)
+      val = val ? moment(val).format('YYYY-MM-DD HH:mm') : ''
+
+      emit('set-value', val, props.type)
     }
+
+    watch(() => props.value, (current, previous) => {
+      console.log(props.value)
+      if (!current) {
+        currentValue.value = ''
+      }
+    })
 
     return {
       handleInput,

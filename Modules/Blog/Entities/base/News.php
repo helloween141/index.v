@@ -8,6 +8,7 @@ use Modules\Blog\Database\factories\NewsFactory;
 use Modules\Blog\Entities\Author;
 use Modules\Vpanel\Behaviors\UrlBehavior;
 use Modules\Vpanel\Core\BaseModel;
+use Modules\Vpanel\Core\Fields\BoolField;
 use Modules\Vpanel\Core\Fields\DateField;
 use Modules\Vpanel\Core\Fields\Field;
 use Modules\Vpanel\Core\Fields\HtmlField;
@@ -36,6 +37,13 @@ class News extends BaseModel
                     ->required()
                     ->showInFilter()
                     ->showInSearch()
+            )
+            ->addField(
+                BoolField::create()
+                    ->setName('show')
+                    ->setTitle('Показывать')
+                    ->showInFilter()
+                    ->hideFromEditor()
             )
             ->addField(
                 DateField::create()

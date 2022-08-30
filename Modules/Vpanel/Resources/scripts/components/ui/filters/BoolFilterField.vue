@@ -1,6 +1,6 @@
 <template>
-  <div class="flex items-center">
-    <span class="dark:text-white mb-3">{{ field.title }}</span>
+  <div class="flex items-center mb-3">
+    <span class="dark:text-white">{{ field.title }}</span>
     <input type="checkbox"
            :value="value"
            @click="onClick($event.target.value)"
@@ -14,10 +14,10 @@
 import {defineComponent} from "vue";
 
 export default defineComponent({
-  name: 'BooleanFilterField',
+  name: 'BoolFilterField',
   emits: ['set-filter'],
   props: {
-    value: String,
+    value: Boolean,
     field: Object,
   },
   setup(props, {emit}) {

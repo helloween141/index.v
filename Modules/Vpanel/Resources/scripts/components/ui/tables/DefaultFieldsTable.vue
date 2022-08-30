@@ -10,9 +10,17 @@
         <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap w-48">
           {{ field.title }}
         </th>
+
         <td class="px-6 py-4">
-          <InputField
-              v-if="field.type === 'string' || field.type === 'int'"
+          <StringField
+              v-if="field.type === 'string'"
+              :field="field"
+              :value="values[field.name]"
+              @set-value="setValue"
+          />
+
+          <NumberField
+              v-if="field.type === 'int' || field.type === 'float'"
               :field="field"
               :value="values[field.name]"
               @set-value="setValue"
@@ -46,6 +54,13 @@
               @set-value="setValue"
           />
 
+          <BoolField
+              v-else-if="field.type === 'bool'"
+              :field="field"
+              :value="!!values[field.name]"
+              @set-value="setValue"
+          />
+
           <DateField
               v-else-if="field.type === 'date'"
               :field="field"
@@ -60,16 +75,18 @@
 
 <script lang="ts">
 import {defineComponent} from "vue";
-import InputField from "@/components/ui/fields/InputField.vue";
+import StringField from "@/components/ui/fields/StringField.vue";
 import TextField from "@/components/ui/fields/TextField.vue";
 import HtmlField from "@/components/ui/fields/HtmlField.vue";
 import SelectField from "@/components/ui/fields/SelectField.vue";
 import PointerField from "@/components/ui/fields/PointerField.vue";
 import DateField from "@/components/ui/fields/DateField.vue";
+import BoolField from "@/components/ui/fields/BoolField.vue";
+import NumberField from "@/components/ui/fields/NumberField.vue";
 
 export default defineComponent({
   name: 'DefaultFieldsTable',
-  components: {DateField, PointerField, SelectField, HtmlField, TextField, InputField},
+  components: {NumberField, StringField, BoolField, DateField, PointerField, SelectField, HtmlField, TextField},
   props: {
     fields: Object,
     values: Object

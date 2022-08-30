@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-5 inline-block justify-between p-6 w-full bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
+  <div class="mb-5 p-6 w-full bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
     {{filter}}
 
     <div v-for="(field, index) in fields"
@@ -7,7 +7,7 @@
          class="mb-3"
     >
       <StringFilterField
-          v-if="field.type === 'string' || field.type === 'pointer'"
+          v-if="field.type === 'string' || field.type === 'pointer' || field.type === 'select'"
           :field="field"
           v-model:value="values[field.name]"
           @set-filter="setFilter"
@@ -27,8 +27,8 @@
           @set-filter="setFilter"
       />
 
-      <BooleanFilterField
-          v-if="field.type === 'boolean'"
+      <BoolFilterField
+          v-if="field.type === 'bool'"
           :field="field"
           v-model:value="values[field.name]"
           @set-filter="setFilter"
@@ -56,11 +56,11 @@ import {defineComponent, ref} from "vue";
 import StringFilterField from "@/components/ui/filters/StringFilterField.vue";
 import DateRangeFilterField from "@/components/ui/filters/DateRangeFilterField.vue";
 import NumberFilterField from "@/components/ui/filters/NumberFilterField.vue";
-import BooleanFilterField from "@/components/ui/filters/BooleanFilterField.vue";
+import BoolFilterField from "@/components/ui/filters/BoolFilterField.vue";
 
 export default defineComponent({
   name: 'EditorFilterPanel',
-  components: {BooleanFilterField, NumberFilterField, DateRangeFilterField, StringFilterField},
+  components: {BoolFilterField, NumberFilterField, DateRangeFilterField, StringFilterField},
   props: {
     fields: Object
   },
@@ -74,7 +74,11 @@ export default defineComponent({
 
       const filterIndex = filter.findIndex(item => (item.name === fieldFilter.name && item.comparsion === fieldFilter.comparsion))
       if (filterIndex >= 0) {
-        filter[filterIndex] = fieldFilter
+        if (!fieldFilter.value) {
+          filter.splice(filterIndex, 1)
+        } else {
+          filter[filterIndex] = fieldFilter
+        }
       } else {
         filter.push(fieldFilter)
       }
