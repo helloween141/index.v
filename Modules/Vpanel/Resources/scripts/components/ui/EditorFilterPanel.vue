@@ -71,9 +71,7 @@ export default defineComponent({
     const setFilter = (fieldFilter, fieldName) => {
       values.value[fieldName] = fieldFilter[fieldName]
       filter = {...filter, ...fieldFilter}
-
       Object.keys(filter).forEach((k) => (!filter[k]) && delete filter[k]);
-      console.log(filter)
     }
 
     const onApplyFilter = () => {

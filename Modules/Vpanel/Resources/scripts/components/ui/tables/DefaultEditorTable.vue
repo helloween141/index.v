@@ -57,7 +57,7 @@ export default defineComponent({
         }
       })
     }
-
+    console.log(props.values.data)
     const onClick = (recordId: number) => {
       emit('select-record', recordId)
     }

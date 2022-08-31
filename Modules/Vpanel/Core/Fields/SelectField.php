@@ -4,7 +4,7 @@ namespace Modules\Vpanel\Core\Fields;
 
 class SelectField extends Field
 {
-    public array $options = [];
+    protected array $options = [];
 
     public function __construct(protected string $type = 'select'){}
 
@@ -12,5 +12,10 @@ class SelectField extends Field
     {
         $this->options = $options;
         return $this;
+    }
+
+    public function getOptions(): array
+    {
+        return $this->options;
     }
 }
