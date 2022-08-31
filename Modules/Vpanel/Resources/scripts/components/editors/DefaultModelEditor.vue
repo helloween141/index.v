@@ -38,14 +38,24 @@ export default defineComponent({
   name: 'DefaultModelEditor',
   components: {EditorFilterPanel, EditorActionPanel, DefaultEditorTable},
   props: {
-    incModel: Object
+    incModel: Object,
+    customModuleName: String,
+    customModelName: String
   },
+
   setup(props) {
     const route = useRoute()
-    const {moduleName, modelName} = getRouteParameters(route)
     const values = ref({})
-
     const showFilter = ref(false)
+    let {moduleName, modelName} = getRouteParameters(route)
+
+    if (props.customModuleName) {
+      moduleName = props.customModuleName
+    }
+
+    if (props.customModelName) {
+      modelName = props.customModelName
+    }
 
     onMounted(async () => {
       values.value = await loadList(moduleName, modelName, [])

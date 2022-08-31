@@ -21,10 +21,16 @@ export const getRouteParameters = (route) => {
     }
 }
 
-export const getFieldsForFilter = (fields) => {
-    return fields.filter(field => field.inFilter)
+export const getFieldsForFilter = (fields: any) => {
+    if (fields) {
+        return fields.filter(field => field.inFilter)
+    }
+    return []
 }
 
-export const getPlaceholderForSearch = (fields) => {
-    return fields.filter(field => field.inSearch).map(field => field.title.toLowerCase()).join(', ')
+export const getPlaceholderForSearch = (fields: any) => {
+    if (fields) {
+        return fields.filter(field => field.inSearch).map(field => field.title.toLowerCase()).join(', ')
+    }
+    return ''
 }

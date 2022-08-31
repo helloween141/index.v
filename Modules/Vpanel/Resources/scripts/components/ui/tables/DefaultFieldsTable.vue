@@ -48,7 +48,14 @@
           />
 
           <PointerField
-              v-else-if="field.type === 'pointer'"
+              v-else-if="field.type === 'pointer' && !field.isModal"
+              :field="field"
+              :value="values[field.name]"
+              @set-value="setValue"
+          />
+
+          <PointerModalField
+              v-else-if="field.type === 'pointer' && field.isModal"
               :field="field"
               :value="values[field.name]"
               @set-value="setValue"
@@ -83,10 +90,13 @@ import PointerField from "@/components/ui/fields/PointerField.vue";
 import DateField from "@/components/ui/fields/DateField.vue";
 import BoolField from "@/components/ui/fields/BoolField.vue";
 import NumberField from "@/components/ui/fields/NumberField.vue";
+import PointerModalField from "@/components/ui/fields/PointerModalField.vue";
 
 export default defineComponent({
   name: 'DefaultFieldsTable',
-  components: {NumberField, StringField, BoolField, DateField, PointerField, SelectField, HtmlField, TextField},
+  components: {
+    PointerModalField,
+    NumberField, StringField, BoolField, DateField, PointerField, SelectField, HtmlField, TextField},
   props: {
     fields: Object,
     values: Object

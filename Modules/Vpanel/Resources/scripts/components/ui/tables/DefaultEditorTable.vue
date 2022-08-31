@@ -50,11 +50,13 @@ export default defineComponent({
   setup(props, { emit }) {
     const fieldNames = []
 
-    props.model.fields.forEach(field => {
-      if (field.inEditor) {
-        fieldNames.push({name: field['name'], title: field['title']})
-      }
-    })
+    if (props.model.fields) {
+      props.model.fields.forEach(field => {
+        if (field.inEditor) {
+          fieldNames.push({name: field['name'], title: field['title']})
+        }
+      })
+    }
 
     const onClick = (recordId: number) => {
       emit('select-record', recordId)
