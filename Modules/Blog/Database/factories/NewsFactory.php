@@ -26,7 +26,9 @@ class NewsFactory extends Factory
             'author_id' => Author::all()->random()->id,
             'short_text' => $this->faker->sentence(5),
             'full_text' => $this->faker->text(),
-            'show' => 1
+            'show' => 1,
+            'type' => '',
+            'price' => ($this->faker->randomDigit() + 1) * 150
         ];
     }
 }

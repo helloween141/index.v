@@ -19,7 +19,7 @@
           @set-filter="setFilter"
       />
 
-      <NumberFilterField
+      <NumberRangeFilterField
           v-if="field.type === 'int' || field.type === 'float'"
           :field="field"
           v-model:value="values[field.name]"
@@ -54,12 +54,12 @@
 import {defineComponent, ref} from "vue";
 import StringFilterField from "@/components/ui/filters/StringFilterField.vue";
 import DateRangeFilterField from "@/components/ui/filters/DateRangeFilterField.vue";
-import NumberFilterField from "@/components/ui/filters/NumberFilterField.vue";
 import BoolFilterField from "@/components/ui/filters/BoolFilterField.vue";
+import NumberRangeFilterField from "@/components/ui/filters/NumberRangeFilterField.vue";
 
 export default defineComponent({
   name: 'EditorFilterPanel',
-  components: {BoolFilterField, NumberFilterField, DateRangeFilterField, StringFilterField},
+  components: {NumberRangeFilterField, BoolFilterField, DateRangeFilterField, StringFilterField},
   props: {
     fields: Object
   },
@@ -70,8 +70,10 @@ export default defineComponent({
 
     const setFilter = (fieldFilter, fieldName) => {
       values.value[fieldName] = fieldFilter[fieldName]
-
       filter = {...filter, ...fieldFilter}
+
+      Object.keys(filter).forEach((k) => (!filter[k]) && delete filter[k]);
+      console.log(filter)
     }
 
     const onApplyFilter = () => {

@@ -33,7 +33,7 @@ abstract class BaseModel extends Model
 
         $fields = static::getStructure()->getFields();
         foreach ($fields as $field) {
-            if ($field->showInEditor()) {
+            if ($field->isInEditor()) {
                 $query->addSelect($field->getSelect(static::class));
             }
 
@@ -44,9 +44,14 @@ abstract class BaseModel extends Model
 
             $where = $field->getWhere(static::class, $filter);
             if ($where) {
-                $query->whereRaw($where);
+                if (is_array($where[0])) {
+                    foreach ($where as $w) {
+                        $query->where(...$w);
+                    }
+                } else {
+                    $query->where(...$where);
+                }
             }
-
         }
 
         // TODO: add order by (id: default)

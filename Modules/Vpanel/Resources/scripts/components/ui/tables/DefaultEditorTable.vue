@@ -2,15 +2,14 @@
   <div>
     <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
       <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-        <thead v-if="fieldNames.length > 0" class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             <th v-for="field in fieldNames" scope="col" class="py-3 px-6">
               {{ field.title }}
             </th>
           </tr>
         </thead>
-
-        <tbody v-if="values">
+        <tbody>
           <tr v-for="(item, index) in values.data"
               :key="index"
               @click="onClick(item.id)"

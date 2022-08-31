@@ -46,18 +46,18 @@ class PointerField extends Field
         ];
     }
 
-    public function getWhere(BaseModel|string $mainModel, array $filter): string
+    public function getWhere(BaseModel|string $mainModel, array $filter): array
     {
-        return "";
+        return [];
 
         /** @var string|BaseModel */
-        $model = $this->getModel();
-
-        $tableName = with(new $model)->getTable();
-        if (key_exists($this->name, $filter)) {
-            return "{$tableName}_{$this->name}.id IN (" . implode(", ", $filter[$this->name]) . ")";
-        }
-        return "";
+//        $model = $this->getModel();
+//
+//        $tableName = with(new $model)->getTable();
+//        if (key_exists($this->name, $filter)) {
+//            return "{$tableName}_{$this->name}.id IN (" . implode(", ", $filter[$this->name]) . ")";
+//        }
+//        return "";
     }
 
     public function getJoin(BaseModel|string $mainModel): array

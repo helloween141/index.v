@@ -1,11 +1,10 @@
 <template>
   <v-select
-      v-model="currentValue"
-      :label="identifyLabel"
-      :options="field.values"
+      v-model="selectedOption"
+      :options="options"
       :required="field.required"
-      :searchable="false"
-      :clearable="false"
+      :searchable="true"
+      :clearable="true"
       @update:modelValue="handleInput"
       class="py-2 bg-gray-200 text-gray-700 rounded leading-tight focus:outline-none focus:bg-white focus:border-purple-500 font-medium"
   />
@@ -13,7 +12,7 @@
 
 
 <script>
-import {defineComponent, onMounted, ref} from "vue";
+import {defineComponent, ref} from "vue";
 
 export default defineComponent({
   name: 'SelectField',
@@ -23,25 +22,23 @@ export default defineComponent({
   },
   emits: ['set-value'],
   setup(props, {emit}) {
-    const currentValue = ref({})
-    const identifyLabel = ref(props.field.identify || 'name')
+    const selectedOption = ref(props.field.options[props.value])
+    const options = []
 
-    onMounted(() => {
-      if (!props.value) {
-        currentValue.value = props.field.values.find(val => val.default) || props.field.values[0]
-      } else {
-        currentValue.value = (typeof props.value === 'object') ? props.value : props.field.values.find(val => val.id === props.value)
-      }
-      this.handleInput(currentValue.value)
-    })
+    for (const [key, value] of Object.entries(props.field.options)) {
+      options.push({
+        id: key,
+        label: value
+      })
+    }
 
     const handleInput = () => {
-      emit('set-value', props.field.name, currentValue.value)
+      emit('set-value', props.field.name, selectedOption.value)
     }
 
     return {
-      currentValue,
-      identifyLabel,
+      options,
+      selectedOption,
       handleInput
     }
   }

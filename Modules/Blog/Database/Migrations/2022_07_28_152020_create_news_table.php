@@ -21,6 +21,8 @@ return new class extends Migration
             $table->text('short_text');
             $table->longText('full_text');
             $table->boolean('show')->default(1);
+            $table->string('type');
+            $table->integer('price');
             $table->foreignId('author_id')->constrained('authors');
         });
     }

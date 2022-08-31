@@ -12,7 +12,9 @@ use Modules\Vpanel\Core\Fields\BoolField;
 use Modules\Vpanel\Core\Fields\DateField;
 use Modules\Vpanel\Core\Fields\Field;
 use Modules\Vpanel\Core\Fields\HtmlField;
+use Modules\Vpanel\Core\Fields\IntField;
 use Modules\Vpanel\Core\Fields\PointerField;
+use Modules\Vpanel\Core\Fields\SelectField;
 use Modules\Vpanel\Core\Fields\StringField;
 use Modules\Vpanel\Core\Fields\TextField;
 use Modules\Vpanel\Core\ModelStructure;
@@ -49,6 +51,23 @@ class News extends BaseModel
                 DateField::create()
                     ->setName('date')
                     ->setTitle('Дата')
+                    ->showInFilter()
+            )
+            ->addField(
+                IntField::create()
+                    ->setName('price')
+                    ->setTitle('Стоимость')
+                    ->showInFilter()
+            )
+            ->addField(
+                SelectField::create()
+                    ->setName('type')
+                    ->setTitle('Тип')
+                    ->setOptions([
+                        'type1' => 'Тип 1',
+                        'type2' => 'Тип 2',
+                        'type3' => 'Тип 3'
+                    ])
                     ->showInFilter()
             )
             ->addField(

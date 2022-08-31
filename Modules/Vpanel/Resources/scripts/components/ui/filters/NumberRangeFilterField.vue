@@ -1,48 +1,64 @@
 <template>
-  <div class="flex justify-between">
-    <NumberFilterField />
+  <div>
+    <span class="dark:text-white">{{ field.title }}</span>
+    <div class="flex">
+      <NumberFilterField
+          :placeholder="'От'"
+          :type="'from'"
+          :value="(value && value[0]) ? value[0].value : ''"
+          @set-value="onInput"
+          class="mr-3"
+      />
+      <NumberFilterField
+          :placeholder="'До'"
+          :type="'to'"
+          :value="(value && value[1]) ? value[1].value : ''"
+          @set-value="onInput"
+      />
+    </div>
   </div>
 </template>
 
 <script>
-import {defineComponent, ref} from "vue";
-import DateFilterField from "@/components/ui/filters/DateFilterField.vue";
+import {defineComponent} from "vue";
 import NumberFilterField from "./NumberFilterField.vue";
+
 export default defineComponent({
   name: 'NumberRangeFilterField',
-  components: {NumberFilterField, DateFilterField},
+  components: {NumberFilterField},
   emits: ['set-filter'],
   props: {
     field: Object,
-    valueFrom: String,
-    valueTo: String,
+    value: Array,
   },
   setup(props, {emit}) {
-    const onInputFrom = (val) => {
-      emit('set-filter', {
-        'from': {
-          'name': props.field.name,
-          'comparsion': '>=',
-          'value': val,
-          'type': props.field.type
-        }
-      })
-    }
+    let valFrom = ''
+    let valTo = ''
 
-    const onInputTo = (val) => {
-      emit('set-filter', {
-        'to': {
-          'name': props.field.name,
+    const onInput = (val, type) => {
+      valFrom = type === 'from' ? val : valFrom
+      valTo = type === 'to' ? val : valTo
+
+      const result = []
+      if (valFrom) {
+        result.push({
+          'comparsion': '>=',
+          'value': valFrom
+        })
+      }
+
+      if (valTo) {
+        result.push({
           'comparsion': '<=',
-          'value': val,
-          'type': props.field.type
-        }
-      })
+          'value': valTo
+        })
+      }
+
+      emit('set-filter', {[props.field.name]: result}, props.field.name)
     }
 
     return {
-      onInputFrom,
-      onInputTo
+      onInput
     }
   }
 })

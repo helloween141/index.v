@@ -33,8 +33,8 @@ abstract class Field
         ];
     }
 
-    public function getWhere(BaseModel|string $mainModel, array $filter): string {
-        return "";
+    public function getWhere(BaseModel|string $mainModel, array $filter): array {
+        return [];
     }
 
     public function getJoin(BaseModel|string $mainModel): array {
@@ -132,7 +132,7 @@ abstract class Field
         return $this->readonly;
     }
 
-    public function showInEditor(): bool
+    public function isInEditor(): bool
     {
         return $this->inEditor;
     }

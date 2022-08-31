@@ -1,5 +1,5 @@
 <template>
-  <div class="relative overflow-x-auto" v-if="values">
+  <div v-if="values" class="relative overflow-x-auto">
     <form @submit.prevent="onSave">
       <span class="text-white">{{values}}</span>
 
@@ -48,20 +48,24 @@ import DefaultFieldsTable from "@/components/ui/tables/DefaultFieldsTable.vue";
 import {useToast} from "vue-toastification";
 import {APIMessage} from "@/api/messages";
 import {getRouteParameters, prepareFormData} from "@/utils/utils";
+import {loadList} from "@/api/actionEditor";
 
 export default defineComponent({
   name: 'ModuleForm',
   components: {DefaultFieldsTable, FormActionPanel},
   props: {
-    incModel: Object,
-    incValues: Object
+    incModel: Object
   },
-  setup(props) {
+  setup() {
     const toast = useToast()
     const route = useRoute()
-    const values = ref(props.incValues)
+    const values = ref()
 
     const {moduleName, modelName, recordId} = getRouteParameters(route)
+
+    onMounted(async () => {
+      values.value = await loadRecord(moduleName, modelName, recordId)
+    })
 
     const onSave = async () => {
       const formData = prepareFormData(values.value)
