@@ -1,34 +1,36 @@
 <template>
-  <v-select
-      v-model="selectedOption"
-      :label="identifyLabel"
-      :options="options"
-      :required="field.required"
-      @search="fetchData"
-      @update:modelValue="handleInput"
-      class="py-2 bg-gray-200 text-gray-700 rounded leading-tight focus:outline-none focus:bg-white focus:border-purple-500 custom-fx"
-  />
+  <div>
+    <span class="dark:text-white mb-3">{{ field.title }}</span>
+    <v-select
+        v-model="currentValue"
+        :label="identifyLabel"
+        :options="options"
+        @update:modelValue="handleInput"
+        class="py-2 bg-gray-200 text-gray-700 rounded leading-tight focus:outline-none focus:bg-white focus:border-purple-500 custom-fx"
+        multiple
+        push-tags
+    />
+  </div>
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, ref} from "vue";
+import {defineComponent, onMounted, ref, watch} from "vue";
 import axios from "axios";
 import {$vfm} from "vue-final-modal";
 import VModal from "@/components/ui/modal/VModal.vue";
 import DefaultModelEditor from "@/components/editors/DefaultModelEditor.vue";
 
 export default defineComponent({
-  name: 'PointerField',
+  name: 'PointerFilterField',
   props: {
     field: Object,
     value: [Number, Object]
   },
-  emits: ['set-value'],
+  emits: ['set-filter'],
   setup(props, {emit}) {
     const options = ref([])
     const identifyLabel = ref(props.field.identify || 'name')
-    const selectedOption = ref({})
-    let incValues = []
+    const currentValue = ref(null)
 
     onMounted(async () => {
       const listResponse = await axios.get(`/api/vpanel/pointer`, {
@@ -36,34 +38,32 @@ export default defineComponent({
           'model': props.field.model
         }
       })
-      incValues = listResponse.data
-
-      if (!props.field.isModal) {
-        options.value = listResponse.data
-      }
+      options.value = listResponse.data
 
       if (options.value) {
         const currentOption = (options.value.find(option => option.id === props.value))
         if (currentOption) {
-          selectedOption.value = currentOption[identifyLabel.value]
+          currentValue.value = currentOption[identifyLabel.value]
         }
       }
     })
 
-    // TODO: autocomplete
-    const fetchData = (search, loading) => {
-    }
+    watch(() => props.value, (current, previous) => {
+      if (!current) {
+        currentValue.value = null
+      }
+    })
 
     const handleInput = () => {
-      emit('set-value', props.field.name, selectedOption.value)
+      const result = currentValue.value.map(item => item.id)
+      emit('set-filter', {[props.field.name]: result}, props.field.name)
     }
 
     return {
       options,
       identifyLabel,
-      selectedOption,
-      handleInput,
-      fetchData
+      currentValue,
+      handleInput
     }
   }
 })

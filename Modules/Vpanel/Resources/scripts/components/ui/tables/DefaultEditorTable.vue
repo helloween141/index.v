@@ -4,13 +4,13 @@
       <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
-            <th v-for="field in fieldNames" scope="col" class="py-3 px-6">
-              {{ field.title }}
+            <th v-for="header in headers" scope="col" class="py-3 px-6">
+              {{ header.title }}
             </th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in values.data"
+          <tr v-for="(item, index) in rows"
               :key="index"
               @click="onClick(item.id)"
               class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer"
@@ -48,22 +48,30 @@ export default defineComponent({
     values: Object
   },
   setup(props, { emit }) {
-    const fieldNames = []
+    const headers = []
+    const rows = []
 
-    if (props.model.fields) {
-      props.model.fields.forEach(field => {
-        if (field.inEditor) {
-          fieldNames.push({name: field['name'], title: field['title']})
-        }
+    props.model.fields.forEach(field => {
+      if (field.inEditor) {
+        headers.push({name: field['name'], title: field['title']})
+      }
+    })
+
+    props.values.data.forEach(item => {
+      let obj = {}
+      headers.forEach(header => {
+        obj = {...obj, [header['name']]: item[header['name']]}
       })
-    }
-    console.log(props.values.data)
+      rows.push(obj)
+    })
+  
     const onClick = (recordId: number) => {
       emit('select-record', recordId)
     }
 
     return {
-      fieldNames,
+      headers,
+      rows,
       onClick
     }
   }

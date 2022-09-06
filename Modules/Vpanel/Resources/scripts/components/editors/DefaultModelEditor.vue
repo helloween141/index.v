@@ -13,7 +13,8 @@
         v-show="showFilter"
     />
 
-    <div v-if="values">
+    <div v-if="values && values.data">
+      {{values}}
       <DefaultEditorTable
           @select-record="selectRecord"
           :model="incModel"

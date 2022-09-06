@@ -44,7 +44,10 @@ abstract class BaseModel extends Model
 
             $where = $field->getWhere(static::class, $filter);
             if ($where) {
-                if (is_array($where[0])) {
+                if ($field->getType() === 'pointer') {
+                    $query->whereIn(...$where);
+                }
+                else if (is_array($where[0])) {
                     foreach ($where as $w) {
                         $query->where(...$w);
                     }

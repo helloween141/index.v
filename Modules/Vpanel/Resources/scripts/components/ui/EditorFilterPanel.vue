@@ -6,7 +6,7 @@
          class="mb-3"
     >
       <StringFilterField
-          v-if="field.type === 'string' || field.type === 'pointer' || field.type === 'select'"
+          v-if="field.type === 'string' || field.type === 'select'"
           :field="field"
           v-model:value="values[field.name]"
           @set-filter="setFilter"
@@ -28,6 +28,13 @@
 
       <BoolFilterField
           v-if="field.type === 'bool'"
+          :field="field"
+          v-model:value="values[field.name]"
+          @set-filter="setFilter"
+      />
+
+      <PointerFilterField
+          v-if="field.type === 'pointer'"
           :field="field"
           v-model:value="values[field.name]"
           @set-filter="setFilter"
@@ -56,10 +63,11 @@ import StringFilterField from "@/components/ui/filters/StringFilterField.vue";
 import DateRangeFilterField from "@/components/ui/filters/DateRangeFilterField.vue";
 import BoolFilterField from "@/components/ui/filters/BoolFilterField.vue";
 import NumberRangeFilterField from "@/components/ui/filters/NumberRangeFilterField.vue";
+import PointerFilterField from "@/components/ui/filters/PointerFilterField.vue";
 
 export default defineComponent({
   name: 'EditorFilterPanel',
-  components: {NumberRangeFilterField, BoolFilterField, DateRangeFilterField, StringFilterField},
+  components: {PointerFilterField, NumberRangeFilterField, BoolFilterField, DateRangeFilterField, StringFilterField},
   props: {
     fields: Object
   },
