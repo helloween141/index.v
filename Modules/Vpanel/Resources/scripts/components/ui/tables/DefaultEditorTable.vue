@@ -10,12 +10,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in rows"
+          <tr v-for="(row, index) in rows"
               :key="index"
-              @click="onClick(item.id)"
+              @click="onClick(row.id)"
               class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer"
           >
-            <td v-for="(val, key, index) in item"
+            <td v-for="(val, key, index) in row"
                 :key="index"
                 v-show="key !== 'id'"
                 class="py-4 px-6"
@@ -58,13 +58,13 @@ export default defineComponent({
     })
 
     props.values.data.forEach(item => {
-      let obj = {}
+      let obj = {id: item['id']}
       headers.forEach(header => {
         obj = {...obj, [header['name']]: item[header['name']]}
       })
       rows.push(obj)
     })
-  
+
     const onClick = (recordId: number) => {
       emit('select-record', recordId)
     }
