@@ -14,11 +14,12 @@ export const loadInterface = async (moduleName: string, modelName: string) => {
     }
 }
 
-export const loadList = async (moduleName: string, modelName: string, filter: any = []) => {
+export const loadList = async (moduleName: string, modelName: string, filter: any = [], searchString: string = '') => {
     try {
         const response = await axios.get(APISettings.baseURL + `/list/${moduleName}/${modelName}`, {
             params: {
-                'filter': JSON.stringify(filter)
+                'filter': JSON.stringify(filter),
+                'search': searchString
             }
         })
         return response.data

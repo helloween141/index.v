@@ -25,7 +25,7 @@ abstract class BaseModel extends Model
         return null;
     }
 
-    public static function getList($filter = [], $withPagination = false)
+    public static function getList($filter = [], $search = "", $withPagination = false)
     {
         $tableName = with(new static)->getTable();
 
@@ -42,23 +42,30 @@ abstract class BaseModel extends Model
                 $query->leftJoin(...$join);
             }
 
-            $where = $field->getWhere(static::class, $filter);
-            if ($where) {
-                if ($field->getType() === "pointer") {
-                    $query->whereIn(...$where);
-                }
-                else if (is_array($where[0])) {
-                    foreach ($where as $w) {
-                        $query->where(...$w);
+            if (count($filter) > 0) {
+                $where = $field->getWhere(static::class, $filter);
+                if ($where) {
+                    if ($field->getType() === "pointer") {
+                        $query->whereIn(...$where);
                     }
-                } else {
-                    $query->where(...$where);
+                    else if (is_array($where[0])) {
+                        foreach ($where as $w) {
+                            $query->where(...$w);
+                        }
+                    } else {
+                        $query->where(...$where);
+                    }
+                }
+            }
+            else if (!empty($search)) {
+                if ($field->isInSearch()) {
+                    $query->orWhere($field->getName(), "like", "%" . $search . "%");
                 }
             }
         }
 
         // TODO: add order by (id: default)
-        $query->orderBy($tableName . ".id", "DESC");
+        $query->orderBy($tableName . ".id", "desc");
 
         if ($withPagination) {
             $paginatedList = $query->paginate();

@@ -3,6 +3,7 @@
 namespace Modules\Vpanel\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
@@ -13,21 +14,20 @@ use Nwidart\Modules\Facades\Module;
 
 class MainRequestController extends Controller
 {
-    public function getMenu()
+    public function getMenu(): JsonResponse
     {
         $list = [];
         $modules = Module::getOrdered();
         foreach ($modules as $module) {
-            $menu = $module->get('menu') ?? null;
+            $menu = $module->get("menu") ?? null;
             if ($menu) {
                 $list[] = $menu;
             }
         }
-
         return response()->json($list,Response::HTTP_OK);
     }
 
-    public function getInterface(string $moduleName, string $modelName)
+    public function getInterface(string $moduleName, string $modelName): JsonResponse
     {
         $model = Utils::getModelClass($moduleName, $modelName);
         if (!class_exists($model)) {
@@ -38,34 +38,35 @@ class MainRequestController extends Controller
         return response()->json($structure, Response::HTTP_OK);
     }
 
-    public function getList(Request $request, string $moduleName = '', string $modelName = '')
+    public function getList(Request $request, string $moduleName = "", string $modelName = ""): JsonResponse
     {
         $model = Utils::getModelClass($moduleName, $modelName);
         if (!class_exists($model)) {
             throw new \Error(ApiError::MODEL_NOT_FOUND);
         }
 
-        $filter = json_decode($request->get('filter', []), true);
+        $filter = json_decode($request->get("filter", []), true);
+        $search = $request->get("search", "");
 
         /** @var $model BaseModel */
-        $list = $model::getList(filter: $filter, withPagination: true);
+        $list = $model::getList(filter: $filter, search: $search, withPagination: true);
 
         return response()->json($list, Response::HTTP_OK);
     }
 
-    public function getPointer(Request $request)
+    public function getPointer(Request $request): JsonResponse
     {
-        $model = $request->get('model');
+        $model = $request->get("model");
         if (!class_exists($model)) {
             throw new \Error(ApiError::MODEL_NOT_FOUND);
         }
 
         /** @var $model BaseModel */
-        $records = $model::getList(filter: [], withPagination: false);
+        $records = $model::getList();
         return response()->json($records, Response::HTTP_OK);
     }
 
-    public function getRecord(string $moduleName, string $modelName, int $id = 0)
+    public function getRecord(string $moduleName, string $modelName, int $id = 0): JsonResponse
     {
         $model = Utils::getModelClass($moduleName, $modelName);
         if (!class_exists($model)) {
@@ -80,7 +81,7 @@ class MainRequestController extends Controller
         return response()->json(null, Response::HTTP_OK);
     }
 
-    public function saveRecord(Request $request, string $moduleName, string $modelName)
+    public function saveRecord(Request $request, string $moduleName, string $modelName): JsonResponse
     {
         $model = Utils::getModelClass($moduleName, $modelName);
         if (!class_exists($model)) {
@@ -98,14 +99,14 @@ class MainRequestController extends Controller
         $validatedData = $validator->getData();
 
         $record = $model::query()->updateOrCreate(
-            ['id' => $validatedData['id'] ?? 0],
+            ["id" => $validatedData["id"] ?? 0],
             $validatedData
         );
 
         return response()->json($record, $record ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
     }
 
-    public function deleteRecord(string $moduleName, string $modelName, int $id)
+    public function deleteRecord(string $moduleName, string $modelName, int $id): JsonResponse
     {
         $model = Utils::getModelClass($moduleName, $modelName);
         if (!class_exists($model)) {
@@ -113,7 +114,7 @@ class MainRequestController extends Controller
         }
 
         /** @var $model BaseModel */
-        $result = $model::where('id', $id)->delete();
+        $result = $model::where("id", $id)->delete();
 
         return response()->json($result, $result ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
     }

@@ -3,7 +3,7 @@
     <EditorActionPanel
         @on-create="createRecord"
         @on-show-filter="showFilterPanel"
-        @on-search="applyFilter"
+        @on-search="applySearch"
         :model="incModel"
     />
 
@@ -67,6 +67,10 @@ export default defineComponent({
       router.push({ name: 'module', params: { id: 0 } })
     }
 
+    const applySearch = async (searchString) => {
+      values.value = await loadList(moduleName, modelName, [], searchString)
+    }
+
     const applyFilter = async (filter) => {
       values.value = await loadList(moduleName, modelName, filter)
     }
@@ -82,6 +86,7 @@ export default defineComponent({
       createRecord,
       showFilterPanel,
       applyFilter,
+      applySearch,
       showFilter,
       filterFields,
       values
