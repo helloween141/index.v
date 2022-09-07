@@ -1,34 +1,46 @@
 <template>
-  <div class="flex items-center mb-3">
+  <div class="flex flex-col">
     <span class="dark:text-white">{{ field.title }}</span>
-    <input type="checkbox"
-           :value="value"
-           @change="onChange(value)"
-           class="w-4 h-4 ml-3 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-    />
+    <div class="mt-2">
+      <label :for="field.name" class="inline-flex relative items-center cursor-pointer">
+        <input
+            type="checkbox"
+            v-model="currentValue"
+            @input="onChange"
+            :id="field.name"
+            class="sr-only peer"
+        />
+        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+      </label>
+    </div>
   </div>
-
 </template>
 
 <script>
-import {defineComponent} from "vue";
+import {defineComponent, ref, watch} from "vue";
 
 export default defineComponent({
   name: 'BoolFilterField',
   emits: ['set-filter'],
   props: {
-    value: {
-      type: Boolean,
-      default: 0
-    },
+    value: Boolean,
     field: Object,
   },
   setup(props, {emit}) {
-    const onChange = (val) => {
-      emit('set-filter', {[props.field.name]: (val ? 0 : 1)}, props.field.name)
+    const currentValue = ref(false)
+
+    const onChange = () => {
+      emit('set-filter', {[props.field.name]: (currentValue.value ? 0 : 1)}, props.field.name)
     }
 
+    watch(() => props.value, (current, previous) => {
+      if (!props.value) {
+        currentValue.value = false
+      }
+    })
+
     return {
+      currentValue,
       onChange
     }
   }

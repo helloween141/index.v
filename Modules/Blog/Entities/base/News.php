@@ -43,7 +43,7 @@ class News extends BaseModel
             ->addField(
                 BoolField::create()
                     ->setName('show')
-                    ->setTitle('Скрыть')
+                    ->setTitle('Активно')
                     ->showInFilter()
                     ->hideFromEditor()
             )

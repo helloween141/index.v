@@ -1,51 +1,54 @@
 <template>
   <div class="mb-5 p-6 w-full bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
     {{values}}
-    <div v-for="(field, index) in fields"
-         :key="index"
-         class="mb-3"
-    >
-      <StringFilterField
-          v-if="field.type === 'string'"
-          :field="field"
-          v-model:value="values[field.name]"
-          @set-filter="setFilter"
-      />
+    <div class="flex flex-wrap">
+      <div v-for="(field, index) in fields"
+           :key="index"
+           class="mb-3 pr-3"
+           :class="field.type === 'bool' ? 'basis-1/7' : 'basis-1/3'"
+      >
+        <StringFilterField
+            v-if="field.type === 'string'"
+            :field="field"
+            v-model:value="values[field.name]"
+            @set-filter="setFilter"
+        />
 
-      <DateRangeFilterField
-          v-if="field.type === 'date'"
-          :field="field"
-          v-model:value="values[field.name]"
-          @set-filter="setFilter"
-      />
+        <DateRangeFilterField
+            v-if="field.type === 'date'"
+            :field="field"
+            v-model:value="values[field.name]"
+            @set-filter="setFilter"
+        />
 
-      <NumberRangeFilterField
-          v-if="field.type === 'int' || field.type === 'float'"
-          :field="field"
-          v-model:value="values[field.name]"
-          @set-filter="setFilter"
-      />
+        <NumberRangeFilterField
+            v-if="field.type === 'int' || field.type === 'float'"
+            :field="field"
+            v-model:value="values[field.name]"
+            @set-filter="setFilter"
+        />
 
-      <BoolFilterField
-          v-if="field.type === 'bool'"
-          :field="field"
-          v-model:value="values[field.name]"
-          @set-filter="setFilter"
-      />
+        <BoolFilterField
+            v-if="field.type === 'bool'"
+            :field="field"
+            v-model:value="values[field.name]"
+            @set-filter="setFilter"
+        />
 
-      <PointerFilterField
-          v-if="field.type === 'pointer'"
-          :field="field"
-          v-model:value="values[field.name]"
-          @set-filter="setFilter"
-      />
+        <PointerFilterField
+            v-if="field.type === 'pointer'"
+            :field="field"
+            v-model:value="values[field.name]"
+            @set-filter="setFilter"
+        />
 
-      <SelectFilterField
-          v-if="field.type === 'select'"
-          :field="field"
-          v-model:value="values[field.name]"
-          @set-filter="setFilter"
-      />
+        <SelectFilterField
+            v-if="field.type === 'select'"
+            :field="field"
+            v-model:value="values[field.name]"
+            @set-filter="setFilter"
+        />
+      </div>
     </div>
 
     <div class="flex justify-end">
@@ -89,7 +92,7 @@ export default defineComponent({
     const setFilter = (fieldFilter, fieldName) => {
       values.value[fieldName] = fieldFilter[fieldName]
       filter = {...filter, ...fieldFilter}
-      Object.keys(filter).forEach((k) => (!filter[k]) && delete filter[k]);
+      Object.keys(filter).forEach((k) => (!filter[k] && filter[k] !== 0) && delete filter[k]);
     }
 
     const onApplyFilter = () => {
