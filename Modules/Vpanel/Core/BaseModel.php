@@ -44,7 +44,7 @@ abstract class BaseModel extends Model
 
             $where = $field->getWhere(static::class, $filter);
             if ($where) {
-                if ($field->getType() === 'pointer') {
+                if ($field->getType() === "pointer") {
                     $query->whereIn(...$where);
                 }
                 else if (is_array($where[0])) {
@@ -62,13 +62,13 @@ abstract class BaseModel extends Model
 
         if ($withPagination) {
             $paginatedList = $query->paginate();
-            return self::formatList($paginatedList);
+            return self::prepareList($paginatedList);
         }
 
         return $query->get();
     }
 
-    private static function formatList($list) {
+    private static function prepareList($list) {
         $collection = $list->getCollection();
         $collection->transform(function ($item) {
             foreach ($item->attributes as $key => $value) {

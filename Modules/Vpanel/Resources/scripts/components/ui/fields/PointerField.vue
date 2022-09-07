@@ -70,8 +70,8 @@ export default defineComponent({
 </script>
 
 <style scoped>
-  .custom-fx {
-    font-size: 1rem;
-    padding: 0.5rem 0.3rem;
-  }
+.custom-fx {
+  font-size: 1rem;
+  padding: 0.2rem 0.2rem;
+}
 </style>

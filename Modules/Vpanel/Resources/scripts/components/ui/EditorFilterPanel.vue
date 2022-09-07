@@ -6,7 +6,7 @@
          class="mb-3"
     >
       <StringFilterField
-          v-if="field.type === 'string' || field.type === 'select'"
+          v-if="field.type === 'string'"
           :field="field"
           v-model:value="values[field.name]"
           @set-filter="setFilter"
@@ -39,6 +39,13 @@
           v-model:value="values[field.name]"
           @set-filter="setFilter"
       />
+
+      <SelectFilterField
+          v-if="field.type === 'select'"
+          :field="field"
+          v-model:value="values[field.name]"
+          @set-filter="setFilter"
+      />
     </div>
 
     <div class="flex justify-end">
@@ -64,10 +71,13 @@ import DateRangeFilterField from "@/components/ui/filters/DateRangeFilterField.v
 import BoolFilterField from "@/components/ui/filters/BoolFilterField.vue";
 import NumberRangeFilterField from "@/components/ui/filters/NumberRangeFilterField.vue";
 import PointerFilterField from "@/components/ui/filters/PointerFilterField.vue";
+import SelectFilterField from "@/components/ui/filters/SelectFilterField.vue";
 
 export default defineComponent({
   name: 'EditorFilterPanel',
-  components: {PointerFilterField, NumberRangeFilterField, BoolFilterField, DateRangeFilterField, StringFilterField},
+  components: {
+    SelectFilterField,
+    PointerFilterField, NumberRangeFilterField, BoolFilterField, DateRangeFilterField, StringFilterField},
   props: {
     fields: Object
   },
@@ -89,6 +99,7 @@ export default defineComponent({
     const onResetFilter = () => {
       filter = {}
       values.value = {}
+      emit('on-filter', filter)
     }
 
     return {

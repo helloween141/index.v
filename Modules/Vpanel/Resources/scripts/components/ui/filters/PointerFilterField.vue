@@ -72,6 +72,6 @@ export default defineComponent({
 <style scoped>
   .custom-fx {
     font-size: 1rem;
-    padding: 0.5rem 0.3rem;
+    padding: 0.2rem 0.2rem;
   }
 </style>

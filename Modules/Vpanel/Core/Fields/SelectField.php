@@ -2,6 +2,8 @@
 
 namespace Modules\Vpanel\Core\Fields;
 
+use Modules\Vpanel\Core\BaseModel;
+
 class SelectField extends Field
 {
     protected array $options = [];
@@ -17,5 +19,13 @@ class SelectField extends Field
     public function getOptions(): array
     {
         return $this->options;
+    }
+
+    public function getWhere(BaseModel|string $mainModel, array $filter): array {
+        $tableName = with(new $mainModel)->getTable();
+        if (key_exists($this->name, $filter)) {
+            return ["{$tableName}.{$this->name}", "=", $filter[$this->name]];
+        }
+        return [];
     }
 }

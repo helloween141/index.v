@@ -3,7 +3,7 @@
     <span class="dark:text-white">{{ field.title }}</span>
     <input type="checkbox"
            :value="value"
-           @click="onClick($event.target.value)"
+           @change="onChange(value)"
            class="w-4 h-4 ml-3 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
     />
   </div>
@@ -17,16 +17,19 @@ export default defineComponent({
   name: 'BoolFilterField',
   emits: ['set-filter'],
   props: {
-    value: Boolean,
+    value: {
+      type: Boolean,
+      default: 0
+    },
     field: Object,
   },
   setup(props, {emit}) {
-    const onClick = (val) => {
-      emit('set-filter', {[props.field.name]: val}, props.field.name)
+    const onChange = (val) => {
+      emit('set-filter', {[props.field.name]: (val ? 0 : 1)}, props.field.name)
     }
 
     return {
-      onClick
+      onChange
     }
   }
 })

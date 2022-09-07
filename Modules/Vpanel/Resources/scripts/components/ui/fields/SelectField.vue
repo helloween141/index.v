@@ -6,7 +6,7 @@
       :searchable="true"
       :clearable="true"
       @update:modelValue="handleInput"
-      class="py-2 bg-gray-200 text-gray-700 rounded leading-tight focus:outline-none focus:bg-white focus:border-purple-500 font-medium"
+      class="py-2 bg-gray-200 text-gray-700 rounded leading-tight focus:outline-none focus:bg-white focus:border-purple-500 font-medium custom-fx"
   />
 </template>
 
@@ -46,5 +46,8 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
+.custom-fx {
+  font-size: 1rem;
+  padding: 0.2rem 0.2rem;
+}
 </style>

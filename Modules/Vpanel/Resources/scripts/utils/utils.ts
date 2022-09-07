@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const prepareFormData = (values: object) => {
     const data = new FormData()
     Object.keys(values).forEach(key => {
@@ -31,4 +33,44 @@ export const getPlaceholderForSearch = (fields: any) => {
         return fields.filter(field => field.inSearch).map(field => field.title.toLowerCase()).join(', ')
     }
     return ''
+}
+
+export const getHeadersForEditorTable = (fields: any) => {
+    const result = []
+    fields.forEach(field => {
+        if (field.inEditor) {
+            result.push({name: field['name'], title: field['title']})
+        }
+    })
+    return result
+}
+
+export const getRowsForEditorTable = (fields: any, data: any) => {
+    const result = []
+    if (data) {
+        data.forEach(item => {
+            let obj = {id: item['id']}
+            fields.forEach(field => {
+                if (field.inEditor) {
+                    const fName = field['name']
+                    const fValue = item[field['name']]
+
+                    if (field.type === 'date') {
+                        obj = {...obj, [fName]: formatDate(fValue)}
+                    } else if (field.type === 'select' && fValue) {
+                        obj = {...obj, [fName]: field.options[fValue]}
+                    } else {
+                        obj = {...obj, [fName]: fValue}
+                    }
+                }
+            })
+            result.push(obj)
+        })
+    }
+
+    return result
+}
+
+export const formatDate = (date) => {
+    return moment(date).format('DD.MM.YYYY')
 }

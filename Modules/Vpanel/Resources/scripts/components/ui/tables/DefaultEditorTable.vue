@@ -2,14 +2,14 @@
   <div>
     <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
       <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <thead v-if="headers" class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             <th v-for="header in headers" scope="col" class="py-3 px-6">
               {{ header.title }}
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody v-if="rows">
           <tr v-for="(row, index) in rows"
               :key="index"
               @click="onClick(row.id)"
@@ -36,8 +36,9 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref} from "vue";
+import {defineComponent, ref, watch} from "vue";
 import Pagination from "@/components/ui/Pagination.vue";
+import {getHeadersForEditorTable, getRowsForEditorTable} from "@/utils/utils";
 
 export default defineComponent({
   name: 'DefaultEditorTable',
@@ -48,26 +49,16 @@ export default defineComponent({
     values: Object
   },
   setup(props, { emit }) {
-    const headers = []
-    const rows = []
-
-    props.model.fields.forEach(field => {
-      if (field.inEditor) {
-        headers.push({name: field['name'], title: field['title']})
-      }
-    })
-
-    props.values.data.forEach(item => {
-      let obj = {id: item['id']}
-      headers.forEach(header => {
-        obj = {...obj, [header['name']]: item[header['name']]}
-      })
-      rows.push(obj)
-    })
+    const headers = getHeadersForEditorTable(props.model.fields)
+    const rows = ref()
 
     const onClick = (recordId: number) => {
       emit('select-record', recordId)
     }
+
+    watch(() => props.values, (current, previous) => {
+      rows.value = getRowsForEditorTable(props.model.fields, current.data)
+    })
 
     return {
       headers,
