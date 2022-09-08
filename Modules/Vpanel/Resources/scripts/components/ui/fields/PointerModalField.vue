@@ -4,16 +4,18 @@
       :label="identifyLabel"
       :required="field.required"
       @click="handleClick"
-      @update:modelValue="handleInput"
       class="py-2 bg-gray-200 text-gray-700 rounded leading-tight focus:outline-none focus:bg-white focus:border-purple-500 custom-fx"
   />
 </template>
 
 <script lang="ts">
-import {defineComponent, ref} from "vue";
+import {defineComponent, onMounted, ref} from "vue";
 import {$vfm} from "vue-final-modal";
 import VModal from "@/components/ui/modal/VModal.vue";
 import DefaultModelEditor from "@/components/editors/DefaultModelEditor.vue";
+import axios from "axios";
+import {parsePointerModelPath} from "@/utils/utils";
+import {loadInterface, loadList} from "@/api/actionEditor";
 
 export default defineComponent({
   name: 'PointerModalField',
@@ -25,36 +27,45 @@ export default defineComponent({
   setup(props, {emit}) {
     const identifyLabel = ref(props.field.identify || 'name')
     const selectedOption = ref({})
+    let model = null
+    let values = null
+
+    onMounted(async () => {
+      const pointerPath = parsePointerModelPath(props.field.model)
+      model = await loadInterface(pointerPath.module, pointerPath.model)
+      values = await loadList(pointerPath.module, pointerPath.model, true)
+
+      selectedOption.value = values.data.find(item => item.id === props.value)
+    })
 
     const handleClick = () => {
       $vfm.show({
         component: VModal,
-        on: {
-          confirm(close) {
-            close()
-          },
-        },
         slots: {
           content: {
             component: DefaultModelEditor,
             bind: {
-              incModel: {},
-              customModuleName: '',
-              customModelName: ''
+              incModel: model,
+              incValues: values,
+              isModal: true
+            },
+            on: {
+              selectRecord(recordId) {
+                if (values) {
+                  selectedOption.value = values.data.find(item => item.id === recordId)
+                  emit('set-value', props.field.name, selectedOption.value)
+                  $vfm.hideAll()
+                }
+              }
             }
           }
         }
       })
     }
 
-    const handleInput = () => {
-      emit('set-value', props.field.name, selectedOption.value)
-    }
-
     return {
       identifyLabel,
       selectedOption,
-      handleInput,
       handleClick
     }
   }

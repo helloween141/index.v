@@ -37,11 +37,13 @@ export const getPlaceholderForSearch = (fields: any) => {
 
 export const getHeadersForEditorTable = (fields: any) => {
     const result = []
-    fields.forEach(field => {
-        if (field.inEditor) {
-            result.push({name: field['name'], title: field['title']})
-        }
-    })
+    if (fields) {
+        fields.forEach(field => {
+            if (field.inEditor) {
+                result.push({name: field['name'], title: field['title']})
+            }
+        })
+    }
     return result
 }
 
@@ -67,10 +69,18 @@ export const getRowsForEditorTable = (fields: any, data: any) => {
             result.push(obj)
         })
     }
-
     return result
 }
 
 export const formatDate = (date) => {
     return moment(date).format('DD.MM.YYYY')
+}
+
+export const parsePointerModelPath = (path: string) => {
+    const prsr = path.split('\\')
+
+    return {
+        module: prsr[1],
+        model: prsr[3]
+    }
 }

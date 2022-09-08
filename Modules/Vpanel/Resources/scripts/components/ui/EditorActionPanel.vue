@@ -25,7 +25,9 @@
         <i class="fa-solid fa-filter text-white"></i>
       </button>
 
-      <button @click="onCreate" class="bg-blue-700 hover:bg-blue-400 ml-3 text-gray-800 font-bold py-2 px-4 rounded">
+      <button v-if="!isModal"
+              @click="onCreate"
+              class="bg-blue-700 hover:bg-blue-400 ml-3 text-gray-800 font-bold py-2 px-4 rounded">
           <span class="text-white">
             <i class="fa-solid fa-circle-plus"></i> Создать {{ model.accusativeRecordTitle }}
           </span>
@@ -43,6 +45,7 @@ export default defineComponent({
   name: 'EditorActionPanel',
   props: {
     model: Object,
+    isModal: Boolean
   },
   emits: ['on-create', 'on-show-filter', 'on-search'],
   setup(props, {emit}) {

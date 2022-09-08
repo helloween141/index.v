@@ -45,25 +45,14 @@ class MainRequestController extends Controller
             throw new \Error(ApiError::MODEL_NOT_FOUND);
         }
 
+        $withPagination = !(($request->get("pagination")) === "false");
         $filter = json_decode($request->get("filter", []), true);
         $search = $request->get("search", "");
 
         /** @var $model BaseModel */
-        $list = $model::getList(filter: $filter, search: $search, withPagination: true);
+        $list = $model::getList(filter: $filter, search: $search, withPagination: $withPagination);
 
         return response()->json($list, Response::HTTP_OK);
-    }
-
-    public function getPointer(Request $request): JsonResponse
-    {
-        $model = $request->get("model");
-        if (!class_exists($model)) {
-            throw new \Error(ApiError::MODEL_NOT_FOUND);
-        }
-
-        /** @var $model BaseModel */
-        $records = $model::getList();
-        return response()->json($records, Response::HTTP_OK);
     }
 
     public function getRecord(string $moduleName, string $modelName, int $id = 0): JsonResponse

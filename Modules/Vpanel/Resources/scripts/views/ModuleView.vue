@@ -3,6 +3,7 @@
     <component
         :is="targetComponent"
         :inc-model="modelInterface"
+        :inc-values="modelValues"
     />
   </div>
 </template>
@@ -10,8 +11,9 @@
 <script lang="ts">
 import {defineAsyncComponent, defineComponent, ref, shallowRef, watch} from "vue";
 import {useRoute} from "vue-router";
-import {loadInterface} from "@/api/actionEditor";
+import {loadInterface, loadList} from "@/api/actionEditor";
 import {getRouteParameters} from "@/utils/utils";
+import {loadRecord} from "@/api/actionForm";
 
 export default defineComponent({
   name: 'ModuleView',
@@ -28,9 +30,11 @@ export default defineComponent({
         modelInterface.value = await loadInterface(moduleName, modelName)
 
         if (recordId) {
+          modelValues.value = await loadRecord(moduleName, modelName, recordId)
           const formComponent = modelInterface.value['formComponent']
           targetComponent.value = formComponent ? loadCustomComponent(formComponent, moduleName) : loadFormComponent()
         } else {
+          modelValues.value = await loadList(moduleName, modelName, true)
           const editorComponent = modelInterface.value['editorComponent']
           targetComponent.value = editorComponent ? loadCustomComponent(editorComponent, moduleName) : loadEditorComponent()
         }
@@ -51,7 +55,8 @@ export default defineComponent({
 
     return {
       targetComponent,
-      modelInterface
+      modelInterface,
+      modelValues
     }
   }
 })

@@ -19,6 +19,8 @@ import axios from "axios";
 import {$vfm} from "vue-final-modal";
 import VModal from "@/components/ui/modal/VModal.vue";
 import DefaultModelEditor from "@/components/editors/DefaultModelEditor.vue";
+import {parsePointerModelPath} from "@/utils/utils";
+import {loadList} from "@/api/actionEditor";
 
 export default defineComponent({
   name: 'PointerFilterField',
@@ -33,14 +35,10 @@ export default defineComponent({
     const currentValue = ref(null)
 
     onMounted(async () => {
-      const listResponse = await axios.get(`/api/vpanel/pointer`, {
-        params: {
-          'model': props.field.model
-        }
-      })
-      options.value = listResponse.data
+      const pointerPath = parsePointerModelPath(props.field.model)
+      options.value = await loadList(pointerPath.module, pointerPath.model, false)
 
-      if (options.value) {
+      if (options.value.length > 0) {
         const currentOption = (options.value.find(option => option.id === props.value))
         if (currentOption) {
           currentValue.value = currentOption[identifyLabel.value]

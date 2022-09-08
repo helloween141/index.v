@@ -14,12 +14,13 @@ export const loadInterface = async (moduleName: string, modelName: string) => {
     }
 }
 
-export const loadList = async (moduleName: string, modelName: string, filter: any = [], searchString: string = '') => {
+export const loadList = async (moduleName: string, modelName: string, withPagination: boolean, filter: any = [], searchString: string = '') => {
     try {
         const response = await axios.get(APISettings.baseURL + `/list/${moduleName}/${modelName}`, {
             params: {
                 'filter': JSON.stringify(filter),
-                'search': searchString
+                'search': searchString,
+                'pagination': withPagination
             }
         })
         return response.data

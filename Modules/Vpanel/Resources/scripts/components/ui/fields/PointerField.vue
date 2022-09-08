@@ -16,6 +16,8 @@ import axios from "axios";
 import {$vfm} from "vue-final-modal";
 import VModal from "@/components/ui/modal/VModal.vue";
 import DefaultModelEditor from "@/components/editors/DefaultModelEditor.vue";
+import {parsePointerModelPath} from "@/utils/utils";
+import {loadList} from "@/api/actionEditor";
 
 export default defineComponent({
   name: 'PointerField',
@@ -28,21 +30,12 @@ export default defineComponent({
     const options = ref([])
     const identifyLabel = ref(props.field.identify || 'name')
     const selectedOption = ref({})
-    let incValues = []
 
     onMounted(async () => {
-      const listResponse = await axios.get(`/api/vpanel/pointer`, {
-        params: {
-          'model': props.field.model
-        }
-      })
-      incValues = listResponse.data
+      const pointerPath = parsePointerModelPath(props.field.model)
+      options.value = await loadList(pointerPath.module, pointerPath.model, false)
 
-      if (!props.field.isModal) {
-        options.value = listResponse.data
-      }
-
-      if (options.value) {
+      if (options.value.length > 0) {
         const currentOption = (options.value.find(option => option.id === props.value))
         if (currentOption) {
           selectedOption.value = currentOption[identifyLabel.value]

@@ -1,11 +1,11 @@
 <template>
-  <div v-if="values" class="relative overflow-x-auto">
+  <div v-if="currentValues" class="relative overflow-x-auto">
     <form @submit.prevent="onSave">
-      <span class="text-white">{{values}}</span>
+      <span class="text-white">{{currentValues}}</span>
 
       <div class="mb-3 flex justify-between items-center flex-wrap">
         <h1 class="dark:text-white text-2xl">
-          <span v-if="values.id">
+          <span v-if="currentValues.id">
             Редактировать {{ incModel.accusativeRecordTitle }}
           </span>
           <span v-else>
@@ -22,7 +22,7 @@
 
       <DefaultFieldsTable
           :fields="incModel.fields"
-          :values="values"
+          :values="currentValues"
           @set-value="setValue"
       />
 
@@ -54,21 +54,18 @@ export default defineComponent({
   name: 'ModuleForm',
   components: {DefaultFieldsTable, FormActionPanel},
   props: {
-    incModel: Object
+    incModel: Object,
+    incValues: Object
   },
-  setup() {
+  setup(props) {
     const toast = useToast()
     const route = useRoute()
-    const values = ref()
+    const currentValues = ref(props.incValues)
 
     const {moduleName, modelName, recordId} = getRouteParameters(route)
 
-    onMounted(async () => {
-      values.value = await loadRecord(moduleName, modelName, recordId)
-    })
-
     const onSave = async () => {
-      const formData = prepareFormData(values.value)
+      const formData = prepareFormData(currentValues.value)
       const newId = await saveRecord(moduleName, modelName, formData)
       if (newId) {
         toast.success(APIMessage.SUCCESS_SAVE)
@@ -87,7 +84,7 @@ export default defineComponent({
     }
 
     const setValue = (fieldName, fieldValue) => {
-      values.value[fieldName] = fieldValue
+      currentValues.value[fieldName] = fieldValue
     }
 
     return {
@@ -95,7 +92,7 @@ export default defineComponent({
       onDelete,
       onBack,
       setValue,
-      values
+      currentValues
     }
   },
 })

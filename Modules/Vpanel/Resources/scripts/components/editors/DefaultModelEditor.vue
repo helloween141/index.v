@@ -5,6 +5,7 @@
         @on-show-filter="showFilterPanel"
         @on-search="applySearch"
         :model="incModel"
+        :isModal="isModal"
     />
 
     <EditorFilterPanel
@@ -16,9 +17,8 @@
     <DefaultEditorTable
         @select-record="selectRecord"
         :model="incModel"
-        :values="values"
+        :values="currentValues"
     />
-
   </div>
 </template>
 
@@ -35,32 +35,29 @@ import {useRoute} from "vue-router";
 export default defineComponent({
   name: 'DefaultModelEditor',
   components: {EditorFilterPanel, EditorActionPanel, DefaultEditorTable},
+  emits: ['select-record'],
   props: {
     incModel: Object,
-    customModuleName: String,
-    customModelName: String
+    incValues: Object,
+    params: Object,
+    isModal: {
+      type: Boolean,
+      default: false
+    }
   },
-
-  setup(props) {
+  setup(props, { emit }) {
     const route = useRoute()
-    const values = ref({})
+    const currentValues = ref(props.incValues)
     const showFilter = ref(false)
+
     let {moduleName, modelName} = getRouteParameters(route)
 
-    if (props.customModuleName) {
-      moduleName = props.customModuleName
-    }
-
-    if (props.customModelName) {
-      modelName = props.customModelName
-    }
-
-    onMounted(async () => {
-      values.value = await loadList(moduleName, modelName, [])
-    })
-
     const selectRecord = (recordId) => {
-      router.push({ name: 'module', params: { id: recordId } })
+      if (props.isModal) {
+        emit('select-record', recordId)
+      } else {
+        router.push({ name: 'module', params: { id: recordId } })
+      }
     }
 
     const createRecord = () => {
@@ -68,11 +65,11 @@ export default defineComponent({
     }
 
     const applySearch = async (searchString) => {
-      values.value = await loadList(moduleName, modelName, [], searchString)
+      currentValues.value = await loadList(moduleName, modelName, true,[], searchString)
     }
 
     const applyFilter = async (filter) => {
-      values.value = await loadList(moduleName, modelName, filter)
+      currentValues.value = await loadList(moduleName, modelName, true, filter)
     }
 
     const showFilterPanel = () => {
@@ -89,7 +86,7 @@ export default defineComponent({
       applySearch,
       showFilter,
       filterFields,
-      values
+      currentValues
     }
   }
 })
