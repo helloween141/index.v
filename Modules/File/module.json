@@ -1,13 +1,19 @@
 {
-    "name": "File",
-    "alias": "file",
-    "description": "",
-    "keywords": [],
-    "priority": 0,
-    "providers": [
-        "Modules\\File\\Providers\\FileServiceProvider"
-    ],
-    "aliases": {},
-    "files": [],
-    "requires": []
+  "name": "File",
+  "menu": {
+    "title": "Файлы и изображения",
+    "icon": "fa-solid fa-newspaper",
+    "module": "File",
+    "model": "File"
+  },
+  "alias": "file",
+  "description": "",
+  "keywords": [],
+  "priority": 0,
+  "providers": [
+    "Modules\\File\\Providers\\FileServiceProvider"
+  ],
+  "aliases": {},
+  "files": [],
+  "requires": []
 }

@@ -15,7 +15,7 @@ abstract class BaseModel extends Model
 
     protected static ?ModelStructure $structure = null;
 
-    public static function getStructure(): ModelStructure
+    public static function getStructure(): ?ModelStructure
     {
         return static::defineStructure();
     }
@@ -27,11 +27,16 @@ abstract class BaseModel extends Model
 
     public static function getList($filter = [], $search = "", $withPagination = false)
     {
+        $structure = static::getStructure();
+        if (!$structure) {
+            return null;
+        }
+
         $tableName = with(new static)->getTable();
 
         $query = static::query()->addSelect(["{$tableName}.id"]);
 
-        $fields = static::getStructure()->getFields();
+        $fields = $structure->getFields();
         foreach ($fields as $field) {
             if ($field->isInEditor()) {
                 $query->addSelect($field->getSelect(static::class));

@@ -85,6 +85,7 @@ class News extends BaseModel
                 FileField::create()
                     ->setName('file')
                     ->setTitle('Файл')
+                    ->hideFromEditor()
             )
             ->addField(
                 TextField::create()

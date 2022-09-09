@@ -64,7 +64,7 @@ export const getRowsForEditorTable = (fields: any, data: any) => {
                     } else if (field.type === 'select' && fValue) {
                         obj = {...obj, [fName]: field.options[fValue]}
                     } else {
-                        obj = {...obj, [fName]: fValue}
+                        obj = {...obj, [fName]: (fValue !== null) ? fValue : ''}
                     }
                 }
             })
