@@ -20,7 +20,10 @@
                 v-show="key !== 'id'"
                 class="py-4 px-6"
             >
-              <span v-if="val.value">
+              <span v-if="!val">
+                -
+              </span>
+              <span v-else-if="val.value">
                 {{ val.value }}
               </span>
               <span v-else>

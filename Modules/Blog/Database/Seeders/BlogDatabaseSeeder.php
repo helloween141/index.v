@@ -16,7 +16,7 @@ class BlogDatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Author::factory(3)->create();
-        News::factory(3)->create();
+        Author::factory(5)->create();
+        News::factory(5)->create();
     }
 }

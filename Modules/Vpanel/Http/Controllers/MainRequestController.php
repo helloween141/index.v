@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
+use Modules\File\Entities\File;
 use Modules\Vpanel\Core\ApiError;
 use Modules\Vpanel\Core\BaseModel;
 use Modules\Vpanel\Core\Utils;
@@ -80,12 +81,22 @@ class MainRequestController extends Controller
         /** @var $model BaseModel */
         $requiredFields = $model::getStructure()->getRequiredFields();
 
-        $validator = Validator::make($request->post(), $requiredFields);
+        $validator = Validator::make($request->all(), $requiredFields);
         if ($validator->fails()) {
             return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $validatedData = $validator->getData();
+
+        $files = $request->file();
+        if (count($files) > 0) {
+            foreach ($files as $key => $file) {
+                $uploadedFile = File::uploadFile($file);
+                if ($uploadedFile) {
+                    $validatedData[$key] = $uploadedFile->id;
+                }
+            }
+        }
 
         $record = $model::query()->updateOrCreate(
             ["id" => $validatedData["id"] ?? 0],

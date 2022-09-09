@@ -23,7 +23,9 @@ return new class extends Migration
             $table->boolean('show')->default(1);
             $table->string('type');
             $table->integer('price');
-            $table->foreignId('author_id')->constrained('authors');
+            $table->foreignId('file')->nullable()->constrained('files')->onDelete('cascade');
+            $table->foreignId('image')->nullable()->constrained('files')->onDelete('cascade');
+            $table->foreignId('author_id')->constrained('authors')->onDelete('cascade');
         });
     }
 

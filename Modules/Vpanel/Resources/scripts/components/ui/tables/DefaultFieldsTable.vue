@@ -74,6 +74,21 @@
               :value="values[field.name]"
               @set-value="setValue"
           />
+
+          <FileField
+              v-else-if="field.type === 'file'"
+              :field="field"
+              :value="values[field.name]"
+              @set-value="setValue"
+          />
+
+          <ImageField
+              v-else-if="field.type === 'image'"
+              :field="field"
+              :value="values[field.name]"
+              @set-value="setValue"
+          />
+
         </td>
       </tr>
     </tbody>
@@ -91,10 +106,14 @@ import DateField from "@/components/ui/fields/DateField.vue";
 import BoolField from "@/components/ui/fields/BoolField.vue";
 import NumberField from "@/components/ui/fields/NumberField.vue";
 import PointerModalField from "@/components/ui/fields/PointerModalField.vue";
+import FileField from "@/components/ui/fields/FileField.vue";
+import ImageField from "@/components/ui/fields/ImageField.vue";
 
 export default defineComponent({
   name: 'DefaultFieldsTable',
   components: {
+    ImageField,
+    FileField,
     PointerModalField,
     NumberField, StringField, BoolField, DateField, PointerField, SelectField, HtmlField, TextField},
   props: {

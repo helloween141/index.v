@@ -11,6 +11,7 @@ use Modules\Vpanel\Core\BaseModel;
 use Modules\Vpanel\Core\Fields\BoolField;
 use Modules\Vpanel\Core\Fields\DateField;
 use Modules\Vpanel\Core\Fields\Field;
+use Modules\Vpanel\Core\Fields\FileField;
 use Modules\Vpanel\Core\Fields\HtmlField;
 use Modules\Vpanel\Core\Fields\IntField;
 use Modules\Vpanel\Core\Fields\PointerField;
@@ -79,6 +80,11 @@ class News extends BaseModel
                     ->modal()
                     ->showInFilter()
                     ->showInSearch()
+            )
+            ->addField(
+                FileField::create()
+                    ->setName('file')
+                    ->setTitle('Файл')
             )
             ->addField(
                 TextField::create()

@@ -7,7 +7,7 @@
       v-on="$listeners"
   >
 
-    <i class="fa fa-close float-right cursor-pointer" @click="close"></i>
+    <i class="fa fa-close float-right cursor-pointer dark:text-gray-500" @click="close"></i>
 
     <span class="mr-8 text-2xl font-bold">
       <slot name="title"></slot>
