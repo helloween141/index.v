@@ -25,6 +25,8 @@ abstract class Field
 
     protected mixed $defaultValue;
 
+    protected string $tooltip;
+
     public function getSelect(BaseModel|string $mainModel): array {
         $tableName = with(new $mainModel)->getTable();
 
@@ -61,6 +63,12 @@ abstract class Field
     public function setDefault(mixed $value): Field
     {
         $this->defaultValue = $value;
+        return $this;
+    }
+
+    public function setTooltip(string $value): Field
+    {
+        $this->tooltip = $value;
         return $this;
     }
 
