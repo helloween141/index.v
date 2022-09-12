@@ -1,5 +1,4 @@
 <template>
-  {{selectedOption}}
   <v-select
       v-model="selectedOption"
       :label="identifyLabel"

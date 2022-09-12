@@ -125,8 +125,8 @@ abstract class BaseModel extends Model
         $requiredFields = [];
         foreach ($structure->getFields() as $field) {
             foreach ($data as $key => $value) {
-                if ($key === $field->getName() && ($value === "null" || $value === null)) {
-                    if (in_array($field->getType(),["pointer", "image", "file"])) {
+                if ($key === $field->getName() && ($value === "null")) {
+                    if (in_array($field->getType(), ["pointer", "image", "file"])) {
                         $data[$key] = null;
                     } else if($field->getType() === "select") {
                         $data[$key] = "";
@@ -136,14 +136,17 @@ abstract class BaseModel extends Model
             if ($field->isRequired()) {
                 $requiredFields = [
                     ...$requiredFields,
-                    $field->getName() => 'required'
+                    $field->getName() => "required"
                 ];
             }
         }
 
         $validator = Validator::make($data, $requiredFields);
         if ($validator->fails()) {
-            return $validator->errors();
+            return [
+                "success" => false,
+                "errors" => $validator->errors()
+            ];
         }
 
         $validatedData = $validator->getData();
@@ -162,6 +165,9 @@ abstract class BaseModel extends Model
             $validatedData
         );
 
-        return $record;
+        return [
+            "success" => $record,
+            "errors" => null
+        ];
     }
 }

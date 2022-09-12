@@ -86,8 +86,8 @@ class MainRequestController extends Controller
         $files = $request->file();
 
         $result = $model::saveRecord($data, $files);
-        if ($result->getMessages() !== null) {
-            return response()->json($result->getMessages(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        if ($result["errors"]) {
+            return response()->json($result["errors"], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         return response()->json($result, $result ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
