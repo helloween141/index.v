@@ -4,7 +4,10 @@ namespace Modules\Vpanel\Core;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Modules\File\Entities\File;
 use Modules\Vpanel\Core\Fields\Field;
 
 abstract class BaseModel extends Model
@@ -111,5 +114,54 @@ abstract class BaseModel extends Model
 
         Utils::prepareModelData($record);
         return $record[0];
+    }
+
+    public static function saveRecord($data, $files = []) {
+        $structure = static::getStructure();
+        if (!$structure) {
+            return null;
+        }
+
+        $requiredFields = [];
+        foreach ($structure->getFields() as $field) {
+            foreach ($data as $key => $value) {
+                if ($key === $field->getName() && ($value === "null" || $value === null)) {
+                    if (in_array($field->getType(),["pointer", "image", "file"])) {
+                        $data[$key] = null;
+                    } else if($field->getType() === "select") {
+                        $data[$key] = "";
+                    }
+                }
+            }
+            if ($field->isRequired()) {
+                $requiredFields = [
+                    ...$requiredFields,
+                    $field->getName() => 'required'
+                ];
+            }
+        }
+
+        $validator = Validator::make($data, $requiredFields);
+        if ($validator->fails()) {
+            return $validator->errors();
+        }
+
+        $validatedData = $validator->getData();
+
+        if (count($files) > 0) {
+            foreach ($files as $key => $file) {
+                $uploadedFile = File::uploadFile($file);
+                if ($uploadedFile) {
+                    $validatedData[$key] = $uploadedFile->id;
+                }
+            }
+        }
+
+        $record = static::query()->updateOrCreate(
+            ["id" => $validatedData["id"] ?? 0],
+            $validatedData
+        );
+
+        return $record;
     }
 }

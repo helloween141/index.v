@@ -1,15 +1,16 @@
 <template>
+  {{selectedOption}}
   <v-select
       v-model="selectedOption"
       :label="identifyLabel"
       :required="field.required"
-      @click="handleClick"
+      @open="handleClick"
       class="py-2 bg-gray-200 text-gray-700 rounded leading-tight focus:outline-none focus:bg-white focus:border-purple-500 custom-fx"
   />
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, ref} from "vue";
+import {defineComponent, onMounted, ref, watch} from "vue";
 import {$vfm} from "vue-final-modal";
 import VModal from "@/components/ui/modal/VModal.vue";
 import DefaultModelEditor from "@/components/editors/DefaultModelEditor.vue";
@@ -62,6 +63,12 @@ export default defineComponent({
         }
       })
     }
+
+    watch(() => selectedOption.value, (current, previous) => {
+      if (!current) {
+        emit('set-value', props.field.name, selectedOption.value)
+      }
+    })
 
     return {
       identifyLabel,

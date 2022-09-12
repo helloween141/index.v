@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Validator;
-use Modules\File\Entities\File;
 use Modules\Vpanel\Core\ApiError;
 use Modules\Vpanel\Core\BaseModel;
 use Modules\Vpanel\Core\Utils;
@@ -78,56 +76,21 @@ class MainRequestController extends Controller
 
     public function saveRecord(Request $request, string $moduleName, string $modelName): JsonResponse
     {
+        /** @var $model BaseModel */
         $model = Utils::getModelClass($moduleName, $modelName);
         if (!class_exists($model)) {
             throw new \Error(ApiError::MODEL_NOT_FOUND);
         }
 
         $data = $request->all();
-
-        $allFields = $model::getStructure()->getFields();
-        $requiredFields = [];
-        foreach ($allFields as $field) {
-            foreach ($data as $key => $value) {
-                if ($key === $field->getName() && ($value === "null" || $value === null)) {
-                    if (in_array($field->getType(),["pointer", "image", "file"])) {
-                        $data[$key] = null;
-                    } else if($field->getType() === "select") {
-                        $data[$key] = "";
-                    }
-                }
-            }
-            if ($field->isRequired()) {
-                $requiredFields = [
-                    ...$requiredFields,
-                    $field->getName() => 'required'
-                ];
-            }
-        }
-
-        $validator = Validator::make($data, $requiredFields);
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
-
-        $validatedData = $validator->getData();
-
         $files = $request->file();
-        if (count($files) > 0) {
-            foreach ($files as $key => $file) {
-                $uploadedFile = File::uploadFile($file);
-                if ($uploadedFile) {
-                    $validatedData[$key] = $uploadedFile->id;
-                }
-            }
+
+        $result = $model::saveRecord($data, $files);
+        if ($result->getMessages() !== null) {
+            return response()->json($result->getMessages(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $record = $model::query()->updateOrCreate(
-            ["id" => $validatedData["id"] ?? 0],
-            $validatedData
-        );
-
-        return response()->json($record, $record ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
+        return response()->json($result, $result ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
     }
 
     public function deleteRecord(string $moduleName, string $modelName, int $id): JsonResponse
