@@ -36,7 +36,7 @@ export default defineComponent({
       options.value = await loadList(pointerPath.module, pointerPath.model, false)
 
       if (options.value.length > 0) {
-        const currentOption = (options.value.find(option => option.id === props.value))
+        const currentOption = (options.value.find(option => option.id === props.value['id']))
         if (currentOption) {
           selectedOption.value = currentOption[identifyLabel.value]
         }

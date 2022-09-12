@@ -14,7 +14,7 @@ class FileField extends Field
 
         return [
             "{$tableName}_{$this->name}.id AS {$this->name}.id",
-            "{$tableName}_{$this->name} AS {$this->name}.value"
+            "{$tableName}_{$this->name}.path AS {$this->name}.value"
         ];
     }
 

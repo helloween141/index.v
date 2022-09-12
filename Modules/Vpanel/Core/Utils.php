@@ -25,7 +25,7 @@ class Utils
         return $result;
     }
 
-    public static function translitUrl($value)
+    public static function translitUrl($value): string
     {
         $converter = array(
             'а' => 'a',    'б' => 'b',    'в' => 'v',    'г' => 'g',    'д' => 'd',
@@ -46,8 +46,23 @@ class Utils
         return $value;
     }
 
-    public static function getModelClass(string $moduleName, string $modelName)
+    public static function getModelClass(string $moduleName, string $modelName): string
     {
         return 'Modules\\' . $moduleName . '\\Entities\\' . ucfirst($modelName);
+    }
+
+    public static function prepareModelData($collection) {
+        $collection->transform(function ($item) {
+            foreach ($item->getAttributes() as $key => $value) {
+                if (str_contains($key, ".")) {
+                    $prefix = explode(".", $key);
+                    $item[$prefix[0]] = array_merge($item[$prefix[0]] ?? [], [$prefix[1] => $value]);
+                    unset($item[$key]);
+                }
+            }
+            return $item;
+        });
+
+        return $collection;
     }
 }

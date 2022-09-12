@@ -6,7 +6,7 @@
       :searchable="true"
       :clearable="true"
       @update:modelValue="handleInput"
-      class="py-2 bg-gray-200 text-gray-700 rounded leading-tight focus:outline-none focus:bg-white focus:border-purple-500 font-medium custom-fx"
+      class="py-2 bg-gray-200 text-gray-700 rounded leading-tight focus:outline-none focus:bg-white focus:border-purple-500 custom-fx"
   />
 </template>
 

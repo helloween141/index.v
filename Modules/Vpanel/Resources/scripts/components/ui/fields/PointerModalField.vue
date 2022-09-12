@@ -35,7 +35,7 @@ export default defineComponent({
       model = await loadInterface(pointerPath.module, pointerPath.model)
       values = await loadList(pointerPath.module, pointerPath.model, true)
 
-      selectedOption.value = values.data.find(item => item.id === props.value)
+      selectedOption.value = values.data.find(item => item.id === props.value['id'])
     })
 
     const handleClick = () => {

@@ -25,15 +25,18 @@ abstract class BaseModel extends Model
         return null;
     }
 
-    public static function getList($filter = [], $search = "", $withPagination = false)
+    public static function getList(array $params = [])
     {
         $structure = static::getStructure();
         if (!$structure) {
             return null;
         }
 
-        $tableName = with(new static)->getTable();
+        $filter = $params["filter"] ?? [];
+        $search = $params["search"] ?? "";
+        $withPagination = $params["withPagination"] ?? false;
 
+        $tableName = with(new static)->getTable();
         $query = static::query()->addSelect(["{$tableName}.id"]);
 
         $fields = $structure->getFields();
@@ -62,10 +65,8 @@ abstract class BaseModel extends Model
                     }
                 }
             }
-            else if (!empty($search)) {
-                if ($field->isInSearch()) {
-                    $query->orWhere($field->getName(), "like", "%" . $search . "%");
-                }
+            else if (!empty($search) && $field->isInSearch()) {
+                $query->orWhere($field->getName(), "like", "%" . $search . "%");
             }
         }
 
@@ -74,25 +75,41 @@ abstract class BaseModel extends Model
 
         if ($withPagination) {
             $paginatedList = $query->paginate();
-            return self::prepareList($paginatedList);
+            Utils::prepareModelData($paginatedList->getCollection());
+            return $paginatedList;
         }
 
         return $query->get();
     }
 
-    private static function prepareList($list) {
-        $collection = $list->getCollection();
-        $collection->transform(function ($item) {
-            foreach ($item->attributes as $key => $value) {
-                if (str_contains($key, ".")) {
-                    $prefix = explode(".", $key);
-                    $item[$prefix[0]] = array_merge($item[$prefix[0]] ?? [], [$prefix[1] => $value]);
-                    unset($item[$key]);
-                }
-            }
-            return $item;
-        });
+    public static function getRecord($id) {
+        $structure = static::getStructure();
+        if (!$structure) {
+            return null;
+        }
 
-        return $list;
+        $tableName = with(new static)->getTable();
+
+        $query = static::query()->addSelect(["{$tableName}.id"]);
+
+        $fields = $structure->getFields();
+        foreach ($fields as $field) {
+            $query->addSelect($field->getSelect(static::class));
+
+            $join = $field->getJoin(static::class);
+            if (count($join) > 0) {
+                $query->leftJoin(...$join);
+            }
+        }
+        $query->where($tableName .".id", "=", $id);
+
+        $record = $query->get();
+
+        if (!$record) {
+            return null;
+        }
+
+        Utils::prepareModelData($record);
+        return $record[0];
     }
 }

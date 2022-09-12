@@ -98,7 +98,7 @@ class News extends BaseModel
                     ->setTitle('Полное описание')
             )
             ->addUrl()
-            ->addMeta()
+            //->addMeta()
             ->setModelTitle('Новости')
             ->setRecordTitle('новость')
             ->setAccusativeRecordTitle('новость');

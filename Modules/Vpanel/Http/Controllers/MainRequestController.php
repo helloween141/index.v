@@ -25,7 +25,7 @@ class MainRequestController extends Controller
                 $list[] = $menu;
             }
         }
-        return response()->json($list,Response::HTTP_OK);
+        return response()->json($list, Response::HTTP_OK);
     }
 
     public function getInterface(string $moduleName, string $modelName): JsonResponse
@@ -51,7 +51,12 @@ class MainRequestController extends Controller
         $search = $request->get("search", "");
 
         /** @var $model BaseModel */
-        $list = $model::getList(filter: $filter, search: $search, withPagination: $withPagination);
+        $list = $model::getList(
+            params: [
+                "filter" => $filter,
+                "search" => $search,
+                "withPagination" => $withPagination
+            ]);
 
         return response()->json($list, Response::HTTP_OK);
     }
@@ -64,7 +69,7 @@ class MainRequestController extends Controller
         }
 
         if ($id > 0) {
-            $record = $model::find($id);
+            $record = $model::getRecord($id);
             return response()->json($record, $record ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
         }
 
@@ -78,10 +83,29 @@ class MainRequestController extends Controller
             throw new \Error(ApiError::MODEL_NOT_FOUND);
         }
 
-        /** @var $model BaseModel */
-        $requiredFields = $model::getStructure()->getRequiredFields();
+        $data = $request->all();
 
-        $validator = Validator::make($request->all(), $requiredFields);
+        $allFields = $model::getStructure()->getFields();
+        $requiredFields = [];
+        foreach ($allFields as $field) {
+            foreach ($data as $key => $value) {
+                if ($key === $field->getName() && ($value === "null" || $value === null)) {
+                    if (in_array($field->getType(),["pointer", "image", "file"])) {
+                        $data[$key] = null;
+                    } else if($field->getType() === "select") {
+                        $data[$key] = "";
+                    }
+                }
+            }
+            if ($field->isRequired()) {
+                $requiredFields = [
+                    ...$requiredFields,
+                    $field->getName() => 'required'
+                ];
+            }
+        }
+
+        $validator = Validator::make($data, $requiredFields);
         if ($validator->fails()) {
             return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }

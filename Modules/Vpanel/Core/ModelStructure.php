@@ -107,36 +107,6 @@ class ModelStructure
         return $this->masterModel;
     }
 
-    public function getRequiredFields(): array
-    {
-        $required = [];
-        foreach ($this->getFields() as $field) {
-            if ($field->isRequired()) {
-                $required = [
-                    ...$required,
-                    $field->getName() => 'required'
-                ];
-            }
-        }
-
-        return $required;
-    }
-
-    public function getPointerFields(): array
-    {
-        $pointers = [];
-        foreach ($this->getFields() as $field) {
-            if ($field->isPointer()) {
-                $pointers = [
-                    ...$pointers,
-                    $field->getName() => $field->getModel()
-                ];
-            }
-        }
-
-        return $pointers;
-    }
-
     public function getIdentifyField(): string
     {
         foreach ($this->getFields() as $field) {

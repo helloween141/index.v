@@ -4,7 +4,7 @@
                toolbar="full"
                content-type="html"
                class="bg-gray-200 appearance-none border-gray-200 rounded w-full text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-               style="height: 300px;"
+               style="height: 300px; font-size: initial;"
                @textChange="handleInput"
   />
 </template>

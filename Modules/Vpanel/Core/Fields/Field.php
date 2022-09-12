@@ -154,6 +154,4 @@ abstract class Field
     {
         return $this->inFilter;
     }
-
-
 }
