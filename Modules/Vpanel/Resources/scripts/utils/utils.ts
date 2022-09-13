@@ -1,13 +1,13 @@
 import moment from "moment";
 
 export const prepareFormData = (values: object) => {
-  let data = {}
+  const data = new FormData()
   Object.keys(values).forEach(key => {
     let item = values[key]
     if (typeof item === 'object' && item !== null && item.hasOwnProperty('id')) {
-      data = {...data, ...{[key]: item.id}}
+      data.append(key, item.id)
     } else {
-      data = {...data, ...{[key]: item}}
+      data.append(key, item)
     }
   })
   return data

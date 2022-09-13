@@ -18,7 +18,7 @@ export const loadRecord = async (moduleName: string, modelName: string, id: numb
 export const saveRecord = async (moduleName: string, modelName: string, formData: object) => {
     try {
         const response = await axios.post(APISettings.baseURL + `/${moduleName}/${modelName}/save`, formData)
-        return response.data.record.id
+        return response.data.recordId
     } catch (error) {
         toast.error(APIMessage.ERROR_SAVE_DATA)
         console.error(error)

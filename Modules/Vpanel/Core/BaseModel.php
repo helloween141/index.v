@@ -124,6 +124,11 @@ abstract class BaseModel extends Model
 
         $requiredFields = [];
         foreach ($structure->getFields() as $field) {
+            foreach ($data as $key => $value) {
+                if ($key === $field->getName() && (!$value || $value === "null")) {
+                    $data[$key] = $field->getDefaultValue();
+                }
+            }
             if ($field->isRequired()) {
                 $requiredFields = [
                     ...$requiredFields,
@@ -135,7 +140,7 @@ abstract class BaseModel extends Model
         $validator = Validator::make($data, $requiredFields);
         if ($validator->fails()) {
             return [
-                "record" => false,
+                "recordId" => 0,
                 "errors" => $validator->errors()
             ];
         }
@@ -151,13 +156,17 @@ abstract class BaseModel extends Model
             }
         }
 
-        $record = static::query()->updateOrCreate(
-            isset($validatedData["id"]) ? ["id" => $validatedData["id"]] : [],
-            $validatedData
-        );
+        $query = static::query();
+
+        if (isset($validatedData["id"])) {
+            $query->find($validatedData["id"])->update($validatedData);
+            $recordId = $validatedData["id"];
+        } else {
+            $recordId = $query->create($validatedData);
+        }
 
         return [
-            "record" => $record,
+            "recordId" => $recordId,
             "errors" => null
         ];
     }

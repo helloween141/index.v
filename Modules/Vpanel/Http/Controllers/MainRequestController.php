@@ -82,7 +82,7 @@ class MainRequestController extends Controller
             throw new \Error(ApiError::MODEL_NOT_FOUND);
         }
 
-        $data = json_decode($request->getContent(), true);
+        $data = $request->all();
         $files = $request->file();
 
         $result = $model::saveRecord($data, $files);
