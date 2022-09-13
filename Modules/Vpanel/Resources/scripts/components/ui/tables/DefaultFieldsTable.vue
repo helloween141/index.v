@@ -1,4 +1,5 @@
 <template>
+  {{fields}}
   <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
     <tbody>
       <tr
@@ -88,7 +89,6 @@
               :value="values[field.name]"
               @set-value="setValue"
           />
-
         </td>
       </tr>
     </tbody>
@@ -112,10 +112,9 @@ import ImageField from "@/components/ui/fields/ImageField.vue";
 export default defineComponent({
   name: 'DefaultFieldsTable',
   components: {
-    ImageField,
-    FileField,
-    PointerModalField,
-    NumberField, StringField, BoolField, DateField, PointerField, SelectField, HtmlField, TextField},
+    ImageField, FileField, PointerModalField, NumberField, StringField, BoolField, DateField,
+    PointerField, SelectField, HtmlField, TextField
+  },
   props: {
     fields: Object,
     values: Object

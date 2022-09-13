@@ -5,7 +5,7 @@ use Modules\Vpanel\Core\BaseModel;
 
 class DateField extends Field
 {
-    public function __construct(protected string $type = 'date') {}
+    public function __construct(protected string $type = "date", protected mixed $defaultValue = null) {}
 
     public function getWhere(BaseModel|string $mainModel, array $filter): array {
         $tableName = with(new $mainModel)->getTable();

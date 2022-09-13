@@ -13,19 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('news', function (Blueprint $table) {
-            $table->id();
-            $table->string('title')->default('');
-            $table->string('url')->default('');
-            $table->timestamp('date');
-            $table->text('short_text');
-            $table->longText('full_text');
-            $table->boolean('show')->default(1);
-            $table->string('type');
-            $table->integer('price');
-            $table->foreignId('file')->nullable()->constrained('files')->onDelete('cascade');
-            $table->foreignId('image')->nullable()->constrained('files')->onDelete('cascade');
-            $table->foreignId('author_id')->constrained('authors')->onDelete('cascade');
+        Schema::create("news", function (Blueprint $table) {
+            $table->increments("id");
+            $table->string("title")->default("");
+            $table->string("url")->default("");
+            $table->timestamp("date");
+            $table->text("short_text")->default("");
+            $table->longText("full_text")->default("");
+            $table->boolean("show")->default(1);
+            $table->string("type")->default("");
+            $table->integer("price")->default(0);
+            $table->foreignId("file")->nullable()->constrained("files")->onDelete("cascade");
+            $table->foreignId("image")->nullable()->constrained("files")->onDelete("cascade");
+            $table->foreignId("author_id")->constrained("authors")->onDelete("cascade");
         });
     }
 
@@ -36,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('news');
+        Schema::dropIfExists("news");
     }
 };

@@ -6,7 +6,7 @@ use Modules\Vpanel\Core\BaseModel;
 
 class FileField extends Field
 {
-    public function __construct(protected string $type = 'file') {}
+    public function __construct(protected string $type = "file", protected mixed $defaultValue = null) {}
 
     public function getSelect(BaseModel|string $mainModel = ""): array
     {

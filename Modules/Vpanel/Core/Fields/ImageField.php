@@ -6,7 +6,7 @@ use Modules\Vpanel\Core\BaseModel;
 
 class ImageField extends Field
 {
-    public function __construct(protected string $type = 'image') {}
+    public function __construct(protected string $type = "image", protected mixed $defaultValue = null) {}
 
     public function getSelect(BaseModel|string $mainModel = ""): array
     {

@@ -47,7 +47,7 @@ import {saveRecord, deleteRecord, loadRecord} from "@/api/actionForm";
 import DefaultFieldsTable from "@/components/ui/tables/DefaultFieldsTable.vue";
 import {useToast} from "vue-toastification";
 import {APIMessage} from "@/api/messages";
-import {getRouteParameters, prepareFormData} from "@/utils/utils";
+import {getRouteParameters, prepareFormData, setDefaultFieldsValues} from "@/utils/utils";
 import {loadList} from "@/api/actionEditor";
 
 export default defineComponent({
@@ -60,13 +60,13 @@ export default defineComponent({
   setup(props) {
     const toast = useToast()
     const route = useRoute()
-    const currentValues = ref(props.incValues)
-
     const {moduleName, modelName, recordId} = getRouteParameters(route)
+    let currentValues = ref(setDefaultFieldsValues(props.incModel.fields, props.incValues))
 
     const onSave = async () => {
       const formData = prepareFormData(currentValues.value)
       const newId = await saveRecord(moduleName, modelName, formData)
+      alert(newId)
       if (newId) {
         toast.success(APIMessage.SUCCESS_SAVE)
         await router.push({name: 'module', params: {'module': moduleName, 'model': modelName, id: newId}})

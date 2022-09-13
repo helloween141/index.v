@@ -1,13 +1,13 @@
 import moment from "moment";
 
 export const prepareFormData = (values: object) => {
-  const data = new FormData()
+  let data = {}
   Object.keys(values).forEach(key => {
     let item = values[key]
     if (typeof item === 'object' && item !== null && item.hasOwnProperty('id')) {
-      data.append(key, item.id)
+      data = {...data, ...{[key]: item.id}}
     } else {
-      data.append(key, item)
+      data = {...data, ...{[key]: item}}
     }
   })
   return data
@@ -69,6 +69,20 @@ export const getRowsForEditorTable = (fields: any, data: any) => {
       result.push(obj)
     })
   }
+  return result
+}
+
+export const setDefaultFieldsValues = (fields: any, data: any) => {
+  let result = {}
+
+  if (data.id) {
+    result = {...result, ...{id: data.id}}
+  }
+
+  fields.forEach(field => {
+    result = {...result, ...{[field.name]: data[field.name] ? data[field.name] : field.defaultValue}}
+  })
+
   return result
 }
 

@@ -6,7 +6,7 @@ use Modules\Vpanel\Core\BaseModel;
 
 class FloatField extends Field
 {
-    public function __construct(protected string $type = 'float') {}
+    public function __construct(protected string $type = "float", protected mixed $defaultValue = 0) {}
 
     public function getWhere(BaseModel|string $mainModel, array $filter): array {
         $tableName = with(new $mainModel)->getTable();

@@ -8,7 +8,7 @@ class SelectField extends Field
 {
     protected array $options = [];
 
-    public function __construct(protected string $type = 'select'){}
+    public function __construct(protected string $type = "select", protected mixed $defaultValue = ""){}
 
     public function setOptions(array $options = []): Field
     {

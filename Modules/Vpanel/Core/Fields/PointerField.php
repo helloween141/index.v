@@ -11,7 +11,7 @@ class PointerField extends Field
 
     protected bool $isModal = false;
 
-    public function __construct(protected string $type = 'pointer')
+    public function __construct(protected string $type = "pointer", protected mixed $defaultValue = null)
     {
     }
 
