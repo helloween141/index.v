@@ -76,6 +76,10 @@ export const formatDate = (date) => {
   return moment(date).format('DD.MM.YYYY')
 }
 
+export const getStoragePath = () => {
+  return '/storage/'
+}
+
 export const parsePointerModelPath = (path: string) => {
   const prsr = path.split('\\')
 

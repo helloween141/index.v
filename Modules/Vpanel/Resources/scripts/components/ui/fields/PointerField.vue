@@ -3,11 +3,19 @@
       v-model="selectedOption"
       :label="identifyLabel"
       :options="options"
-      :required="field.required"
       @search="fetchData"
       @update:modelValue="handleInput"
       class="py-2 bg-gray-200 text-gray-700 rounded leading-tight focus:outline-none focus:bg-white focus:border-purple-500 custom-fx"
-  />
+  >
+    <template #search="{attributes, events}">
+      <input
+          class="vs__search"
+          :required="field.required && !selectedOption"
+          v-bind="attributes"
+          v-on="events"
+      />
+    </template>
+  </v-select>
 </template>
 
 <script lang="ts">

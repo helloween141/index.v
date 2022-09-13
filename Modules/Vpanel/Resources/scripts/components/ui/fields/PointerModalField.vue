@@ -2,10 +2,18 @@
   <v-select
       v-model="selectedOption"
       :label="identifyLabel"
-      :required="field.required"
       @open="handleClick"
       class="py-2 bg-gray-200 text-gray-700 rounded leading-tight focus:outline-none focus:bg-white focus:border-purple-500 custom-fx"
-  />
+  >
+    <template #search="{attributes, events}">
+      <input
+          class="vs__search"
+          :required="field.required && !selectedOption"
+          v-bind="attributes"
+          v-on="events"
+      />
+    </template>
+  </v-select>
 </template>
 
 <script lang="ts">
