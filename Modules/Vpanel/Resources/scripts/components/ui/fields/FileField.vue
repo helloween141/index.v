@@ -10,7 +10,7 @@
         <div v-if="currentValue" class="flex flex-col justify-center items-center">
           <i class="fas fa-2x fa-file pb-3"></i>
           <p class="text-sm text-gray-500 dark:text-gray-400">
-            <span class="font-semibold">Текущий файл: {{ currentValue.name }}</span>
+            <span class="font-semibold">Название: {{ currentValue.name }}</span>
           </p>
         </div>
         <div v-else class="flex flex-col justify-center items-center">
@@ -24,7 +24,7 @@
     </label>
     <div class="mt-3" v-if="currentValue">
       <a
-          :href="getDownloadLink(currentValue.value)"
+          :href="getLink(currentValue.value)"
           v-if="currentValue.id"
           target="_blank"
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-3">
@@ -63,7 +63,7 @@ export default defineComponent({
       handleInput($event.target)
     }
 
-    const getDownloadLink = (path) => {
+    const getLink = (path) => {
       return getStoragePath() + path
     }
 
@@ -85,7 +85,7 @@ export default defineComponent({
       onDrop,
       onChange,
       onReset,
-      getDownloadLink
+      getLink
     }
   }
 })

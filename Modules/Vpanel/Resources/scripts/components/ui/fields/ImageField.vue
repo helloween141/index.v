@@ -1,20 +1,51 @@
 <template>
   <div>
-    <label for="dropzone-file" class="flex flex-col w-1/3 h-32 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-      <div class="flex flex-col justify-center items-center pt-5 pb-6">
-        <svg aria-hidden="true" class="mb-3 w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-        <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-        <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+    {{currentValue}}
+    <label :for="`dropzone-${field.type}`"
+           class="flex flex-col w-1/3 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+    >
+      <div @dragover.prevent="onDrop"
+           @dragleave.prevent="onDrop"
+           @drop.prevent="onDrop"
+           class="pt-5 pb-6"
+      >
+        <div v-if="currentValue" class="flex flex-col justify-center items-center">
+          <p class="text-sm text-gray-500 dark:text-gray-400">
+            <img class="max-w-xs h-auto rounded-lg" :src="getLink(currentValue.value)" alt="image description">
+            <span class="font-semibold">Название: {{ currentValue.name }}</span>
+          </p>
+        </div>
+        <div v-else class="flex flex-col justify-center items-center">
+          <i class="fas fa-2x fa-file-upload pb-3"></i>
+          <p class="text-sm text-gray-500 dark:text-gray-400">
+            <span class="font-semibold">Нажмите на иконку загрузки</span> или перенесите изображение
+          </p>
+        </div>
       </div>
-      <input id="dropzone-file" type="file" class="hidden" />
+      <input :id="`dropzone-${field.type}`" type="file" class="hidden" ref="image" @change="onChange($event)" />
     </label>
-    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Скачать</button>
+    <div class="mt-3" v-if="currentValue">
+      <a
+          :href="getLink(currentValue.value)"
+          v-if="currentValue.id"
+          target="_blank"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-3">
+        Скачать
+      </a>
+      <button
+          v-if="currentValue.name"
+          @click.prevent="onReset"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-3">
+        Удалить
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
 
 import {defineComponent, ref} from "vue";
+import {getStoragePath} from "@/utils/utils";
 
 export default defineComponent({
   name: 'ImageField',
@@ -26,13 +57,37 @@ export default defineComponent({
   setup(props, {emit}) {
     const currentValue = ref(props.value)
 
-    const handleInput = () => {
-      emit('set-value', props.field.name, currentValue.value)
+    const onDrop = ($event) => {
+      handleInput($event.dataTransfer)
+    }
+
+    const onChange = ($event) => {
+      handleInput($event.target)
+    }
+
+    const getLink = (path) => {
+      return getStoragePath() + path
+    }
+
+    const onReset = () => {
+      currentValue.value = null
+      emit('set-value', props.field.name, null)
+    }
+
+    const handleInput = (target) => {
+      if (target && target.files) {
+        currentValue.value = target.files[0]
+        emit('set-value', props.field.name, currentValue.value)
+      }
     }
 
     return {
       currentValue,
-      handleInput
+      getStoragePath,
+      onDrop,
+      onChange,
+      onReset,
+      getLink
     }
   }
 })

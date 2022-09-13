@@ -13,6 +13,7 @@ use Modules\Vpanel\Core\Fields\DateField;
 use Modules\Vpanel\Core\Fields\Field;
 use Modules\Vpanel\Core\Fields\FileField;
 use Modules\Vpanel\Core\Fields\HtmlField;
+use Modules\Vpanel\Core\Fields\ImageField;
 use Modules\Vpanel\Core\Fields\IntField;
 use Modules\Vpanel\Core\Fields\PointerField;
 use Modules\Vpanel\Core\Fields\SelectField;
@@ -85,6 +86,12 @@ class News extends BaseModel
                 FileField::create()
                     ->setName('file')
                     ->setTitle('Файл')
+                    ->hideFromEditor()
+            )
+            ->addField(
+                ImageField::create()
+                    ->setName('image')
+                    ->setTitle('Изображение')
                     ->hideFromEditor()
             )
             ->addField(
