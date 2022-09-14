@@ -5,7 +5,7 @@ const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
         {
-            path: '/admin/:module/:model/:id?/',
+            path: '/admin/:module/:model/:id?',
             name: 'module',
             component: () => import('../views/ModuleView.vue'),
             meta: {
@@ -13,7 +13,7 @@ const router = createRouter({
             }
         },
         {
-            path: '/admin/',
+            path: '/admin',
             name: 'dashboard',
             component: () => DashboardView,
             meta: {

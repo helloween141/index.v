@@ -10,7 +10,7 @@ class File extends base\File
     public static function uploadFile(UploadedFile $file): File
     {
         $originalName = $file->getClientOriginalName();
-        $filePath = $file->store('', 'public');
+        $filePath = $file->store("", "public");
 
         $fileModel = new File();
         $fileModel->name = $originalName;

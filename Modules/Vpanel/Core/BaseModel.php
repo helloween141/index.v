@@ -58,8 +58,7 @@ abstract class BaseModel extends Model
                 if ($where) {
                     if ($field->getType() === "pointer") {
                         $query->whereIn(...$where);
-                    }
-                    else if (is_array($where[0])) {
+                    } else if (is_array($where[0])) {
                         foreach ($where as $w) {
                             $query->where(...$w);
                         }
@@ -67,8 +66,7 @@ abstract class BaseModel extends Model
                         $query->where(...$where);
                     }
                 }
-            }
-            else if (!empty($search) && $field->isInSearch()) {
+            } else if (!empty($search) && $field->isInSearch()) {
                 $query->orWhere($field->getName(), "like", "%" . $search . "%");
             }
         }
@@ -85,7 +83,8 @@ abstract class BaseModel extends Model
         return $query->get();
     }
 
-    public static function getRecord($id) {
+    public static function getRecord($id)
+    {
         $structure = static::getStructure();
         if (!$structure) {
             return null;
@@ -104,7 +103,7 @@ abstract class BaseModel extends Model
                 $query->leftJoin(...$join);
             }
         }
-        $query->where($tableName .".id", "=", $id);
+        $query->where($tableName . ".id", "=", $id);
 
         $record = $query->get();
 
@@ -116,7 +115,8 @@ abstract class BaseModel extends Model
         return $record[0];
     }
 
-    public static function saveRecord($data, $files = []) {
+    public static function saveRecord($data, $id = 0, $files = [])
+    {
         $structure = static::getStructure();
         if (!$structure) {
             return null;
@@ -138,10 +138,11 @@ abstract class BaseModel extends Model
         }
 
         $validator = Validator::make($data, $requiredFields);
+
         if ($validator->fails()) {
             return [
                 "recordId" => 0,
-                "errors" => $validator->errors()
+                "error" => $validator->messages()
             ];
         }
 
@@ -158,16 +159,15 @@ abstract class BaseModel extends Model
 
         $query = static::query();
 
-        if (isset($validatedData["id"])) {
-            $query->find($validatedData["id"])->update($validatedData);
-            $recordId = $validatedData["id"];
+        if ($id > 0) {
+            $query->findOrFail($id)->update($validatedData);
         } else {
-            $recordId = $query->create($validatedData);
+            $id = ($query->create($validatedData))->id;
         }
 
         return [
-            "recordId" => $recordId,
-            "errors" => null
+            "recordId" => $id,
+            "error" => ""
         ];
     }
 }

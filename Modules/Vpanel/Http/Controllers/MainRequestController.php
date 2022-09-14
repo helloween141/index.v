@@ -74,7 +74,7 @@ class MainRequestController extends Controller
         return response()->json(null, Response::HTTP_OK);
     }
 
-    public function saveRecord(Request $request, string $moduleName, string $modelName): JsonResponse
+    public function saveRecord(Request $request, string $moduleName, string $modelName, int $id = 0): JsonResponse
     {
         /** @var $model BaseModel */
         $model = Utils::getModelClass($moduleName, $modelName);
@@ -85,9 +85,9 @@ class MainRequestController extends Controller
         $data = $request->all();
         $files = $request->file();
 
-        $result = $model::saveRecord($data, $files);
-        if ($result["errors"]) {
-            return response()->json($result["errors"], Response::HTTP_UNPROCESSABLE_ENTITY);
+        $result = $model::saveRecord($data, $id, $files);
+        if ($result["error"]) {
+            return response()->json($result["error"], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         return response()->json($result, $result ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);

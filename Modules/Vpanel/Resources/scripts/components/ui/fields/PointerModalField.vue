@@ -2,7 +2,8 @@
   <v-select
       v-model="selectedOption"
       :label="identifyLabel"
-      @open="handleClick"
+      :clearable="!field.required"
+      @click="handleClick"
       class="py-2 bg-gray-200 text-gray-700 rounded leading-tight focus:outline-none focus:bg-white focus:border-purple-500 custom-fx"
   >
     <template #search="{attributes, events}">
@@ -34,7 +35,7 @@ export default defineComponent({
   emits: ['set-value'],
   setup(props, {emit}) {
     const identifyLabel = ref(props.field.identify || 'name')
-    const selectedOption = ref({})
+    const selectedOption = ref()
     let model = null
     let values = null
 
@@ -43,7 +44,9 @@ export default defineComponent({
       model = await loadInterface(pointerPath.module, pointerPath.model)
       values = await loadList(pointerPath.module, pointerPath.model, true)
 
-      selectedOption.value = values.data.find(item => item.id === props.value['id'])
+      if (props.value) {
+        selectedOption.value = values.data.find(item => item.id === props.value['id'])
+      }
     })
 
     const handleClick = () => {

@@ -3,7 +3,7 @@
       v-model="selectedOption"
       :label="identifyLabel"
       :options="options"
-      @search="fetchData"
+      :clearable="!field.required"
       @update:modelValue="handleInput"
       class="py-2 bg-gray-200 text-gray-700 rounded leading-tight focus:outline-none focus:bg-white focus:border-purple-500 custom-fx"
   >
@@ -37,7 +37,7 @@ export default defineComponent({
   setup(props, {emit}) {
     const options = ref([])
     const identifyLabel = ref(props.field.identify || 'name')
-    const selectedOption = ref({})
+    const selectedOption = ref()
 
     onMounted(async () => {
       const pointerPath = parsePointerModelPath(props.field.model)
@@ -50,10 +50,6 @@ export default defineComponent({
         }
       }
     })
-
-    // TODO: autocomplete
-    const fetchData = (search, loading) => {
-    }
 
     const handleInput = () => {
       emit('set-value', props.field.name, selectedOption.value)

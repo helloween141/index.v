@@ -1,4 +1,4 @@
-import moment from "moment";
+import moment from 'moment';
 
 export const prepareFormData = (values: object) => {
   const data = new FormData()
@@ -15,9 +15,9 @@ export const prepareFormData = (values: object) => {
 
 export const getRouteParameters = (route) => {
   return {
-    moduleName: (route.params.module || '').toString(),
-    modelName: (route.params.model || '').toString(),
-    recordId: (route.params?.id || '').toString()
+    moduleName: (route.params.module || ''),
+    modelName: (route.params.model || ''),
+    recordId: parseInt(route.params?.id || '')
   }
 }
 

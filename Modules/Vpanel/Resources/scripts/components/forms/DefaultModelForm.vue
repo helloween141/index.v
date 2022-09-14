@@ -1,7 +1,7 @@
 <template>
   <div v-if="currentValues" class="relative overflow-x-auto">
     <form @submit.prevent="onSave">
-      <span class="text-white">{{currentValues}}</span>
+      <span>{{currentValues}}</span>
 
       <div class="mb-3 flex justify-between items-center flex-wrap">
         <h1 class="dark:text-white text-2xl">
@@ -41,14 +41,13 @@
 <script lang="ts">
 import FormActionPanel from "@/components/ui/FormActionPanel.vue";
 import router from "@/router";
-import {defineComponent, onMounted, ref} from "vue";
+import {defineComponent, ref} from "vue";
 import {useRoute} from "vue-router";
-import {saveRecord, deleteRecord, loadRecord} from "@/api/actionForm";
+import {saveRecord, deleteRecord} from "@/api/actionForm";
 import DefaultFieldsTable from "@/components/ui/tables/DefaultFieldsTable.vue";
 import {useToast} from "vue-toastification";
 import {APIMessage} from "@/api/messages";
 import {getRouteParameters, prepareFormData, setDefaultFieldsValues} from "@/utils/utils";
-import {loadList} from "@/api/actionEditor";
 
 export default defineComponent({
   name: 'ModuleForm',
@@ -57,7 +56,8 @@ export default defineComponent({
     incModel: Object,
     incValues: Object
   },
-  setup(props) {
+  emits: ['reload'],
+  setup(props, {emit}) {
     const toast = useToast()
     const route = useRoute()
     const {moduleName, modelName, recordId} = getRouteParameters(route)
@@ -65,11 +65,15 @@ export default defineComponent({
 
     const onSave = async () => {
       const formData = prepareFormData(currentValues.value)
-      const newId = await saveRecord(moduleName, modelName, formData)
-      alert(newId)
-      if (newId) {
+      const id = await saveRecord(moduleName, modelName, recordId, formData)
+
+      if (id) {
         toast.success(APIMessage.SUCCESS_SAVE)
-        await router.push({name: 'module', params: {'module': moduleName, 'model': modelName, id: newId}})
+        if (id === recordId) {
+          emit('reload', moduleName, modelName, recordId)
+        } else {
+          await router.push({name: 'module', params: {'module': moduleName, 'model': modelName, id}})
+        }
       }
     }
 

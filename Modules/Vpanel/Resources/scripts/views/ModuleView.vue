@@ -4,6 +4,7 @@
         :is="targetComponent"
         :inc-model="modelInterface"
         :inc-values="modelValues"
+        @reload="loadModule"
     />
   </div>
 </template>
@@ -23,13 +24,11 @@ export default defineComponent({
     const route = useRoute()
     const modelValues = ref({})
 
-    watch(route, async (to) => {
-      const {moduleName, modelName, recordId} = getRouteParameters(route)
-
+    const loadModule = async (moduleName, modelName, recordId) => {
       if (moduleName && modelName) {
         modelInterface.value = await loadInterface(moduleName, modelName)
 
-        if (recordId) {
+        if (recordId >= 0) {
           modelValues.value = await loadRecord(moduleName, modelName, recordId)
           const formComponent = modelInterface.value['formComponent']
           targetComponent.value = formComponent ? loadCustomComponent(formComponent, moduleName) : loadFormComponent()
@@ -39,7 +38,7 @@ export default defineComponent({
           targetComponent.value = editorComponent ? loadCustomComponent(editorComponent, moduleName) : loadEditorComponent()
         }
       }
-    }, {flush: 'pre', immediate: true, deep: true})
+    }
 
     const loadCustomComponent = (component: string, moduleName: string) => {
       return defineAsyncComponent(() => import('/Modules/' + moduleName + '/Resources/scripts/components/' + component + '.vue'))
@@ -53,10 +52,17 @@ export default defineComponent({
       return defineAsyncComponent(() => import('../components/forms/DefaultModelForm.vue'))
     }
 
+    watch(route, async (to) => {
+      const {moduleName, modelName, recordId} = getRouteParameters(route)
+
+      await loadModule(moduleName, modelName, recordId)
+    }, {flush: 'pre', immediate: true, deep: true})
+
     return {
       targetComponent,
       modelInterface,
-      modelValues
+      modelValues,
+      loadModule
     }
   }
 })
