@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref, watch} from "vue";
+import {defineComponent, onMounted, ref, watch} from "vue";
 import Pagination from "@/components/ui/Pagination.vue";
 import {getHeadersForEditorTable, getRowsForEditorTable} from "@/utils/utils";
 
@@ -52,14 +52,22 @@ export default defineComponent({
     let headers = ref()
     let rows = ref()
 
+    const init = () => {
+      headers.value = getHeadersForEditorTable(props.model.fields)
+      rows.value = getRowsForEditorTable(props.model.fields, props.values.data)
+    }
+
+    onMounted(() => {
+      init()
+    })
+
+    watch(() => props.values, () => {
+      init()
+    }, { deep: true })
+
     const onClick = (recordId: number) => {
       emit('select-record', recordId)
     }
-
-    watch(() => props.values, (current, previous) => {
-      headers.value = getHeadersForEditorTable(props.model.fields)
-      rows.value = getRowsForEditorTable(props.model.fields, props.values.data)
-    }, { deep: true })
 
     return {
       headers,
