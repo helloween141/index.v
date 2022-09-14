@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{currentValue}}
     <label :for="`dropzone-${field.type}`"
            class="flex flex-col w-1/3 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
     >
@@ -16,7 +15,7 @@
           </p>
         </div>
         <div v-else class="flex flex-col justify-center items-center">
-          <i class="fas fa-2x fa-file-upload pb-3"></i>
+          <i class="fas fa-2x fa-image pb-3"></i>
           <p class="text-sm text-gray-500 dark:text-gray-400">
             <span class="font-semibold">Нажмите на иконку загрузки</span> или перенесите изображение
           </p>
