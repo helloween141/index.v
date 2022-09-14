@@ -6,9 +6,9 @@ use Modules\Vpanel\Core\BaseModel;
 
 class ImageField extends Field
 {
-    public function __construct(protected string $type = "image", protected mixed $defaultValue = null) {}
+    public function __construct(protected string $type = 'image', protected mixed $defaultValue = null) {}
 
-    public function getSelect(BaseModel|string $mainModel = ""): array
+    public function getSelect(BaseModel|string $mainModel = ''): array
     {
         $tableName = with(new File)->getTable();
 
@@ -27,7 +27,7 @@ class ImageField extends Field
         return [
             "{$tableName} AS {$tableName}_{$this->name}",
             "{$tableName}_{$this->name}.id",
-            "=",
+            '=',
             "{$mainTableMain}.{$this->name}"
         ];
     }

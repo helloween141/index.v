@@ -10,7 +10,6 @@ use Modules\Vpanel\Behaviors\UrlBehavior;
 use Modules\Vpanel\Core\BaseModel;
 use Modules\Vpanel\Core\Fields\BoolField;
 use Modules\Vpanel\Core\Fields\DateField;
-use Modules\Vpanel\Core\Fields\Field;
 use Modules\Vpanel\Core\Fields\FileField;
 use Modules\Vpanel\Core\Fields\HtmlField;
 use Modules\Vpanel\Core\Fields\ImageField;
@@ -35,8 +34,8 @@ class News extends BaseModel
         return ModelStructure::create()
             ->addField(
                 StringField::create()
-                    ->setName("title")
-                    ->setTitle("Название")
+                    ->setName('title')
+                    ->setTitle('Название')
                     ->identify()
                     ->required()
                     ->showInFilter()
@@ -44,39 +43,39 @@ class News extends BaseModel
             )
             ->addField(
                 BoolField::create()
-                    ->setName("show")
-                    ->setTitle("Активно")
+                    ->setName('show')
+                    ->setTitle('Активно')
                     ->showInFilter()
                     ->hideFromEditor()
             )
             ->addField(
                 DateField::create()
-                    ->setName("date")
-                    ->setTitle("Дата")
-                    ->setDefault(date("Y-m-d"))
+                    ->setName('date')
+                    ->setTitle('Дата')
+                    ->setDefault(date('Y-m-d'))
                     ->showInFilter()
             )
             ->addField(
                 IntField::create()
-                    ->setName("price")
-                    ->setTitle("Стоимость")
+                    ->setName('price')
+                    ->setTitle('Стоимость')
                     ->showInFilter()
             )
             ->addField(
                 SelectField::create()
-                    ->setName("type")
-                    ->setTitle("Тип")
+                    ->setName('type')
+                    ->setTitle('Тип')
                     ->setOptions([
-                        "type1" => "Тип 1",
-                        "type2" => "Тип 2",
-                        "type3" => "Тип 3"
+                        'type1' => 'Тип 1',
+                        'type2' => 'Тип 2',
+                        'type3' => 'Тип 3'
                     ])
                     ->showInFilter()
             )
             ->addField(
                 PointerField::create()
-                    ->setName("author_id")
-                    ->setTitle("Автор")
+                    ->setName('author_id')
+                    ->setTitle('Автор')
                     ->required()
                     ->setModel(Author::class)
                     ->modal()
@@ -85,30 +84,30 @@ class News extends BaseModel
             )
             ->addField(
                 FileField::create()
-                    ->setName("file")
-                    ->setTitle("Файл")
+                    ->setName('file')
+                    ->setTitle('Файл')
                     ->hideFromEditor()
             )
             ->addField(
                 ImageField::create()
-                    ->setName("image")
-                    ->setTitle("Изображение")
+                    ->setName('image')
+                    ->setTitle('Изображение')
                     ->hideFromEditor()
             )
             ->addField(
                 TextField::create()
-                    ->setName("short_text")
-                    ->setTitle("Краткое описание")
+                    ->setName('short_text')
+                    ->setTitle('Краткое описание')
             )
             ->addField(
                 HtmlField::create()
-                    ->setName("full_text")
-                    ->setTitle("Полное описание")
+                    ->setName('full_text')
+                    ->setTitle('Полное описание')
             )
             ->addUrl()
             //->addMeta()
-            ->setModelTitle("Новости")
-            ->setRecordTitle("новость")
-            ->setAccusativeRecordTitle("новость");
+            ->setModelTitle('Новости')
+            ->setRecordTitle('новость')
+            ->setAccusativeRecordTitle('новость');
     }
 }

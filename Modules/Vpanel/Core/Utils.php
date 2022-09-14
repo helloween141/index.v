@@ -54,8 +54,8 @@ class Utils
     public static function prepareModelData($collection) {
         $collection->transform(function ($item) {
             foreach ($item->getAttributes() as $key => $value) {
-                if (str_contains($key, ".")) {
-                    $prefix = explode(".", $key);
+                if (str_contains($key, '.')) {
+                    $prefix = explode('.', $key);
                     $item[$prefix[0]] = array_merge($item[$prefix[0]] ?? [], [$prefix[1] => $value]);
                     unset($item[$key]);
                 }

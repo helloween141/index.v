@@ -35,9 +35,9 @@ abstract class BaseModel extends Model
             return null;
         }
 
-        $filter = $params["filter"] ?? [];
-        $search = $params["search"] ?? "";
-        $withPagination = $params["withPagination"] ?? false;
+        $filter = $params['filter'] ?? [];
+        $search = $params['search'] ?? '';
+        $withPagination = $params['withPagination'] ?? false;
 
         $tableName = with(new static)->getTable();
         $query = static::query()->addSelect(["{$tableName}.id"]);
@@ -56,7 +56,7 @@ abstract class BaseModel extends Model
             if (count($filter) > 0) {
                 $where = $field->getWhere(static::class, $filter);
                 if ($where) {
-                    if ($field->getType() === "pointer") {
+                    if ($field->getType() === 'pointer') {
                         $query->whereIn(...$where);
                     } else if (is_array($where[0])) {
                         foreach ($where as $w) {
@@ -67,12 +67,12 @@ abstract class BaseModel extends Model
                     }
                 }
             } else if (!empty($search) && $field->isInSearch()) {
-                $query->orWhere($field->getName(), "like", "%" . $search . "%");
+                $query->orWhere($field->getName(), 'like', "%{$search}%");
             }
         }
 
         // TODO: add order by (id: default)
-        $query->orderBy($tableName . ".id", "desc");
+        $query->orderBy("{$tableName}.id", 'desc');
 
         if ($withPagination) {
             $paginatedList = $query->paginate();
@@ -103,7 +103,7 @@ abstract class BaseModel extends Model
                 $query->leftJoin(...$join);
             }
         }
-        $query->where($tableName . ".id", "=", $id);
+        $query->where("{$tableName}.id", '=', $id);
 
         $record = $query->get();
 
@@ -125,14 +125,14 @@ abstract class BaseModel extends Model
         $requiredFields = [];
         foreach ($structure->getFields() as $field) {
             foreach ($data as $key => $value) {
-                if ($key === $field->getName() && (!$value || $value === "null")) {
+                if ($key === $field->getName() && (!$value || $value === 'null')) {
                     $data[$key] = $field->getDefaultValue();
                 }
             }
             if ($field->isRequired()) {
                 $requiredFields = [
                     ...$requiredFields,
-                    $field->getName() => "required"
+                    $field->getName() => 'required'
                 ];
             }
         }
@@ -141,8 +141,8 @@ abstract class BaseModel extends Model
 
         if ($validator->fails()) {
             return [
-                "recordId" => 0,
-                "error" => $validator->messages()
+                'recordId' => 0,
+                'error' => $validator->messages()
             ];
         }
 
@@ -166,8 +166,8 @@ abstract class BaseModel extends Model
         }
 
         return [
-            "recordId" => $id,
-            "error" => ""
+            'recordId' => $id,
+            'error' => ''
         ];
     }
 }

@@ -11,7 +11,7 @@ class PointerField extends Field
 
     protected bool $isModal = false;
 
-    public function __construct(protected string $type = "pointer", protected mixed $defaultValue = null)
+    public function __construct(protected string $type = 'pointer', protected mixed $defaultValue = null)
     {
     }
 
@@ -73,7 +73,7 @@ class PointerField extends Field
         return [
             "{$tableName} AS {$tableName}_{$this->name}",
             "{$tableName}_{$this->name}.id",
-            "=",
+            '=',
             "{$mainTableMain}.{$this->name}"
         ];
     }

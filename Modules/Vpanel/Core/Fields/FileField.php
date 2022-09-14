@@ -6,9 +6,9 @@ use Modules\Vpanel\Core\BaseModel;
 
 class FileField extends Field
 {
-    public function __construct(protected string $type = "file", protected mixed $defaultValue = null) {}
+    public function __construct(protected string $type = 'file', protected mixed $defaultValue = null) {}
 
-    public function getSelect(BaseModel|string $mainModel = ""): array
+    public function getSelect(BaseModel|string $mainModel = ''): array
     {
         $tableName = with(new File)->getTable();
 
@@ -27,7 +27,7 @@ class FileField extends Field
         return [
             "{$tableName} AS {$tableName}_{$this->name}",
             "{$tableName}_{$this->name}.id",
-            "=",
+            '=',
             "{$mainTableMain}.{$this->name}"
         ];
     }

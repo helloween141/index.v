@@ -49,19 +49,24 @@ export default defineComponent({
     values: Object
   },
   setup(props, { emit }) {
-    const headers = getHeadersForEditorTable(props.model.fields)
-    const rows = getRowsForEditorTable(props.model.fields, props.values.data)
+    let headers = ref()
+    let rows = ref()
 
     const onClick = (recordId: number) => {
       emit('select-record', recordId)
     }
+
+    watch(() => props.values, (current, previous) => {
+      headers.value = getHeadersForEditorTable(props.model.fields)
+      rows.value = getRowsForEditorTable(props.model.fields, props.values.data)
+    }, { deep: true })
 
     return {
       headers,
       rows,
       onClick
     }
-  }
+  },
 })
 </script>
 

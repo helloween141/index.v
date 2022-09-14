@@ -6,7 +6,7 @@ use Modules\Vpanel\Core\BaseModel;
 
 class IntField extends Field
 {
-    public function __construct(protected string $type = "int", protected mixed $defaultValue = 0) {}
+    public function __construct(protected string $type = 'int', protected mixed $defaultValue = 0) {}
 
     public function getWhere(BaseModel|string $mainModel, array $filter): array {
         $tableName = with(new $mainModel)->getTable();
@@ -14,7 +14,7 @@ class IntField extends Field
             if (is_array($filter[$this->name])) {
                 $resultQuery = [];
                 foreach ($filter[$this->name] as $item) {
-                    $resultQuery[] = ["{$tableName}.{$this->name}", $item["comparsion"], $item["value"]];
+                    $resultQuery[] = ["{$tableName}.{$this->name}", $item['comparsion'], $item['value']];
                 }
                 return $resultQuery;
             }
