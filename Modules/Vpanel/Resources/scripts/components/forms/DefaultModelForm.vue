@@ -1,5 +1,5 @@
 <template>
-  <div v-if="currentValues" class="relative overflow-x-auto">
+  <div v-if="currentValues" class="relative overflow-x-auto block p-6 w-full bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
     <form @submit.prevent="onSave">
       <span>{{currentValues}}</span>
 
