@@ -1,7 +1,8 @@
 import axios from "axios";
 import {APISettings} from "./config.js"
-import {APIMessage} from './messages.js'
+import {APIMessage} from "@/api/messages";
 import {useToast} from "vue-toastification";
+
 const toast = useToast()
 
 export const loadInterface = async (moduleName: string, modelName: string) => {
@@ -23,6 +24,7 @@ export const loadList = async (moduleName: string, modelName: string, withPagina
                 'pagination': withPagination
             }
         })
+
         return response.data
     } catch (error) {
         toast.error(APIMessage.ERROR_LOAD_INTERFACE)

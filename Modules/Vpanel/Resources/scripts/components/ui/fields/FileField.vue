@@ -6,7 +6,7 @@
            @drop.prevent="onDrop"
            class="pt-5 pb-6"
       >
-        <div v-if="currentValue && currentValue.value" class="flex flex-col justify-center items-center">
+        <div v-if="currentValue" class="flex flex-col justify-center items-center">
           <i class="fas fa-2x fa-file pb-3"></i>
           <p class="text-sm text-gray-500 dark:text-gray-400">
             <span class="font-semibold">Название: {{ currentValue.name }}</span>
@@ -63,7 +63,7 @@ export default defineComponent({
     }
 
     const getLink = (path) => {
-      return getStoragePath() + path
+      return path ? getStoragePath() + path : '#'
     }
 
     const onReset = () => {
