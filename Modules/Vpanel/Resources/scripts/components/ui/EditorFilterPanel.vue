@@ -75,6 +75,8 @@ import BoolFilterField from "@/components/ui/filters/BoolFilterField.vue";
 import NumberRangeFilterField from "@/components/ui/filters/NumberRangeFilterField.vue";
 import PointerFilterField from "@/components/ui/filters/PointerFilterField.vue";
 import SelectFilterField from "@/components/ui/filters/SelectFilterField.vue";
+import router from "@/router";
+import {useRoute} from "vue-router";
 
 export default defineComponent({
   name: 'EditorFilterPanel',
@@ -86,8 +88,16 @@ export default defineComponent({
   },
   emits: ['on-filter'],
   setup(props, {emit}) {
+    const route = useRoute()
     let filter = {}
-    let values = ref({})
+
+    // Применить фильтр, если он присутствует
+    if (route.query.f) {
+      filter = JSON.parse(route.query.f.toString())
+      emit('on-filter', filter)
+    }
+
+    const values = ref(filter)
 
     const setFilter = (fieldFilter, fieldName) => {
       values.value[fieldName] = fieldFilter[fieldName]
@@ -96,12 +106,14 @@ export default defineComponent({
     }
 
     const onApplyFilter = () => {
+      router.push({path: route.path, query: {f: JSON.stringify(filter)} })
       emit('on-filter', filter)
     }
 
     const onResetFilter = () => {
       filter = {}
       values.value = {}
+      router.push({path: route.path})
       emit('on-filter', filter)
     }
 

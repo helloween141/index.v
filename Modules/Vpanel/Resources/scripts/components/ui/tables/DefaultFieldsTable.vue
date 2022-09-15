@@ -12,7 +12,6 @@
             <span class="font-medium text-gray-900 dark:text-white pr-1">
               {{ field.title }}
             </span>
-
             <Tooltip
                 v-if="field.tooltip"
                 :text="field.tooltip"

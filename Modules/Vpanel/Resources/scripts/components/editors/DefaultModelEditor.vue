@@ -2,8 +2,8 @@
   <div v-if="incModel">
     <EditorActionPanel
         @on-create="createRecord"
-        @on-show-filter="showFilterPanel"
         @on-search="applySearch"
+        @on-toggle-filter="toggleFilterPanel"
         :model="incModel"
         :isModal="isModal"
     />
@@ -48,9 +48,8 @@ export default defineComponent({
   setup(props, { emit }) {
     const route = useRoute()
     const currentValues = ref(props.incValues)
-    const showFilter = ref(false)
-
-    let {moduleName, modelName} = getRouteParameters(route)
+    const showFilter = ref(!!route.query.f)
+    const {moduleName, modelName} = getRouteParameters(route)
 
     const selectRecord = (recordId) => {
       if (props.isModal) {
@@ -69,11 +68,11 @@ export default defineComponent({
     }
 
     const applyFilter = async (filter) => {
-      currentValues.value = await loadList(moduleName, modelName, true, filter)
+      currentValues.value = await loadList(moduleName, modelName, true, filter, '')
     }
 
-    const showFilterPanel = () => {
-      showFilter.value = !showFilter.value
+    const toggleFilterPanel = (value) => {
+      showFilter.value = value
     }
 
     const filterFields = getFieldsForFilter(props.incModel.fields)
@@ -81,7 +80,7 @@ export default defineComponent({
     return {
       selectRecord,
       createRecord,
-      showFilterPanel,
+      toggleFilterPanel,
       applyFilter,
       applySearch,
       showFilter,
