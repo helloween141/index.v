@@ -8,6 +8,7 @@ use Modules\Blog\Database\factories\NewsFactory;
 use Modules\Blog\Entities\Author;
 use Modules\Vpanel\Behaviors\UrlBehavior;
 use Modules\Vpanel\Core\BaseModel;
+use Modules\Vpanel\Core\ChildModel;
 use Modules\Vpanel\Core\Fields\BoolField;
 use Modules\Vpanel\Core\Fields\DateField;
 use Modules\Vpanel\Core\Fields\FileField;
@@ -18,6 +19,7 @@ use Modules\Vpanel\Core\Fields\PointerField;
 use Modules\Vpanel\Core\Fields\SelectField;
 use Modules\Vpanel\Core\Fields\StringField;
 use Modules\Vpanel\Core\Fields\TextField;
+use Modules\Vpanel\Core\MasterModel;
 use Modules\Vpanel\Core\ModelStructure;
 
 class News extends BaseModel
@@ -45,6 +47,7 @@ class News extends BaseModel
                 BoolField::create()
                     ->setName('show')
                     ->setTitle('Активно')
+                    ->setTooltip('Показывать на сайте')
                     ->showInFilter()
                     ->hideFromEditor()
             )
@@ -59,6 +62,7 @@ class News extends BaseModel
                 IntField::create()
                     ->setName('price')
                     ->setTitle('Стоимость')
+                    ->setTooltip('В рублях')
                     ->showInFilter()
             )
             ->addField(
@@ -104,6 +108,7 @@ class News extends BaseModel
                     ->setName('full_text')
                     ->setTitle('Полное описание')
             )
+            ->setChildModel(ChildModel::create()->setModel(Author::class)->setKey("blog_id"))
             ->addUrl()
             //->addMeta()
             ->setModelTitle('Новости')

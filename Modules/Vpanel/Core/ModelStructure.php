@@ -10,7 +10,7 @@ class ModelStructure
 {
     protected array $fields = [];
 
-    protected string $masterModel = '';
+    protected ChildModel $childModel;
 
     protected string $title = '';
 
@@ -51,9 +51,9 @@ class ModelStructure
         return $this;
     }
 
-    public function setMasterModel($model): ModelStructure
+    public function setChildModel(ChildModel $childModel): ModelStructure
     {
-        $this->masterModel = $model;
+        $this->childModel = $childModel;
         return $this;
     }
 
@@ -102,9 +102,9 @@ class ModelStructure
         return $this->formComponent;
     }
 
-    public function getMasterModel(): string
+    public function getChildModel(): ChildModel
     {
-        return $this->masterModel;
+        return $this->childModel;
     }
 
     public function getIdentifyField(): string

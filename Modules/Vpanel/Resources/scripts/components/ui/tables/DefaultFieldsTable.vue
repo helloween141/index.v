@@ -7,11 +7,23 @@
           :key="field"
           class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white odd:bg-gray-50"
       >
-        <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap w-48">
-          {{ field.title }}
+        <th scope="row" class="px-4 py-4 whitespace-nowrap w-48">
+          <div class="flex">
+            <span class="font-medium text-gray-900 dark:text-white pr-1">
+              {{ field.title }}
+            </span>
+
+            <Tooltip
+                v-if="field.tooltip"
+                :text="field.tooltip"
+                :style="'top: -37px; left: -10px;'"
+            >
+              <i class="fas fa-question-circle cursor-pointer" />
+            </Tooltip>
+          </div>
         </th>
 
-        <td class="px-6 py-4">
+        <td class="px-4 py-4">
           <StringField
               v-if="field.type === 'string'"
               :field="field"
@@ -107,10 +119,12 @@ import NumberField from "@/components/ui/fields/NumberField.vue";
 import PointerModalField from "@/components/ui/fields/PointerModalField.vue";
 import FileField from "@/components/ui/fields/FileField.vue";
 import ImageField from "@/components/ui/fields/ImageField.vue";
+import Tooltip from "@/components/ui/Tooltip.vue";
 
 export default defineComponent({
   name: 'DefaultFieldsTable',
   components: {
+    Tooltip,
     ImageField, FileField, PointerModalField, NumberField, StringField, BoolField, DateField,
     PointerField, SelectField, HtmlField, TextField
   },
