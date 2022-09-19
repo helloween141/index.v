@@ -6,7 +6,7 @@ class ChildModel
 {
     protected string $model;
 
-    protected string $key;
+    protected string $relationKey;
 
     protected bool $tab = false;
 
@@ -23,9 +23,9 @@ class ChildModel
         return $this;
     }
 
-    public function setKey(string $key): static
+    public function setRelationKey(string $relationKey): static
     {
-        $this->key = $key;
+        $this->relationKey = $relationKey;
         return $this;
     }
 

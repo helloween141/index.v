@@ -46,7 +46,7 @@ class MainRequestController extends Controller
 
         $filter = json_decode($request->get('filter', []), true);
         $search = $request->get('search', '');
-        $page = $request->get('page', null);
+        $page = $request->get('page');
 
         /** @var $model BaseModel */
         $list = $model::getList(

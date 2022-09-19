@@ -3,7 +3,7 @@
 namespace Modules\Blog\Entities;
 
 
-class News extends \Modules\Blog\Entities\base\News
+class News extends base\News
 {
     public static function boot()
     {

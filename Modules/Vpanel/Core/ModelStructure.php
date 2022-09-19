@@ -10,7 +10,7 @@ class ModelStructure
 {
     protected array $fields = [];
 
-    protected ChildModel $childModel;
+    protected array $childModel = [];
 
     protected string $title = '';
 
@@ -51,9 +51,9 @@ class ModelStructure
         return $this;
     }
 
-    public function setChildModel(ChildModel $childModel): ModelStructure
+    public function addChildModel(ChildModel $childModel): ModelStructure
     {
-        $this->childModel = $childModel;
+        $this->childModel[] = $childModel;
         return $this;
     }
 

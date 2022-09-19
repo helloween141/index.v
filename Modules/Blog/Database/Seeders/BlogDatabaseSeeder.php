@@ -3,9 +3,9 @@
 namespace Modules\Blog\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Eloquent\Model;
 use Modules\Blog\Entities\Author;
 use Modules\Blog\Entities\News;
+use Modules\Blog\Entities\NewsTag;
 
 class BlogDatabaseSeeder extends Seeder
 {
@@ -18,5 +18,6 @@ class BlogDatabaseSeeder extends Seeder
     {
         Author::factory(5)->create();
         News::factory(5)->create();
+        NewsTag::factory(5)->create();
     }
 }

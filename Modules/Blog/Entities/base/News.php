@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Blog\Database\factories\NewsFactory;
 use Modules\Blog\Entities\Author;
+use Modules\Blog\Entities\NewsTag;
 use Modules\Vpanel\Behaviors\UrlBehavior;
 use Modules\Vpanel\Core\BaseModel;
 use Modules\Vpanel\Core\ChildModel;
@@ -19,7 +20,6 @@ use Modules\Vpanel\Core\Fields\PointerField;
 use Modules\Vpanel\Core\Fields\SelectField;
 use Modules\Vpanel\Core\Fields\StringField;
 use Modules\Vpanel\Core\Fields\TextField;
-use Modules\Vpanel\Core\MasterModel;
 use Modules\Vpanel\Core\ModelStructure;
 
 class News extends BaseModel
@@ -108,7 +108,12 @@ class News extends BaseModel
                     ->setName('full_text')
                     ->setTitle('Полное описание')
             )
-            ->setChildModel(ChildModel::create()->setModel(Author::class)->setKey("blog_id"))
+            ->addChildModel(
+                ChildModel::create()
+                    ->setModel(NewsTag::class)
+                    ->setRelationKey('news_id')
+                    ->showAsTab()
+            )
             ->addUrl()
             //->addMeta()
             ->setModelTitle('Новости')
