@@ -27,13 +27,23 @@ export default defineComponent({
     const loadModule = async (moduleName, modelName, recordId) => {
       if (moduleName && modelName) {
         modelInterface.value = await loadInterface(moduleName, modelName)
-
         if (recordId >= 0) {
           modelValues.value = await loadRecord(moduleName, modelName, recordId)
           const formComponent = modelInterface.value['formComponent']
           targetComponent.value = formComponent ? loadCustomComponent(formComponent, moduleName) : loadFormComponent()
         } else {
-          modelValues.value = await loadList(moduleName, modelName, true)
+          let filter = []
+          let page = 1
+
+          if (route.query.f) {
+            filter = JSON.parse((route.query.f).toString())
+          }
+
+          if (route.query.page) {
+            page = parseInt(route.query.page.toString())
+          }
+
+          modelValues.value = await loadList(moduleName, modelName, page, filter)
           const editorComponent = modelInterface.value['editorComponent']
           targetComponent.value = editorComponent ? loadCustomComponent(editorComponent, moduleName) : loadEditorComponent()
         }
@@ -54,7 +64,6 @@ export default defineComponent({
 
     watch(route, async (to) => {
       const {moduleName, modelName, recordId} = getRouteParameters(route)
-
       await loadModule(moduleName, modelName, recordId)
     }, {flush: 'pre', immediate: true, deep: true})
 

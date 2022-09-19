@@ -20,7 +20,7 @@
                 v-show="key !== 'id'"
                 class="py-4 px-6"
             >
-              <span v-if="val.value">
+              <span v-if="val && val.value">
                 {{ val.value }}
               </span>
               <span v-else>
@@ -31,7 +31,10 @@
         </tbody>
       </table>
     </div>
-    <Pagination :pages="values" />
+    <Pagination
+        :pages="values"
+        @set-page="setPage"
+    />
   </div>
 </template>
 
@@ -39,11 +42,13 @@
 import {defineComponent, onMounted, ref, watch} from "vue";
 import Pagination from "@/components/ui/Pagination.vue";
 import {getHeadersForEditorTable, getRowsForEditorTable} from "@/utils/utils";
+import router from "@/router";
+import {useRoute} from "vue-router";
 
 export default defineComponent({
   name: 'DefaultEditorTable',
   components: {Pagination},
-  emits: ['select-record'],
+  emits: ['select-record', 'set-page'],
   props: {
     model: Object,
     values: Object
@@ -69,10 +74,15 @@ export default defineComponent({
       emit('select-record', recordId)
     }
 
+    const setPage = (page: number) => {
+      emit('set-page', page)
+    }
+
     return {
       headers,
       rows,
-      onClick
+      onClick,
+      setPage
     }
   },
 })

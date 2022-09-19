@@ -20,10 +20,6 @@
 
 <script lang="ts">
 import {defineComponent, onMounted, ref} from "vue";
-import axios from "axios";
-import {$vfm} from "vue-final-modal";
-import VModal from "@/components/ui/modal/VModal.vue";
-import DefaultModelEditor from "@/components/editors/DefaultModelEditor.vue";
 import {parsePointerModelPath} from "@/utils/utils";
 import {loadList} from "@/api/actionEditor";
 
@@ -41,7 +37,7 @@ export default defineComponent({
 
     onMounted(async () => {
       const pointerPath = parsePointerModelPath(props.field.model)
-      options.value = await loadList(pointerPath.module, pointerPath.model, false)
+      options.value = await loadList(pointerPath.module, pointerPath.model)
 
       if (options.value.length > 0) {
         const currentOption = (options.value.find(option => option.id === props.value['id']))

@@ -22,7 +22,6 @@ import {defineComponent, onMounted, ref, watch} from "vue";
 import {$vfm} from "vue-final-modal";
 import VModal from "@/components/ui/modal/VModal.vue";
 import DefaultModelEditor from "@/components/editors/DefaultModelEditor.vue";
-import axios from "axios";
 import {parsePointerModelPath} from "@/utils/utils";
 import {loadInterface, loadList} from "@/api/actionEditor";
 
@@ -36,13 +35,14 @@ export default defineComponent({
   setup(props, {emit}) {
     const identifyLabel = ref(props.field.identify || 'name')
     const selectedOption = ref()
+    const pointerPath = parsePointerModelPath(props.field.model)
+
     let model = null
     let values = null
 
     onMounted(async () => {
-      const pointerPath = parsePointerModelPath(props.field.model)
       model = await loadInterface(pointerPath.module, pointerPath.model)
-      values = await loadList(pointerPath.module, pointerPath.model, true)
+      values = await loadList(pointerPath.module, pointerPath.model, 1, [], '')
 
       if (props.value) {
         selectedOption.value = values.data.find(item => item.id === props.value['id'])
@@ -58,7 +58,10 @@ export default defineComponent({
             bind: {
               incModel: model,
               incValues: values,
-              isModal: true
+              modalData: {
+                module: pointerPath.module,
+                model: pointerPath.model,
+              }
             },
             on: {
               selectRecord(recordId) {

@@ -18,7 +18,7 @@ class MainRequestController extends Controller
         $list = [];
         $modules = Module::getOrdered();
         foreach ($modules as $module) {
-            $menu = $module->get("menu") ?? null;
+            $menu = $module->get('menu') ?? null;
             if ($menu) {
                 $list[] = $menu;
             }
@@ -37,23 +37,23 @@ class MainRequestController extends Controller
         return response()->json($structure, Response::HTTP_OK);
     }
 
-    public function getList(Request $request, string $moduleName = "", string $modelName = ""): JsonResponse
+    public function getList(Request $request, string $moduleName = '', string $modelName = ''): JsonResponse
     {
         $model = Utils::getModelClass($moduleName, $modelName);
         if (!class_exists($model)) {
             throw new \Error(ApiError::MODEL_NOT_FOUND);
         }
 
-        $withPagination = !(($request->get("pagination")) === "false");
-        $filter = json_decode($request->get("filter", []), true);
-        $search = $request->get("search", "");
+        $filter = json_decode($request->get('filter', []), true);
+        $search = $request->get('search', '');
+        $page = $request->get('page', null);
 
         /** @var $model BaseModel */
         $list = $model::getList(
             params: [
-                "filter" => $filter,
-                "search" => $search,
-                "withPagination" => $withPagination
+                'page' => $page,
+                'filter' => $filter,
+                'search' => $search,
             ]);
 
         return response()->json($list, Response::HTTP_OK);
@@ -86,8 +86,8 @@ class MainRequestController extends Controller
         $files = $request->file();
 
         $result = $model::saveRecord($data, $id, $files);
-        if ($result["error"]) {
-            return response()->json($result["error"], Response::HTTP_UNPROCESSABLE_ENTITY);
+        if ($result['error']) {
+            return response()->json($result['error'], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         return response()->json($result, $result ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
@@ -101,7 +101,7 @@ class MainRequestController extends Controller
         }
 
         /** @var $model BaseModel */
-        $result = $model::where("id", $id)->delete();
+        $result = $model::where('id', $id)->delete();
 
         return response()->json($result, $result ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
     }

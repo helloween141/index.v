@@ -35,9 +35,9 @@ abstract class BaseModel extends Model
             return null;
         }
 
+        $page = $params['page'] ?? null;
         $filter = $params['filter'] ?? [];
         $search = $params['search'] ?? '';
-        $withPagination = $params['withPagination'] ?? false;
 
         $tableName = with(new static)->getTable();
         $query = static::query()->addSelect(["{$tableName}.id"]);
@@ -74,8 +74,8 @@ abstract class BaseModel extends Model
         // TODO: add order by (id: default)
         $query->orderBy("{$tableName}.id", 'desc');
 
-        if ($withPagination) {
-            $paginatedList = $query->paginate();
+        if ($page > 0) {
+            $paginatedList = $query->paginate(3, '[*]', 'page', $page);
             Utils::prepareModelData($paginatedList->getCollection());
             return $paginatedList;
         }

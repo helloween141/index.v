@@ -9,13 +9,14 @@
     />
 
     <EditorFilterPanel
-        :fields="filterFields"
         @on-filter="applyFilter"
+        :fields="filterFields"
         v-show="showFilter"
     />
 
     <DefaultEditorTable
         @select-record="selectRecord"
+        @set-page="setPage"
         :model="incModel"
         :values="currentValues"
     />
@@ -40,10 +41,7 @@ export default defineComponent({
     incModel: Object,
     incValues: Object,
     params: Object,
-    isModal: {
-      type: Boolean,
-      default: false
-    }
+    modalData: Object
   },
   setup(props, { emit }) {
     const route = useRoute()
@@ -52,7 +50,7 @@ export default defineComponent({
     const {moduleName, modelName} = getRouteParameters(route)
 
     const selectRecord = (recordId) => {
-      if (props.isModal) {
+      if (props.modalData) {
         emit('select-record', recordId)
       } else {
         router.push({ name: 'module', params: { id: recordId } })
@@ -63,12 +61,30 @@ export default defineComponent({
       router.push({ name: 'module', params: { id: 0 } })
     }
 
-    const applySearch = async (searchString) => {
-      currentValues.value = await loadList(moduleName, modelName, true,[], searchString)
+    const applySearch = async (search) => {
+      if (props.modalData) {
+        currentValues.value = await loadList(props.modalData.module, props.modalData.model, 1, [], search)
+      } else {
+        currentValues.value = await loadList(moduleName, modelName, 1, [], search)
+      }
     }
 
     const applyFilter = async (filter) => {
-      currentValues.value = await loadList(moduleName, modelName, true, filter, '')
+      if (props.modalData) {
+        currentValues.value = await loadList(props.modalData.module, props.modalData.model, 1, filter, '')
+      } else {
+        (Object.keys(filter).length === 0)
+            ? await router.push({path: route.path})
+            : await router.push({path: route.path, query: {f: JSON.stringify(filter)} })
+      }
+    }
+
+    const setPage = async (page: number) => {
+      if (props.modalData) {
+        currentValues.value = await loadList(props.modalData.module, props.modalData.model, page, [], '')
+      } else {
+        await router.push({path: route.fullPath, query: {...route.query, page}})
+      }
     }
 
     const toggleFilterPanel = (value) => {
@@ -83,6 +99,7 @@ export default defineComponent({
       toggleFilterPanel,
       applyFilter,
       applySearch,
+      setPage,
       showFilter,
       filterFields,
       currentValues

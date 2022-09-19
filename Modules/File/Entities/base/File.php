@@ -11,6 +11,8 @@ class File extends BaseModel
 {
     use HasFactory;
 
+    public $timestamps = true;
+
     protected static function newFactory(): Factory
     {
         return new FileFactory();

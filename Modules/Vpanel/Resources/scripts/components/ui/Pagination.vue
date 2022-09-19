@@ -66,8 +66,10 @@ export default {
   },
   methods: {
     onClick(url) {
-      const queryParams = (new URL(url)).searchParams;
-      this.$emit('set-page', queryParams.get('page'))
+      if (url) {
+        const queryParams = (new URL(url)).searchParams;
+        this.$emit('set-page', queryParams.get('page'))
+      }
     }
   }
 }

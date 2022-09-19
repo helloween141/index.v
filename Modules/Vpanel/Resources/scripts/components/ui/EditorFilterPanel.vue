@@ -91,10 +91,8 @@ export default defineComponent({
     const route = useRoute()
     let filter = {}
 
-    // Применить фильтр, если он присутствует
     if (route.query.f) {
       filter = JSON.parse(route.query.f.toString())
-      emit('on-filter', filter)
     }
 
     const values = ref(filter)
@@ -106,14 +104,12 @@ export default defineComponent({
     }
 
     const onApplyFilter = () => {
-      router.push({path: route.path, query: {f: JSON.stringify(filter)} })
       emit('on-filter', filter)
     }
 
     const onResetFilter = () => {
       filter = {}
       values.value = {}
-      router.push({path: route.path})
       emit('on-filter', filter)
     }
 
