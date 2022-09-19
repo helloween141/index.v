@@ -5,8 +5,10 @@
         @on-search="applySearch"
         @on-toggle-filter="toggleFilterPanel"
         :model="incModel"
-        :isModal="isModal"
+        :isModal="!!modalData"
     />
+
+    <div class="w-full border-t dark:border-gray-700 mb-5"></div>
 
     <EditorFilterPanel
         @on-filter="applyFilter"
@@ -24,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, ref} from "vue";
+import {defineComponent, ref} from "vue";
 import DefaultEditorTable from "@/components/ui/tables/DefaultEditorTable.vue";
 import router from "@/router";
 import EditorActionPanel from "@/components/ui/EditorActionPanel.vue";

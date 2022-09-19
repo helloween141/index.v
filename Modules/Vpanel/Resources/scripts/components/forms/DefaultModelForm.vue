@@ -20,6 +20,9 @@
         />
       </div>
 
+      <FormTabPanel v-if="incModel.tabs"/>
+      <div v-else class="w-full border-t dark:border-gray-700 mb-5"></div>
+
       <DefaultFieldsTable
           :fields="incModel.fields"
           :values="currentValues"
@@ -48,10 +51,11 @@ import DefaultFieldsTable from "@/components/ui/tables/DefaultFieldsTable.vue";
 import {useToast} from "vue-toastification";
 import {APIMessage} from "@/api/messages";
 import {getRouteParameters, prepareFormData, setDefaultFieldsValues} from "@/utils/utils";
+import FormTabPanel from "@/components/ui/FormTabPanel.vue";
 
 export default defineComponent({
   name: 'ModuleForm',
-  components: {DefaultFieldsTable, FormActionPanel},
+  components: {FormTabPanel, DefaultFieldsTable, FormActionPanel},
   props: {
     incModel: Object,
     incValues: Object

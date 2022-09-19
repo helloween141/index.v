@@ -34,7 +34,6 @@
           </span>
       </button>
     </div>
-
   </div>
 </template>
 

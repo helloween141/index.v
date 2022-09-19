@@ -8,7 +8,7 @@
            @drop.prevent="onDrop"
            class="pt-5 pb-6"
       >
-        <div v-if="currentValue" class="flex flex-col justify-center items-center">
+        <div v-if="currentValue && currentValue.name" class="flex flex-col justify-center items-center">
           <p class="text-sm text-gray-500 dark:text-gray-400">
             <img class="max-w-xs h-auto rounded-lg" :src="getLink(currentValue.value)"  alt=""/>
             <span class="font-semibold">Название: {{ currentValue.name }}</span>
