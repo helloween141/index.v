@@ -15,7 +15,7 @@
 
 <script lang="ts">
 import {defineComponent, onMounted, ref, watch} from "vue";
-import {parsePointerModelPath} from "@/utils/utils";
+import {parseModelPath} from "@/utils/utils";
 import {loadList} from "@/api/actionEditor";
 
 export default defineComponent({
@@ -31,7 +31,7 @@ export default defineComponent({
     const currentValue = ref(null)
 
     onMounted(async () => {
-      const pointerPath = parsePointerModelPath(props.field.model)
+      const pointerPath = parseModelPath(props.field.model)
       options.value = await loadList(pointerPath.module, pointerPath.model)
 
       if (options.value.length > 0) {

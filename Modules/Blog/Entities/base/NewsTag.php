@@ -2,13 +2,14 @@
 
 namespace Modules\Blog\Entities\base;
 
-
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Blog\Database\factories\NewsTagFactory;
+use Modules\Vpanel\Core\BaseModel;
+use Modules\Vpanel\Core\Fields\StringField;
+use Modules\Vpanel\Core\ModelStructure;
 
-class NewsTag extends Model
+class NewsTag extends BaseModel
 {
     use HasFactory;
 
@@ -17,5 +18,20 @@ class NewsTag extends Model
         return new NewsTagFactory();
     }
 
-
+    public static function defineStructure(): ModelStructure
+    {
+        return ModelStructure::create()
+            ->addField(
+                StringField::create()
+                    ->setName('title')
+                    ->setTitle('Название')
+                    ->identify()
+                    ->required()
+                    ->showInFilter()
+                    ->showInSearch()
+            )
+            ->setModelTitle('Теги')
+            ->setRecordTitle('тег')
+            ->setAccusativeRecordTitle('тег');
+    }
 }

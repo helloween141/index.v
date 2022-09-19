@@ -2,8 +2,7 @@
 
 namespace Modules\Blog\Entities;
 
-use Modules\Vpanel\Core\BaseModel;
 
-class NewsTag extends BaseModel
+class NewsTag extends base\NewsTag
 {
 }

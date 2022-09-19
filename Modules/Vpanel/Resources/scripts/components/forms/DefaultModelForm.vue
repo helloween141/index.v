@@ -1,8 +1,8 @@
 <template>
   <div v-if="currentValues" class="relative overflow-x-auto block p-6 w-full bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
     <form @submit.prevent="onSave">
-      <span>{{currentValues}}</span>
-      {{incModel}}
+      <span class="block mb-5">{{currentValues}}</span>
+      <span>{{incModel}}</span>
 
       <div class="mb-3 flex justify-between items-center flex-wrap">
         <h1 class="dark:text-white text-2xl">
@@ -21,7 +21,10 @@
         />
       </div>
 
-      <FormTabPanel v-if="incModel.tabs"/>
+      <FormTabPanel v-if="tabs"
+                    @select-tab="selectTab"
+                    :tabs="tabs"
+      />
       <div v-else class="w-full border-t dark:border-gray-700 mb-5"></div>
 
       <DefaultFieldsTable
@@ -45,14 +48,15 @@
 <script lang="ts">
 import FormActionPanel from "@/components/ui/FormActionPanel.vue";
 import router from "@/router";
-import {defineComponent, ref} from "vue";
+import {defineComponent, onMounted, ref} from "vue";
 import {useRoute} from "vue-router";
 import {saveRecord, deleteRecord} from "@/api/actionForm";
 import DefaultFieldsTable from "@/components/ui/tables/DefaultFieldsTable.vue";
 import {useToast} from "vue-toastification";
 import {APIMessage} from "@/api/messages";
-import {getRouteParameters, prepareFormData, setDefaultFieldsValues} from "@/utils/utils";
+import {getRouteParameters, parseModelPath, prepareFormData, setDefaultFieldsValues} from "@/utils/utils";
 import FormTabPanel from "@/components/ui/FormTabPanel.vue";
+import {loadInterface} from "@/api/actionEditor";
 
 export default defineComponent({
   name: 'ModuleForm',
@@ -67,6 +71,41 @@ export default defineComponent({
     const route = useRoute()
     const {moduleName, modelName, recordId} = getRouteParameters(route)
     let currentValues = ref(setDefaultFieldsValues(props.incModel.fields, props.incValues))
+    const tabs = ref([])
+
+    // TODO: Refactoring
+    onMounted(async () => {
+      const childModels = props.incModel.childModel
+      if (childModels) {
+        const interfaces = []
+        for (const childModel of childModels) {
+          const path = parseModelPath(childModel.model)
+          const interfaceItem = await loadInterface(path.module, path.model)
+          console.log(interfaceItem)
+          if (childModel.tab) {
+            tabs.value.push({
+              name: path.model,
+              title: interfaceItem.title
+            })
+          }
+          interfaces.push(interfaceItem)
+        }
+        if (tabs.value.length > 0) {
+          tabs.value.unshift({
+            title: 'Основная информация',
+            name: '',
+            active: true
+          })
+        }
+      }
+    })
+
+    const selectTab = (name: string) => {
+      const tab = tabs.value.find(tab => tab.name === name)
+      if (tab) {
+
+      }
+    }
 
     const onSave = async () => {
       const formData = prepareFormData(currentValues.value)
@@ -92,7 +131,7 @@ export default defineComponent({
       router.push({name: 'module', params: {'module': moduleName, 'model': modelName}})
     }
 
-    const setValue = (fieldName, fieldValue) => {
+    const setValue = (fieldName: string, fieldValue: any) => {
       currentValues.value[fieldName] = fieldValue
     }
 
@@ -101,7 +140,9 @@ export default defineComponent({
       onDelete,
       onBack,
       setValue,
-      currentValues
+      selectTab,
+      currentValues,
+      tabs
     }
   },
 })

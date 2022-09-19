@@ -3,12 +3,10 @@
 namespace Modules\Blog\Database\factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Modules\Blog\Entities\Author;
-use Modules\Blog\Entities\News;
 
 class NewsTagFactory extends Factory
 {
-    protected $model = News::class;
+    protected $model = NewsTagFactory::class;
 
     /**
      * Define the model's default state.

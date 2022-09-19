@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('news_tag', function (Blueprint $table) {
             $table->id();
-            $table->string(255);
+            $table->string('title');
             $table->foreignId('news_id')->nullable()->constrained('news')->onDelete('cascade');
             $table->timestamps();
         });

@@ -22,7 +22,7 @@ import {defineComponent, onMounted, ref, watch} from "vue";
 import {$vfm} from "vue-final-modal";
 import VModal from "@/components/ui/modal/VModal.vue";
 import DefaultModelEditor from "@/components/editors/DefaultModelEditor.vue";
-import {parsePointerModelPath} from "@/utils/utils";
+import {parseModelPath} from "@/utils/utils";
 import {loadInterface, loadList} from "@/api/actionEditor";
 
 export default defineComponent({
@@ -35,7 +35,7 @@ export default defineComponent({
   setup(props, {emit}) {
     const identifyLabel = ref(props.field.identify || 'name')
     const selectedOption = ref()
-    const pointerPath = parsePointerModelPath(props.field.model)
+    const pointerPath = parseModelPath(props.field.model)
 
     let model = null
     let values = null

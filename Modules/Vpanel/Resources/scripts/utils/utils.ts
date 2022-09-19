@@ -75,13 +75,15 @@ export const getRowsForEditorTable = (fields: any, data: any) => {
 export const setDefaultFieldsValues = (fields: any, data: any) => {
   let result = {}
 
-  if (data.id) {
-    result = {...result, ...{id: data.id}}
-  }
+  if (data) {
+    if (data.id) {
+      result = {...result, ...{id: data.id}}
+    }
 
-  fields.forEach(field => {
-    result = {...result, ...{[field.name]: data[field.name] ? data[field.name] : field.defaultValue}}
-  })
+    fields.forEach(field => {
+      result = {...result, ...{[field.name]: data[field.name] ? data[field.name] : field.defaultValue}}
+    })
+  }
 
   return result
 }
@@ -94,7 +96,7 @@ export const getStoragePath = () => {
   return '/storage/'
 }
 
-export const parsePointerModelPath = (path: string) => {
+export const parseModelPath = (path: string) => {
   const prsr = path.split('\\')
 
   return {
