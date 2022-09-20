@@ -4,6 +4,8 @@ namespace Modules\Vpanel\Core;
 
 class ChildModel
 {
+    protected string $title;
+
     protected string $model;
 
     protected string $relationKey;
@@ -15,10 +17,10 @@ class ChildModel
         return new static();
     }
 
-    public function setModel(string $baseModel): ChildModel
+    public function setModel(string|BaseModel $baseModel): ChildModel
     {
-        /** @var $model BaseModel */
         $this->model = $baseModel;
+        $this->title = $baseModel::getStructure()->getTitle();
 
         return $this;
     }

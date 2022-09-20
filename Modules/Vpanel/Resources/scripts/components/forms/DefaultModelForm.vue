@@ -1,8 +1,8 @@
 <template>
   <div v-if="currentValues" class="relative overflow-x-auto block p-6 w-full bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
     <form>
-      <!--<span class="block mb-5">{{currentValues}}</span>
-      <span>{{incModel}}</span>-->
+      <span class="block mb-5">{{currentValues}}</span>
+      <span>{{incModel}}</span>
 
       <div class="mb-3 flex justify-between flex-wrap">
         <h1 class="dark:text-white text-2xl">
@@ -59,7 +59,7 @@ import {saveRecord, deleteRecord} from "@/api/actionForm";
 import DefaultFieldsTable from "@/components/ui/tables/DefaultFieldsTable.vue";
 import {useToast} from "vue-toastification";
 import {APIMessage} from "@/api/messages";
-import {getRouteParameters, parseModelPath, prepareFormData, setDefaultFieldsValues} from "@/utils/utils";
+import {getModelTabs, getRouteParameters, parseModelPath, prepareFormData, setDefaultFieldsValues} from "@/utils/utils";
 import FormTabPanel from "@/components/ui/FormTabPanel.vue";
 import {loadInterface} from "@/api/actionEditor";
 import ModuleView from "@/views/ModuleView.vue";
@@ -81,41 +81,16 @@ export default defineComponent({
     const tabs = ref([])
     const currentTab = ref(null)
 
-    // TODO: Refactoring
     onMounted(async () => {
-      const childModels = props.incModel.childModel
-      if (childModels) {
-        const interfaces = []
-        for (const childModel of childModels) {
-          const path = parseModelPath(childModel.model)
-          const interfaceItem = await loadInterface(path.module, path.model)
-          if (childModel.tab) {
-            tabs.value.push({
-              title: interfaceItem.title,
-              module: path.module,
-              model: path.model
-            })
-          }
-          interfaces.push(interfaceItem)
-        }
-        if (tabs.value.length > 0) {
-          tabs.value.unshift({
-            title: 'Основная информация',
-            active: true
-          })
-        }
-      }
+      const childModels = props.incModel?.childModel || []
+      tabs.value = getModelTabs(childModels)
     })
 
     const selectTab = (selectedTab: any) => {
       currentTab.value = selectedTab.model ? selectedTab : null
 
       tabs.value.forEach((tab, index) => {
-        if (tab.model === selectedTab.model) {
-          tabs.value[index].active = true
-        } else {
-          tabs.value[index].active = false
-        }
+        tabs.value[index].active = tab.model === selectedTab.model
       })
     }
 

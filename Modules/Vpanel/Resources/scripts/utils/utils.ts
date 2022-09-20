@@ -106,29 +106,27 @@ export const parseModelPath = (path: string) => {
   }
 }
 
-// export const getTabs = (childModels: any) => {
-//   const tabs = []
-//   if (childModels) {
-//     const interfaces = []
-//     for (const childModel of childModels) {
-//       const path = parseModelPath(childModel.model)
-//       const interfaceItem = await loadInterface(path.module, path.model)
-//       if (childModel.tab) {
-//         tabs.push({
-//           title: interfaceItem.title,
-//           module: path.module,
-//           model: path.model
-//         })
-//       }
-//       interfaces.push(interfaceItem)
-//     }
-//     if (tabs.length > 0) {
-//       tabs.unshift({
-//         title: 'Основная информация',
-//         active: true
-//       })
-//     }
-//   }
-// }
+export const getModelTabs = (childModels: any) => {
+  const tabs = []
+  if (childModels) {
+    for (const childModel of childModels) {
+      const path = parseModelPath(childModel.model)
+      if (childModel.tab) {
+        tabs.push({
+          title: childModel.title,
+          module: path.module,
+          model: path.model
+        })
+      }
+    }
+    if (tabs.length > 0) {
+      tabs.unshift({
+        title: 'Основная информация',
+        active: true
+      })
+    }
+  }
+  return tabs
+}
 
 
