@@ -53,13 +53,13 @@
 
     <div class="flex justify-end">
       <button
-          @click="onResetFilter"
+          @click.prevent="onResetFilter"
           class="bg-red-500 hover:bg-red-700 text-gray-800 font-bold py-2 px-4 rounded">
         <span class="text-white">Сбросить</span>
       </button>
 
       <button
-          @click="onApplyFilter"
+          @click.prevent="onApplyFilter"
           class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-3">
         <span class="text-white">Применить</span>
       </button>

@@ -1,12 +1,5 @@
 <template>
-  <div v-if="targetComponent">
-    <component
-        :is="targetComponent"
-        :inc-model="modelInterface"
-        :inc-values="modelValues"
-        @reload="loadModule"
-    />
-  </div>
+  <ModuleComponent :module="module" :model="model" :record-id="id"/>
 </template>
 
 <script lang="ts">
@@ -15,63 +8,30 @@ import {useRoute} from "vue-router";
 import {loadInterface, loadList} from "@/api/actionEditor";
 import {getRouteParameters} from "@/utils/utils";
 import {loadRecord} from "@/api/actionForm";
+import ModuleComponent from "@/components/ModuleComponent.vue";
 
 export default defineComponent({
   name: 'ModuleView',
+  components: {ModuleComponent},
   setup() {
-    const modelInterface = ref({})
-    const targetComponent = shallowRef('')
     const route = useRoute()
-    const modelValues = ref({})
-
-    const loadModule = async (moduleName, modelName, recordId) => {
-      if (moduleName && modelName) {
-        modelInterface.value = await loadInterface(moduleName, modelName)
-        if (recordId >= 0) {
-          modelValues.value = await loadRecord(moduleName, modelName, recordId)
-          const formComponent = modelInterface.value['formComponent']
-          targetComponent.value = formComponent ? loadCustomComponent(formComponent, moduleName) : loadFormComponent()
-        } else {
-          let filter = []
-          let page = 1
-
-          if (route.query.f) {
-            filter = JSON.parse((route.query.f).toString())
-          }
-
-          if (route.query.page) {
-            page = parseInt(route.query.page.toString())
-          }
-
-          modelValues.value = await loadList(moduleName, modelName, page, filter)
-          const editorComponent = modelInterface.value['editorComponent']
-          targetComponent.value = editorComponent ? loadCustomComponent(editorComponent, moduleName) : loadEditorComponent()
-        }
-      }
-    }
-
-    const loadCustomComponent = (component: string, moduleName: string) => {
-      return defineAsyncComponent(() => import('/Modules/' + moduleName + '/Resources/scripts/components/' + component + '.vue'))
-    }
-
-    const loadEditorComponent = () => {
-      return defineAsyncComponent(() => import('../components/editors/DefaultModelEditor.vue'))
-    }
-
-    const loadFormComponent = () => {
-      return defineAsyncComponent(() => import('../components/forms/DefaultModelForm.vue'))
-    }
+    const module = ref()
+    const model = ref()
+    const id = ref()
 
     watch(route, async (to) => {
       const {moduleName, modelName, recordId} = getRouteParameters(route)
-      await loadModule(moduleName, modelName, recordId)
-    }, {flush: 'pre', immediate: true, deep: true})
+
+      module.value = moduleName
+      model.value = modelName
+      id.value = recordId
+
+    },{flush: 'pre', immediate: true, deep: true})
 
     return {
-      targetComponent,
-      modelInterface,
-      modelValues,
-      loadModule
+      module,
+      model,
+      id
     }
   }
 })

@@ -1,10 +1,10 @@
 <template>
   <div v-if="currentValues" class="relative overflow-x-auto block p-6 w-full bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
-    <form @submit.prevent="onSave">
-      <span class="block mb-5">{{currentValues}}</span>
-      <span>{{incModel}}</span>
+    <form>
+      <!--<span class="block mb-5">{{currentValues}}</span>
+      <span>{{incModel}}</span>-->
 
-      <div class="mb-3 flex justify-between items-center flex-wrap">
+      <div class="mb-3 flex justify-between flex-wrap">
         <h1 class="dark:text-white text-2xl">
           <span v-if="currentValues.id">
             Редактировать {{ incModel.accusativeRecordTitle }}
@@ -21,13 +21,18 @@
         />
       </div>
 
-      <FormTabPanel v-if="tabs"
+      <FormTabPanel v-if="currentValues.id && tabs"
                     @select-tab="selectTab"
                     :tabs="tabs"
       />
       <div v-else class="w-full border-t dark:border-gray-700 mb-5"></div>
 
+      <ModuleComponent v-if="currentTab"
+          :module="currentTab.module"
+          :model="currentTab.model"
+      />
       <DefaultFieldsTable
+          v-else
           :fields="incModel.fields"
           :values="currentValues"
           @set-value="setValue"
@@ -57,10 +62,12 @@ import {APIMessage} from "@/api/messages";
 import {getRouteParameters, parseModelPath, prepareFormData, setDefaultFieldsValues} from "@/utils/utils";
 import FormTabPanel from "@/components/ui/FormTabPanel.vue";
 import {loadInterface} from "@/api/actionEditor";
+import ModuleView from "@/views/ModuleView.vue";
+import ModuleComponent from "@/components/ModuleComponent.vue";
 
 export default defineComponent({
   name: 'ModuleForm',
-  components: {FormTabPanel, DefaultFieldsTable, FormActionPanel},
+  components: {ModuleComponent, ModuleView, FormTabPanel, DefaultFieldsTable, FormActionPanel},
   props: {
     incModel: Object,
     incValues: Object
@@ -72,6 +79,7 @@ export default defineComponent({
     const {moduleName, modelName, recordId} = getRouteParameters(route)
     let currentValues = ref(setDefaultFieldsValues(props.incModel.fields, props.incValues))
     const tabs = ref([])
+    const currentTab = ref(null)
 
     // TODO: Refactoring
     onMounted(async () => {
@@ -81,11 +89,11 @@ export default defineComponent({
         for (const childModel of childModels) {
           const path = parseModelPath(childModel.model)
           const interfaceItem = await loadInterface(path.module, path.model)
-          console.log(interfaceItem)
           if (childModel.tab) {
             tabs.value.push({
-              name: path.model,
-              title: interfaceItem.title
+              title: interfaceItem.title,
+              module: path.module,
+              model: path.model
             })
           }
           interfaces.push(interfaceItem)
@@ -93,18 +101,22 @@ export default defineComponent({
         if (tabs.value.length > 0) {
           tabs.value.unshift({
             title: 'Основная информация',
-            name: '',
             active: true
           })
         }
       }
     })
 
-    const selectTab = (name: string) => {
-      const tab = tabs.value.find(tab => tab.name === name)
-      if (tab) {
+    const selectTab = (selectedTab: any) => {
+      currentTab.value = selectedTab.model ? selectedTab : null
 
-      }
+      tabs.value.forEach((tab, index) => {
+        if (tab.model === selectedTab.model) {
+          tabs.value[index].active = true
+        } else {
+          tabs.value[index].active = false
+        }
+      })
     }
 
     const onSave = async () => {
@@ -142,7 +154,8 @@ export default defineComponent({
       setValue,
       selectTab,
       currentValues,
-      tabs
+      tabs,
+      currentTab
     }
   },
 })

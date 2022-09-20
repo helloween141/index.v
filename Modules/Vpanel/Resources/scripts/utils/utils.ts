@@ -1,4 +1,5 @@
 import moment from 'moment';
+import {loadInterface} from "@/api/actionEditor";
 
 export const prepareFormData = (values: object) => {
   const data = new FormData()
@@ -104,3 +105,30 @@ export const parseModelPath = (path: string) => {
     model: prsr[3]
   }
 }
+
+// export const getTabs = (childModels: any) => {
+//   const tabs = []
+//   if (childModels) {
+//     const interfaces = []
+//     for (const childModel of childModels) {
+//       const path = parseModelPath(childModel.model)
+//       const interfaceItem = await loadInterface(path.module, path.model)
+//       if (childModel.tab) {
+//         tabs.push({
+//           title: interfaceItem.title,
+//           module: path.module,
+//           model: path.model
+//         })
+//       }
+//       interfaces.push(interfaceItem)
+//     }
+//     if (tabs.length > 0) {
+//       tabs.unshift({
+//         title: 'Основная информация',
+//         active: true
+//       })
+//     }
+//   }
+// }
+
+

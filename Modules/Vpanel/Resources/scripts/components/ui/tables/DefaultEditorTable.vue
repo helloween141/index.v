@@ -58,8 +58,13 @@ export default defineComponent({
     let rows = ref()
 
     const init = () => {
-      headers.value = getHeadersForEditorTable(props.model.fields)
-      rows.value = getRowsForEditorTable(props.model.fields, props.values.data)
+      if (props.model) {
+        headers.value = getHeadersForEditorTable(props.model.fields)
+      }
+
+      if (props.values) {
+        rows.value = getRowsForEditorTable(props.model.fields, props.values.data)
+      }
     }
 
     onMounted(() => {

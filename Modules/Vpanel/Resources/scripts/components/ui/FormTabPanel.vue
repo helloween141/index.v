@@ -3,7 +3,7 @@
     <ul class="flex flex-wrap -mb-px">
       <li v-for="tab in tabs" class="mr-2">
         <a href="#"
-           @click.prevent="onClick(tab.name)"
+           @click.prevent="onClick(tab)"
            class="inline-block p-4 rounded-t-lg border-b-2"
            :class="[
                tab.active
@@ -27,8 +27,8 @@ export default defineComponent({
   },
   emits: ['select-tab'],
   setup(props, {emit}) {
-    const onClick = (name: string) => {
-      emit('select-tab', name)
+    const onClick = (tab: any) => {
+      emit('select-tab', tab)
     }
 
     return {

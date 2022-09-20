@@ -58,10 +58,11 @@ export default defineComponent({
             bind: {
               incModel: model,
               incValues: values,
-              modalData: {
+              incPathData: {
                 module: pointerPath.module,
                 model: pointerPath.model,
-              }
+              },
+              isModal: true
             },
             on: {
               selectRecord(recordId) {

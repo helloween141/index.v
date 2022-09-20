@@ -11,7 +11,7 @@
         Удалить
       </span>
     </button>
-    <button @submit.prevent="onSave" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-3">
+    <button @click.prevent="onSave" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-3">
       <span class="text-white">
         Сохранить
       </span>

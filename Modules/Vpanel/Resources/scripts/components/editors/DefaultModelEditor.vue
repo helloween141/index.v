@@ -5,7 +5,7 @@
         @on-search="applySearch"
         @on-toggle-filter="toggleFilterPanel"
         :model="incModel"
-        :isModal="!!modalData"
+        :isModal="!!isModal"
     />
 
     <div class="w-full border-t dark:border-gray-700 mb-5"></div>
@@ -38,12 +38,12 @@ import {useRoute} from "vue-router";
 export default defineComponent({
   name: 'DefaultModelEditor',
   components: {EditorFilterPanel, EditorActionPanel, DefaultEditorTable},
-  emits: ['select-record'],
+  emits: ['select-record', 'reload'],
   props: {
     incModel: Object,
     incValues: Object,
-    params: Object,
-    modalData: Object
+    incPathData: Object,
+    isModal: Boolean
   },
   setup(props, { emit }) {
     const route = useRoute()
@@ -52,7 +52,7 @@ export default defineComponent({
     const {moduleName, modelName} = getRouteParameters(route)
 
     const selectRecord = (recordId) => {
-      if (props.modalData) {
+      if (props.isModal) {
         emit('select-record', recordId)
       } else {
         router.push({ name: 'module', params: { id: recordId } })
@@ -60,32 +60,34 @@ export default defineComponent({
     }
 
     const createRecord = () => {
-      router.push({ name: 'module', params: { id: 0 } })
+      router.push({ name: 'module', params: { module: props.incPathData.module, model: props.incPathData.model, id: 0 } })
     }
 
     const applySearch = async (search) => {
-      if (props.modalData) {
-        currentValues.value = await loadList(props.modalData.module, props.modalData.model, 1, [], search)
+      if (props.isModal) {
+        currentValues.value = await loadList(props.incPathData.module, props.incPathData.model, 1, [], search)
       } else {
         currentValues.value = await loadList(moduleName, modelName, 1, [], search)
       }
     }
 
     const applyFilter = async (filter) => {
-      if (props.modalData) {
-        currentValues.value = await loadList(props.modalData.module, props.modalData.model, 1, filter, '')
+      if (props.isModal) {
+        currentValues.value = await loadList(props.incPathData.module, props.incPathData.model, 1, filter, '')
       } else {
         (Object.keys(filter).length === 0)
             ? await router.push({path: route.path})
             : await router.push({path: route.path, query: {f: JSON.stringify(filter)} })
+        emit('reload', moduleName, modelName)
       }
     }
 
     const setPage = async (page: number) => {
-      if (props.modalData) {
-        currentValues.value = await loadList(props.modalData.module, props.modalData.model, page, [], '')
+      if (props.isModal) {
+        currentValues.value = await loadList(props.incPathData.module, props.incPathData.model, page, [], '')
       } else {
         await router.push({path: route.fullPath, query: {...route.query, page}})
+        emit('reload', moduleName, modelName)
       }
     }
 
