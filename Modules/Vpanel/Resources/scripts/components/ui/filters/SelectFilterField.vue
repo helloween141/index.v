@@ -23,7 +23,7 @@ export default defineComponent({
     value: String,
   },
   setup(props, {emit}) {
-    let currentValue = ref(props.field.options[props.value])
+    let currentValue = ref(props.field.options[props.value?.id || props.value])
     const options = []
 
     for (const [key, value] of Object.entries(props.field.options)) {

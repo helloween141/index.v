@@ -29,11 +29,21 @@ export default defineComponent({
   emits: ['set-filter'],
   props: {
     field: Object,
-    value: [Array, String],
+    value: [Array],
   },
   setup(props, {emit}) {
     let valFrom = ''
     let valTo = ''
+
+    if (Array.isArray(props.value)) {
+      props.value.forEach(item => {
+        if (item.comparsion === '>=') {
+          valFrom = item.value
+        } else if (item.comparsion === '<=') {
+          valTo = item.value
+        }
+      })
+    }
 
     const onInput = (val, type) => {
       valFrom = type === 'from' ? val : valFrom

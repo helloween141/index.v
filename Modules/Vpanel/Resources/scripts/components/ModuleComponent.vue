@@ -5,6 +5,7 @@
         :inc-model="modelInterface"
         :inc-values="modelValues"
         :inc-path-data="pathData"
+        :show-action-panel="showActionPanel"
         @reload="loadModule"
     />
   </div>
@@ -21,7 +22,8 @@ export default defineComponent({
   props: {
     module: String,
     model: String,
-    recordId: Number
+    recordId: Number,
+    showActionPanel: Boolean
   },
   setup(props) {
     const route = useRoute()

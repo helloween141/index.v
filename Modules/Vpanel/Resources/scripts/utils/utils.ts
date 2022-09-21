@@ -1,5 +1,4 @@
 import moment from 'moment';
-import {loadInterface} from "@/api/actionEditor";
 
 export const prepareFormData = (values: object) => {
   const data = new FormData()

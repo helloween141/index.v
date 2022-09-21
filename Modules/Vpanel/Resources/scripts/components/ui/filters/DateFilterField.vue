@@ -1,9 +1,9 @@
 <template>
   <Datepicker
       v-model="currentValue"
-      :format="'dd.MM.yyyy HH:mm'"
-      :placeholder="placeholder"
+      :format="'dd.MM.yyyy'"
       :textInput="true"
+      :placeholder="placeholder"
       @update:modelValue="handleInput"
       locale="ru"
       autoApply
@@ -28,7 +28,7 @@ export default defineComponent({
     const currentValue = ref(props.value)
 
     const handleInput = (val) => {
-      val = val ? moment(val).format('YYYY-MM-DD HH:mm') : ''
+      val = val ? moment(val).format('YYYY-MM-DD') : ''
       emit('set-value', val, props.type)
     }
 

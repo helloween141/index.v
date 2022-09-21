@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from "vue";
+import {defineComponent, ref} from "vue";
 
 export default defineComponent({
   name: 'FormTabPanel',
@@ -27,8 +27,8 @@ export default defineComponent({
   },
   emits: ['select-tab'],
   setup(props, {emit}) {
-    const onClick = (tab: any) => {
-      emit('select-tab', tab)
+    const onClick = (selectedTab) => {
+      emit('select-tab', selectedTab)
     }
 
     return {

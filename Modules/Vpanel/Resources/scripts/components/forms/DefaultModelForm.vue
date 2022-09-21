@@ -1,8 +1,8 @@
 <template>
   <div v-if="currentValues" class="relative overflow-x-auto block p-6 w-full bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
     <form>
-      <span class="block mb-5">{{currentValues}}</span>
-      <span>{{incModel}}</span>
+      <!--<span class="block mb-5">{{currentValues}}</span>
+      <span>{{incModel}}</span>-->
 
       <div class="mb-3 flex justify-between flex-wrap">
         <h1 class="dark:text-white text-2xl">
@@ -22,14 +22,15 @@
       </div>
 
       <FormTabPanel v-if="currentValues.id && tabs"
-                    @select-tab="selectTab"
                     :tabs="tabs"
+                    @select-tab="selectTab"
       />
       <div v-else class="w-full border-t dark:border-gray-700 mb-5"></div>
 
       <ModuleComponent v-if="currentTab"
           :module="currentTab.module"
           :model="currentTab.model"
+          :show-action-panel="false"
       />
       <DefaultFieldsTable
           v-else
@@ -59,9 +60,8 @@ import {saveRecord, deleteRecord} from "@/api/actionForm";
 import DefaultFieldsTable from "@/components/ui/tables/DefaultFieldsTable.vue";
 import {useToast} from "vue-toastification";
 import {APIMessage} from "@/api/messages";
-import {getModelTabs, getRouteParameters, parseModelPath, prepareFormData, setDefaultFieldsValues} from "@/utils/utils";
+import {getModelTabs, getRouteParameters, prepareFormData, setDefaultFieldsValues} from "@/utils/utils";
 import FormTabPanel from "@/components/ui/FormTabPanel.vue";
-import {loadInterface} from "@/api/actionEditor";
 import ModuleView from "@/views/ModuleView.vue";
 import ModuleComponent from "@/components/ModuleComponent.vue";
 
@@ -76,16 +76,17 @@ export default defineComponent({
   setup(props, {emit}) {
     const toast = useToast()
     const route = useRoute()
-    const {moduleName, modelName, recordId} = getRouteParameters(route)
-    let currentValues = ref(setDefaultFieldsValues(props.incModel.fields, props.incValues))
+    const currentValues = ref(setDefaultFieldsValues(props.incModel.fields, props.incValues))
     const tabs = ref([])
     const currentTab = ref(null)
+    const {moduleName, modelName, recordId} = getRouteParameters(route)
 
     onMounted(async () => {
       const childModels = props.incModel?.childModel || []
       tabs.value = getModelTabs(childModels)
     })
 
+    // TODO: Refactoring
     const selectTab = (selectedTab: any) => {
       currentTab.value = selectedTab.model ? selectedTab : null
 

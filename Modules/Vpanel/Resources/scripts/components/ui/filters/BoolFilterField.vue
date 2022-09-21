@@ -27,7 +27,7 @@ export default defineComponent({
     field: Object,
   },
   setup(props, {emit}) {
-    const currentValue = ref(false)
+    const currentValue = ref(props.value ? true : false)
 
     const onChange = () => {
       emit('set-filter', {[props.field.name]: (currentValue.value ? 0 : 1)}, props.field.name)

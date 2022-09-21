@@ -1,19 +1,18 @@
 <template>
   <div v-if="incModel">
     <EditorActionPanel
+        v-show="showActionPanel"
+        :model="incModel"
+        :isModal="!!isModal"
         @on-create="createRecord"
         @on-search="applySearch"
         @on-toggle-filter="toggleFilterPanel"
-        :model="incModel"
-        :isModal="!!isModal"
     />
 
-    <div class="w-full border-t dark:border-gray-700 mb-5"></div>
-
     <EditorFilterPanel
-        @on-filter="applyFilter"
+        v-show="showFilterPanel"
         :fields="filterFields"
-        v-show="showFilter"
+        @on-filter="applyFilter"
     />
 
     <DefaultEditorTable
@@ -43,19 +42,20 @@ export default defineComponent({
     incModel: Object,
     incValues: Object,
     incPathData: Object,
-    isModal: Boolean
+    isModal: Boolean,
+    showActionPanel: Boolean
   },
   setup(props, { emit }) {
     const route = useRoute()
     const currentValues = ref(props.incValues)
-    const showFilter = ref(!!route.query.f)
+    const showFilterPanel = ref(!!route.query.f)
     const {moduleName, modelName} = getRouteParameters(route)
 
     const selectRecord = (recordId) => {
       if (props.isModal) {
         emit('select-record', recordId)
       } else {
-        router.push({ name: 'module', params: { id: recordId } })
+        router.push({ name: 'module', params: { module: props.incPathData.module, model: props.incPathData.model, id: recordId } })
       }
     }
 
@@ -92,7 +92,7 @@ export default defineComponent({
     }
 
     const toggleFilterPanel = (value) => {
-      showFilter.value = value
+      showFilterPanel.value = value
     }
 
     const filterFields = getFieldsForFilter(props.incModel.fields)
@@ -104,7 +104,7 @@ export default defineComponent({
       applyFilter,
       applySearch,
       setPage,
-      showFilter,
+      showFilterPanel,
       filterFields,
       currentValues
     }

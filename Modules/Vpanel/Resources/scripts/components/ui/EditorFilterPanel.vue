@@ -81,20 +81,15 @@ import {useRoute} from "vue-router";
 export default defineComponent({
   name: 'EditorFilterPanel',
   components: {
-    SelectFilterField,
-    PointerFilterField, NumberRangeFilterField, BoolFilterField, DateRangeFilterField, StringFilterField},
+    SelectFilterField, PointerFilterField, NumberRangeFilterField, BoolFilterField, DateRangeFilterField, StringFilterField
+  },
   props: {
     fields: Object
   },
   emits: ['on-filter'],
   setup(props, {emit}) {
     const route = useRoute()
-    let filter = {}
-
-    if (route.query.f) {
-      filter = JSON.parse(route.query.f.toString())
-    }
-
+    let filter = route.query.f ? JSON.parse(route.query.f.toString()) : {}
     const values = ref(filter)
 
     const setFilter = (fieldFilter, fieldName) => {

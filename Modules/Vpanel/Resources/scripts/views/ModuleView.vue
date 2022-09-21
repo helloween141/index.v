@@ -1,5 +1,10 @@
 <template>
-  <ModuleComponent :module="module" :model="model" :record-id="id"/>
+  <ModuleComponent
+      :module="module"
+      :model="model"
+      :record-id="id"
+      :show-action-panel="true"
+  />
 </template>
 
 <script lang="ts">
