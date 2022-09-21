@@ -21,15 +21,15 @@
         />
       </div>
 
-      <FormTabPanel v-if="currentValues.id && tabs"
+      <FormTabPanel v-if="currentValues.id > 0 && tabs"
                     :tabs="tabs"
                     @select-tab="selectTab"
       />
       <div v-else class="w-full border-t dark:border-gray-700 mb-5"></div>
 
-      <ModuleComponent v-if="currentTab"
-          :module="currentTab.module"
-          :model="currentTab.model"
+      <ModuleComponent v-if="modelTab"
+          :module="modelTab.module"
+          :model="modelTab.model"
           :show-action-panel="false"
       />
       <DefaultFieldsTable
@@ -76,22 +76,35 @@ export default defineComponent({
   setup(props, {emit}) {
     const toast = useToast()
     const route = useRoute()
-    const currentValues = ref(setDefaultFieldsValues(props.incModel.fields, props.incValues))
-    const tabs = ref([])
-    const currentTab = ref(null)
     const {moduleName, modelName, recordId} = getRouteParameters(route)
+    const currentValues = ref(setDefaultFieldsValues(props.incModel.fields, props.incValues))
 
-    onMounted(async () => {
-      const childModels = props.incModel?.childModel || []
-      tabs.value = getModelTabs(childModels)
+    const tabs = ref(getModelTabs(props.incModel.childModel))
+    const modelTab = ref()
+
+    onMounted( () => {
+      setActiveTab(route.query.tab || '')
     })
 
     // TODO: Refactoring
     const selectTab = (selectedTab: any) => {
-      currentTab.value = selectedTab.model ? selectedTab : null
+      setActiveTab(selectedTab.model)
 
+      if (selectedTab.model) {
+        router.push({path: route.path, query: {tab: selectedTab.model}})
+      } else {
+        router.replace({query: {}})
+      }
+    }
+
+    const setActiveTab = (activeTab) => {
       tabs.value.forEach((tab, index) => {
-        tabs.value[index].active = tab.model === selectedTab.model
+        if (tab.model === activeTab) {
+          tabs.value[index].active = true
+          modelTab.value = tab.model ? tab : null
+        } else {
+          tabs.value[index].active = false
+        }
       })
     }
 
@@ -116,7 +129,7 @@ export default defineComponent({
     }
 
     const onBack = () => {
-      router.push({name: 'module', params: {'module': moduleName, 'model': modelName}})
+      router.back()
     }
 
     const setValue = (fieldName: string, fieldValue: any) => {
@@ -131,7 +144,7 @@ export default defineComponent({
       selectTab,
       currentValues,
       tabs,
-      currentTab
+      modelTab
     }
   },
 })

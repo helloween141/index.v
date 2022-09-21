@@ -121,6 +121,8 @@ export const getModelTabs = (childModels: any) => {
     if (tabs.length > 0) {
       tabs.unshift({
         title: 'Основная информация',
+        module: '',
+        model: '',
         active: true
       })
     }
