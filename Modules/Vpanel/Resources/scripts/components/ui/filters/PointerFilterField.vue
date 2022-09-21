@@ -48,7 +48,7 @@ export default defineComponent({
 
     watch(() => props.value, (current, previous) => {
       if (!current) {
-        currentValue.value = null
+        currentValue.value = []
       }
     })
 
