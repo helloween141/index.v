@@ -5,7 +5,7 @@
         :inc-model="modelInterface"
         :inc-values="modelValues"
         :inc-path-data="pathData"
-        :show-action-panel="showActionPanel"
+        :is-child="isChild"
         @reload="loadModule"
     />
   </div>
@@ -23,7 +23,7 @@ export default defineComponent({
     module: String,
     model: String,
     recordId: Number,
-    showActionPanel: Boolean
+    isChild: Boolean
   },
   setup(props) {
     const route = useRoute()

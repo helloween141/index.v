@@ -114,7 +114,8 @@ export const getModelTabs = (childModels: any) => {
         tabs.push({
           title: childModel.title,
           module: path.module,
-          model: path.model
+          model: path.model,
+          relationKey: childModel.relationKey
         })
       }
     }

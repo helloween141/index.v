@@ -1,8 +1,8 @@
 <template>
   <div v-if="currentValues" class="relative overflow-x-auto block p-6 w-full bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
     <form>
-      <!--<span class="block mb-5">{{currentValues}}</span>
-      <span>{{incModel}}</span>-->
+      <span class="block mb-5">{{currentValues}}</span>
+      <span>{{incModel}}</span>
 
       <div class="mb-3 flex justify-between flex-wrap">
         <h1 class="dark:text-white text-2xl">
@@ -30,7 +30,7 @@
       <ModuleComponent v-if="modelTab"
           :module="modelTab.module"
           :model="modelTab.model"
-          :show-action-panel="false"
+          :is-child="true"
       />
       <DefaultFieldsTable
           v-else
@@ -82,16 +82,29 @@ export default defineComponent({
     const tabs = ref(getModelTabs(props.incModel.childModel))
     const modelTab = ref()
 
+    if (route.query.master_id && route.query.key) {
+      const {master_id, key} = route.query
+      currentValues.value = {...currentValues.value, ...{
+        [key]: master_id
+      }}
+    }
+
     onMounted( () => {
       setActiveTab(route.query.tab || '')
     })
 
-    // TODO: Refactoring
     const selectTab = (selectedTab: any) => {
       setActiveTab(selectedTab.model)
 
       if (selectedTab.model) {
-        router.push({path: route.path, query: {tab: selectedTab.model}})
+        router.push({
+          path: route.path,
+          query: {
+            tab: selectedTab.model,
+            master_id: recordId,
+            key: selectedTab.relationKey
+          }
+        })
       } else {
         router.replace({query: {}})
       }

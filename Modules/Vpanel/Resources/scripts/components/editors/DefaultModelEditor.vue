@@ -1,9 +1,9 @@
 <template>
   <div v-if="incModel">
     <EditorActionPanel
-        v-show="showActionPanel"
+        :is-child="isChild"
+        :is-modal="!!isModal"
         :model="incModel"
-        :isModal="!!isModal"
         @on-create="createRecord"
         @on-search="applySearch"
         @on-toggle-filter="toggleFilterPanel"
@@ -43,7 +43,7 @@ export default defineComponent({
     incValues: Object,
     incPathData: Object,
     isModal: Boolean,
-    showActionPanel: Boolean
+    isChild: Boolean
   },
   setup(props, { emit }) {
     const route = useRoute()
@@ -60,7 +60,20 @@ export default defineComponent({
     }
 
     const createRecord = () => {
-      router.push({ name: 'module', params: { module: props.incPathData.module, model: props.incPathData.model, id: 0 } })
+      let query = {}
+      if (route.query.master_id && route.query.key) {
+        query = {master_id: route.query.master_id, key: route.query.key}
+      }
+
+      router.push({
+        name: 'module',
+        params: {
+          module: props.incPathData.module,
+          model: props.incPathData.model,
+          id: 0
+        },
+        query
+      })
     }
 
     const applySearch = async (search) => {

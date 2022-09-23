@@ -5,10 +5,8 @@
         {{ model.title }}
       </h1>
 
-      <div v-show="searchPlaceholder"
-           class="flex w-full justify-end"
-      >
-        <div class="relative w-1/2">
+      <div class="flex w-full justify-end">
+        <div v-if="searchPlaceholder && !isChild" class="relative w-1/2">
           <input type="search"
                  v-model="searchString"
                  :placeholder="`Поиск: ${searchPlaceholder}`"
@@ -20,14 +18,15 @@
           </button>
         </div>
 
-        <button @click.prevent="onToggleFilter"
+        <button v-if="!isChild"
+                @click.prevent="onToggleFilter"
                 class="hover:bg-blue-800 text-gray-800 font-bold ml-3 py-2 px-4 rounded"
                 :class="show ? 'bg-gray-400 dark:bg-gray-700' : 'bg-blue-700'"
         >
           <i class="fa-solid fa-filter text-white"></i>
         </button>
 
-        <button v-if="!isModal"
+        <button v-if="!isModal || isChild"
                 @click.prevent="onCreate"
                 class="bg-blue-700 hover:bg-blue-800 ml-3 text-gray-800 font-bold py-2 px-4 rounded">
           <span class="text-white">
@@ -48,8 +47,8 @@ export default defineComponent({
   name: 'EditorActionPanel',
   props: {
     model: Object,
-    isActive: Boolean,
-    isModal: Boolean
+    isModal: Boolean,
+    isChild: Boolean
   },
   emits: ['on-create', 'on-toggle-filter', 'on-search'],
   setup(props, {emit}) {
