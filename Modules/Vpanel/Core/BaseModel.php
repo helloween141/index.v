@@ -70,7 +70,6 @@ abstract class BaseModel extends Model
                 $query->orWhere($field->getName(), 'like', "%{$search}%");
             }
         }
-
         // TODO: add order by (id: default)
         $query->orderBy("{$tableName}.id", 'desc');
 

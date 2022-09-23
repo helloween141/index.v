@@ -8,11 +8,9 @@
 </template>
 
 <script lang="ts">
-import {defineAsyncComponent, defineComponent, ref, shallowRef, watch} from "vue";
+import {defineComponent, ref, watch} from "vue";
 import {useRoute} from "vue-router";
-import {loadInterface, loadList} from "@/api/actionEditor";
 import {getRouteParameters} from "@/utils/utils";
-import {loadRecord} from "@/api/actionForm";
 import ModuleComponent from "@/components/ModuleComponent.vue";
 
 export default defineComponent({

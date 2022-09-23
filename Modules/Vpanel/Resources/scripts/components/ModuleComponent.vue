@@ -41,7 +41,7 @@ export default defineComponent({
           const formComponent = modelInterface.value['formComponent']
           targetComponent.value = formComponent ? loadCustomComponent(formComponent, moduleName) : loadFormComponent()
         } else {
-          let filter = []
+          let filter = null
           let page = 1
 
           if (route.query.f) {
@@ -52,6 +52,11 @@ export default defineComponent({
             page = parseInt(route.query.page.toString())
           }
 
+          if (route.query.master_id && route.query.key) {
+            const {master_id, key} = route.query
+            filter = {...filter, ...{[key]: parseInt(master_id)}}
+          }
+          console.log(filter)
           modelValues.value = await loadList(moduleName, modelName, page, filter)
           const editorComponent = modelInterface.value['editorComponent']
           targetComponent.value = editorComponent ? loadCustomComponent(editorComponent, moduleName) : loadEditorComponent()
