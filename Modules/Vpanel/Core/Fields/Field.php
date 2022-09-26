@@ -29,6 +29,8 @@ abstract class Field
 
     protected string $tooltip;
 
+    protected array $showCondition = [];
+
     public function getSelect(BaseModel|string $mainModel): array {
         $tableName = with(new $mainModel)->getTable();
 
@@ -109,6 +111,12 @@ abstract class Field
 
     public function showInSearch(): Field {
         $this->inSearch = true;
+        return $this;
+    }
+
+    public function showCondition($condition): Field {
+        $this->showCondition = $condition;
+
         return $this;
     }
 

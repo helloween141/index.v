@@ -22,6 +22,8 @@ class ModelStructure
 
     protected string $formComponent = '';
 
+    protected bool $sortable = false;
+
     static function create(): ModelStructure
     {
         return new ModelStructure();
@@ -69,6 +71,11 @@ class ModelStructure
         return $this;
     }
 
+    public function setSortable(): ModelStructure {
+        $this->sortable = true;
+        return $this;
+    }
+
     /**
      * @return Field[]
      */
@@ -102,7 +109,7 @@ class ModelStructure
         return $this->formComponent;
     }
 
-    public function getChildModel(): ChildModel
+    public function getChildModel(): array
     {
         return $this->childModel;
     }

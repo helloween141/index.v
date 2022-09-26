@@ -64,6 +64,9 @@ class News extends BaseModel
                     ->setTitle('Стоимость')
                     ->setTooltip('В рублях')
                     ->showInFilter()
+                    ->showCondition([
+                        ['show', '=', 1]
+                    ])
             )
             ->addField(
                 SelectField::create()
@@ -116,6 +119,7 @@ class News extends BaseModel
             )
             ->addUrl()
             //->addMeta()
+            ->setSortable()
             ->setModelTitle('Новости')
             ->setRecordTitle('новость')
             ->setAccusativeRecordTitle('новость');
