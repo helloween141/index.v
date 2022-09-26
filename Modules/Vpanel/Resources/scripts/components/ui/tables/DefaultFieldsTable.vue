@@ -3,7 +3,7 @@
     <tbody>
       <tr
           v-for="field in fields"
-          v-show="!field.hidden"
+          v-show="field.inForm"
           :key="field"
           class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white odd:bg-gray-50"
       >

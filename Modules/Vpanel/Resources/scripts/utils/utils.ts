@@ -105,7 +105,7 @@ export const parseModelPath = (path: string) => {
   }
 }
 
-export const getModelTabs = (childModels: any) => {
+export const getModelTabs = (childModels: any, masterId: Number) => {
   const tabs = []
   if (childModels) {
     for (const childModel of childModels) {
@@ -115,7 +115,9 @@ export const getModelTabs = (childModels: any) => {
           title: childModel.title,
           module: path.module,
           model: path.model,
-          relationKey: childModel.relationKey
+          filter: {
+            [childModel.relationKey]: masterId
+          }
         })
       }
     }
@@ -131,4 +133,19 @@ export const getModelTabs = (childModels: any) => {
   return tabs
 }
 
-
+export const getAdditionalModels = (childModels: any, masterId: Number) => {
+  const result = []
+  if (childModels) {
+    for (const childModel of childModels) {
+      const path = parseModelPath(childModel.model)
+      result.push({
+        module: path.module,
+        model: path.model,
+        filter: {
+          [childModel.relationKey]: masterId
+        }
+      })
+    }
+  }
+  return result
+}

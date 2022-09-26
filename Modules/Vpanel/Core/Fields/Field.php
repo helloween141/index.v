@@ -19,6 +19,8 @@ abstract class Field
 
     protected bool $inEditor = true;
 
+    protected bool $inForm = true;
+
     protected bool $inFilter = false;
 
     protected bool $inSearch = false;
@@ -95,6 +97,11 @@ abstract class Field
         return $this;
     }
 
+    public function hideFromForm(): Field {
+        $this->inForm = false;
+        return $this;
+    }
+
     public function showInFilter(): Field {
         $this->inFilter = true;
         return $this;
@@ -143,6 +150,11 @@ abstract class Field
     public function isInEditor(): bool
     {
         return $this->inEditor;
+    }
+
+    public function isInForm(): bool
+    {
+        return $this->inForm;
     }
 
     public function isInSearch(): bool

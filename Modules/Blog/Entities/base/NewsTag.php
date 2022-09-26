@@ -35,6 +35,7 @@ class NewsTag extends BaseModel
                 IntField::create()
                 ->setName('news_id')
                 ->hideFromEditor()
+                ->hideFromForm()
             )
             ->setModelTitle('Теги')
             ->setRecordTitle('тег')

@@ -23,7 +23,11 @@ export default defineComponent({
     module: String,
     model: String,
     recordId: Number,
-    isChild: Boolean
+    isChild: Boolean,
+    defaultFilter: {
+      type: Object,
+      default: null
+    }
   },
   setup(props) {
     const route = useRoute()
@@ -41,7 +45,7 @@ export default defineComponent({
           const formComponent = modelInterface.value['formComponent']
           targetComponent.value = formComponent ? loadCustomComponent(formComponent, moduleName) : loadFormComponent()
         } else {
-          let filter = null
+          let filter = props.defaultFilter
           let page = 1
 
           if (route.query.f) {
@@ -52,11 +56,12 @@ export default defineComponent({
             page = parseInt(route.query.page.toString())
           }
 
-          if (route.query.master_id && route.query.key) {
-            const {master_id, key} = route.query
-            filter = {...filter, ...{[key]: parseInt(master_id)}}
-          }
-          console.log(filter)
+          // if (route.query.master_id && route.query.key) {
+          //   const master_id: any = route.query.master_id
+          //   const key: any = route.query.key
+          //   filter = {...filter, ...{[key]: parseInt(master_id)}}
+          // }
+
           modelValues.value = await loadList(moduleName, modelName, page, filter)
           const editorComponent = modelInterface.value['editorComponent']
           targetComponent.value = editorComponent ? loadCustomComponent(editorComponent, moduleName) : loadEditorComponent()
@@ -79,7 +84,8 @@ export default defineComponent({
     watch(props, async (to) => {
       pathData.value = {
         module: props.module,
-        model: props.model
+        model: props.model,
+        filter: props.defaultFilter
       }
       await loadModule(props.module, props.model, props.recordId)
     }, {

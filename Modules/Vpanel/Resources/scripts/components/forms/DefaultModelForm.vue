@@ -21,23 +21,43 @@
         />
       </div>
 
-      <FormTabPanel v-if="currentValues.id > 0 && tabs"
-                    :tabs="tabs"
-                    @select-tab="selectTab"
-      />
-      <div v-else class="w-full border-t dark:border-gray-700 mb-5"></div>
+      <div class="w-full border-t dark:border-gray-700"></div>
 
-      <ModuleComponent v-if="modelTab"
-          :module="modelTab.module"
-          :model="modelTab.model"
-          :is-child="true"
-      />
-      <DefaultFieldsTable
-          v-else
-          :fields="incModel.fields"
-          :values="currentValues"
-          @set-value="setValue"
-      />
+      <section v-if="tabs.length > 0 && currentValues.id > 0">
+        <FormTabPanel
+            :tabs="tabs"
+            @select-tab="selectTab"
+        />
+        <ModuleComponent
+            v-if="modelTab"
+            :module="modelTab.module"
+            :model="modelTab.model"
+            :default-filter="modelTab.filter"
+            :is-child="true"
+        />
+        <DefaultFieldsTable
+            v-else
+            :fields="incModel.fields"
+            :values="currentValues"
+            @set-value="setValue"
+        />
+      </section>
+
+      <section v-else>
+        <DefaultFieldsTable
+            :fields="incModel.fields"
+            :values="currentValues"
+            @set-value="setValue"
+        />
+        <div v-for="additionalModel in additionalModels" class="mt-5">
+          <ModuleComponent
+              :module="additionalModel.module"
+              :model="additionalModel.model"
+              :default-filter="additionalModel.filter"
+              :is-child="true"
+          />
+        </div>
+      </section>
 
       <div class="mt-3 flex justify-end">
         <FormActionPanel
@@ -60,7 +80,7 @@ import {saveRecord, deleteRecord} from "@/api/actionForm";
 import DefaultFieldsTable from "@/components/ui/tables/DefaultFieldsTable.vue";
 import {useToast} from "vue-toastification";
 import {APIMessage} from "@/api/messages";
-import {getModelTabs, getRouteParameters, prepareFormData, setDefaultFieldsValues} from "@/utils/utils";
+import {getAdditionalModels, getModelTabs, getRouteParameters, prepareFormData, setDefaultFieldsValues} from "@/utils/utils";
 import FormTabPanel from "@/components/ui/FormTabPanel.vue";
 import ModuleView from "@/views/ModuleView.vue";
 import ModuleComponent from "@/components/ModuleComponent.vue";
@@ -78,19 +98,14 @@ export default defineComponent({
     const route = useRoute()
     const {moduleName, modelName, recordId} = getRouteParameters(route)
     const currentValues = ref(setDefaultFieldsValues(props.incModel.fields, props.incValues))
-
-    const tabs = ref(getModelTabs(props.incModel.childModel))
+    const additionalModels = ref(getAdditionalModels(props.incModel.childModel, currentValues.value.id))
+    const tabs = ref(getModelTabs(props.incModel.childModel, currentValues.value.id))
     const modelTab = ref()
-
-    if (route.query.master_id && route.query.key) {
-      const {master_id, key} = route.query
-      currentValues.value = {...currentValues.value, ...{
-        [key]: master_id
-      }}
-    }
 
     onMounted( () => {
       setActiveTab(route.query.tab || '')
+
+      currentValues.value = {...currentValues.value, ...route.query}
     })
 
     const selectTab = (selectedTab: any) => {
@@ -100,9 +115,7 @@ export default defineComponent({
         router.push({
           path: route.path,
           query: {
-            tab: selectedTab.model,
-            master_id: recordId,
-            key: selectedTab.relationKey
+            tab: selectedTab.model
           }
         })
       } else {
@@ -157,7 +170,8 @@ export default defineComponent({
       selectTab,
       currentValues,
       tabs,
-      modelTab
+      modelTab,
+      additionalModels
     }
   },
 })

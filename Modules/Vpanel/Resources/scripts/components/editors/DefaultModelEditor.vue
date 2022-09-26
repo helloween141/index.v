@@ -55,15 +55,17 @@ export default defineComponent({
       if (props.isModal) {
         emit('select-record', recordId)
       } else {
-        router.push({ name: 'module', params: { module: props.incPathData.module, model: props.incPathData.model, id: recordId } })
+        router.push({ name: 'module', params: {
+            module: props.incPathData.module,
+            model: props.incPathData.model,
+            id: recordId
+          }
+        })
       }
     }
 
     const createRecord = () => {
-      let query = {}
-      if (route.query.master_id && route.query.key) {
-        query = {master_id: route.query.master_id, key: route.query.key}
-      }
+      let query = props.incPathData.filter
 
       router.push({
         name: 'module',
