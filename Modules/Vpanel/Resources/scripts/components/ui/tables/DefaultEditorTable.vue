@@ -9,26 +9,31 @@
             </th>
           </tr>
         </thead>
-        <tbody v-if="rows">
-          <tr v-for="(row, index) in rows"
-              :key="index"
-              @click="onClick(row.id)"
-              class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer"
-          >
-            <td v-for="(val, key, index) in row"
-                :key="index"
-                v-show="key !== 'id'"
-                class="py-4 px-6"
-            >
-              <span v-if="val && val.value">
-                {{ val.value }}
-              </span>
-              <span v-else>
-                {{ val }}
-              </span>
-            </td>
-          </tr>
-        </tbody>
+
+        <Draggable
+            v-model="rows"
+            tag="tbody"
+            item-key="sort"
+        >
+            <template #item="{element}">
+              <tr
+                  @click="onClick(element.id)"
+                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer">
+                <td v-for="(val, key, index) in element"
+                  :key="index"
+                  v-show="key !== 'id'"
+                  class="py-4 px-6"
+                >
+                  <span v-if="val && val.value">
+                    {{ val.value }}
+                  </span>
+                  <span v-else>
+                    {{ val }}
+                  </span>
+                </td>
+              </tr>
+            </template>
+          </Draggable>
       </table>
     </div>
     <Pagination
@@ -42,12 +47,11 @@
 import {defineComponent, onMounted, ref, watch} from "vue";
 import Pagination from "@/components/ui/Pagination.vue";
 import {getHeadersForEditorTable, getRowsForEditorTable} from "@/utils/utils";
-import router from "@/router";
-import {useRoute} from "vue-router";
+import Draggable from 'vuedraggable'
 
 export default defineComponent({
   name: 'DefaultEditorTable',
-  components: {Pagination},
+  components: {Pagination, Draggable},
   emits: ['select-record', 'set-page'],
   props: {
     model: Object,
@@ -83,11 +87,19 @@ export default defineComponent({
       emit('set-page', page)
     }
 
+    const testList =  [
+      { id: 1, name: "Abby", sport: "basket" },
+      { id: 2, name: "Brooke", sport: "foot" },
+      { id: 3, name: "Courtenay", sport: "volley" },
+      { id: 4, name: "David", sport: "rugby" }
+    ]
+
     return {
       headers,
       rows,
       onClick,
-      setPage
+      setPage,
+      testList
     }
   },
 })
