@@ -9,11 +9,11 @@
             </th>
           </tr>
         </thead>
-
         <Draggable
             v-model="rows"
             tag="tbody"
             item-key="sort"
+            :disabled="!model.sortable"
         >
             <template #item="{element}">
               <tr
