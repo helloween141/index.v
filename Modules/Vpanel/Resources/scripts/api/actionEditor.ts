@@ -24,7 +24,6 @@ export const loadList = async (moduleName: string, modelName: string, page: numb
                 page
             }
         })
-
         return response.data
     } catch (error) {
         toast.error(APIMessage.ERROR_LOAD_INTERFACE)
@@ -32,4 +31,14 @@ export const loadList = async (moduleName: string, modelName: string, page: numb
     }
 }
 
-
+export const sortList = async (moduleName: string, modelName: string, data: any) => {
+    try {
+        const response = await axios.post(APISettings.baseURL + `/${moduleName}/${modelName}/sort-list`, {
+            data
+        })
+        return response.data
+    } catch (error) {
+        toast.error(APIMessage.ERROR_LOAD_INTERFACE)
+        console.error(error)
+    }
+}

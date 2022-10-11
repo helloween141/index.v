@@ -135,5 +135,9 @@ class ModelStructure
         return $this->addField(StringField::create()->setName('meta_title')->setTitle('Meta title')->hideFromEditor())
                     ->addField(TextField::create()->setName('meta_description')->setTitle('Meta description')->hideFromEditor());
     }
+
+    public function isSortable(): bool {
+        return $this->sortable;
+    }
 }
 

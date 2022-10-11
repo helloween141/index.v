@@ -105,4 +105,17 @@ class MainRequestController extends Controller
 
         return response()->json($result, $result ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
     }
+
+    public function sortList(Request $request, string $moduleName, string $modelName) {
+        $model = Utils::getModelClass($moduleName, $modelName);
+        if (!class_exists($model)) {
+            throw new \Error(ApiError::MODEL_NOT_FOUND);
+        }
+        $data = $request->post('data', []);
+
+        /** @var $model BaseModel */
+        $model::sortList($data);
+
+        return response()->json(true, Response::HTTP_OK);
+    }
 }

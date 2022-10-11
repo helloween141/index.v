@@ -10,6 +10,7 @@ Route::group(['prefix' => 'vpanel', 'middleware' => 'auth'], function () {
     Route::get('/record/{moduleName}/{modelName}/{id?}', [MainRequestController::class, 'getRecord']);
     Route::get('/{moduleName}/{modelName}/delete/{id}', [MainRequestController::class, 'deleteRecord']);
     Route::post('/{moduleName}/{modelName}/save/{id}', [MainRequestController::class, 'saveRecord']);
+    Route::post('/{moduleName}/{modelName}/sort-list', [MainRequestController::class, 'sortList']);
 });
 
 Route::group(['prefix' => 'user'], function () {

@@ -18,6 +18,5 @@ class BlogDatabaseSeeder extends Seeder
     {
         Author::factory(5)->create();
         News::factory(5)->create();
-        NewsTag::factory(5)->create();
     }
 }

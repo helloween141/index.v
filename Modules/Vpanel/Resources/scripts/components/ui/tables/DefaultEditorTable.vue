@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
+      {{rows}}
       <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead v-if="headers" class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
@@ -14,6 +15,7 @@
             tag="tbody"
             item-key="sort"
             :disabled="!model.sortable"
+            @change="onChangeSort"
         >
             <template #item="{element}">
               <tr
@@ -52,7 +54,7 @@ import Draggable from 'vuedraggable'
 export default defineComponent({
   name: 'DefaultEditorTable',
   components: {Pagination, Draggable},
-  emits: ['select-record', 'set-page'],
+  emits: ['select-record', 'set-page', 'change-sort'],
   props: {
     model: Object,
     values: Object
@@ -87,19 +89,20 @@ export default defineComponent({
       emit('set-page', page)
     }
 
-    const testList =  [
-      { id: 1, name: "Abby", sport: "basket" },
-      { id: 2, name: "Brooke", sport: "foot" },
-      { id: 3, name: "Courtenay", sport: "volley" },
-      { id: 4, name: "David", sport: "rugby" }
-    ]
+    const onChangeSort = () => {
+      const sortData = []
+      rows.value.forEach((row, key) => {
+        sortData.push(row.id)
+      })
+      emit('change-sort', sortData)
+    }
 
     return {
       headers,
       rows,
       onClick,
-      setPage,
-      testList
+      onChangeSort,
+      setPage
     }
   },
 })

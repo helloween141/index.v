@@ -70,8 +70,16 @@ abstract class BaseModel extends Model
                 $query->orWhere($field->getName(), 'like', "%{$search}%");
             }
         }
-        // TODO: add order by (id: default)
-        $query->orderBy("{$tableName}.id", 'desc');
+
+        if ($structure->isSortable()) {
+            $orderKey = 'sort';
+            $orderDirection = 'asc';
+        } else {
+            $orderKey = 'id';
+            $orderDirection = 'desc';
+        }
+
+        $query->orderBy("{$tableName}." . $orderKey, $orderDirection);
 
         if ($page > 0) {
             $paginatedList = $query->paginate(3, '[*]', 'page', $page);
@@ -168,5 +176,21 @@ abstract class BaseModel extends Model
             'recordId' => $id,
             'error' => ''
         ];
+    }
+
+    public static function sortList($data): void {
+        $records = static::query()
+            ->whereIn('id', $data)
+            ->get();
+
+        foreach ($data as $key => $value) {
+            foreach ($records as $record) {
+                if ($value === $record->id) {
+                    $record->sort = $key;
+                    $record->save();
+                    break;
+                }
+            }
+        }
     }
 }

@@ -18,6 +18,7 @@
     <DefaultEditorTable
         @select-record="selectRecord"
         @set-page="setPage"
+        @change-sort="changeSort"
         :model="incModel"
         :values="currentValues"
     />
@@ -31,7 +32,7 @@ import router from "@/router";
 import EditorActionPanel from "@/components/ui/EditorActionPanel.vue";
 import EditorFilterPanel from "@/components/ui/EditorFilterPanel.vue";
 import {getFieldsForFilter, getRouteParameters} from "@/utils/utils";
-import {loadList} from "@/api/actionEditor";
+import {loadList, sortList} from "@/api/actionEditor";
 import {useRoute} from "vue-router";
 
 export default defineComponent({
@@ -106,6 +107,10 @@ export default defineComponent({
       }
     }
 
+    const changeSort = async(sortData) => {
+      await sortList(props.incPathData.module, props.incPathData.model, sortData)
+    }
+
     const toggleFilterPanel = (value) => {
       showFilterPanel.value = value
     }
@@ -119,6 +124,7 @@ export default defineComponent({
       applyFilter,
       applySearch,
       setPage,
+      changeSort,
       showFilterPanel,
       filterFields,
       currentValues
