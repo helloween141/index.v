@@ -14,7 +14,7 @@ Route::group(['prefix' => 'vpanel', 'middleware' => 'auth'], function () {
 });
 
 Route::group(['prefix' => 'user'], function () {
-    Route::get('/', function (Request $request) {
+    Route::get('/', function () {
         return Auth::user();
     });
     Route::get('/profile', function (Request $request) {});

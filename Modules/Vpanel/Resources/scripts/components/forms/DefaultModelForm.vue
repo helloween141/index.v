@@ -1,8 +1,8 @@
 <template>
   <div v-if="currentValues" class="relative overflow-x-auto block p-6 w-full bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
     <form>
-      <!--<span class="block mb-5">{{currentValues}}</span>
-      <span>{{incModel}}</span>-->
+      <span class="block mb-5">{{currentValues}}</span>
+      <span>{{incModel}}</span>
 
       <div class="mb-3 flex justify-between flex-wrap">
         <h1 class="dark:text-white text-2xl">

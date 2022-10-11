@@ -149,3 +149,16 @@ export const getAdditionalModels = (childModels: any, masterId: Number) => {
   }
   return result
 }
+
+export const getShowConditions = (fields: any) => {
+  let result = {}
+  if (fields) {
+    fields.forEach(field => {
+      const condition = field.showCondition
+      if (condition) {
+        result = {...result, [field.name]: condition}
+      }
+    })
+  }
+  return result
+}

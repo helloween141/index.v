@@ -64,9 +64,7 @@ class News extends BaseModel
                     ->setTitle('Стоимость')
                     ->setTooltip('В рублях')
                     ->showInFilter()
-                    ->showCondition([
-                        ['show', '=', 1]
-                    ])
+                    ->showCondition('record.title === "test" && record.show')
             )
             ->addField(
                 SelectField::create()

@@ -1,7 +1,7 @@
 <template>
   <div>
     <label :for="`dropzone-${field.type}`"
-           class="flex flex-col w-1/3 text-center bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+           class="flex flex-col w-1/2 text-center bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
     >
       <div @dragover.prevent="onDrop"
            @dragleave.prevent="onDrop"
@@ -50,7 +50,7 @@ export default defineComponent({
   name: 'ImageField',
   props: {
     field: Object,
-    value: [String, Number]
+    value: [String, Number, Object]
   },
   emits: ['set-value'],
   setup(props, {emit}) {

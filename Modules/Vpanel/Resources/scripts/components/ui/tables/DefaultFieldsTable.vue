@@ -106,7 +106,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from "vue";
+import {defineComponent, watch} from "vue";
 import StringField from "@/components/ui/fields/StringField.vue";
 import TextField from "@/components/ui/fields/TextField.vue";
 import HtmlField from "@/components/ui/fields/HtmlField.vue";
@@ -119,6 +119,7 @@ import PointerModalField from "@/components/ui/fields/PointerModalField.vue";
 import FileField from "@/components/ui/fields/FileField.vue";
 import ImageField from "@/components/ui/fields/ImageField.vue";
 import Tooltip from "@/components/ui/Tooltip.vue";
+import {getShowConditions} from "@/utils/utils";
 
 export default defineComponent({
   name: 'DefaultFieldsTable',
@@ -136,6 +137,16 @@ export default defineComponent({
     const setValue = (fieldName, fieldValue) => {
       emit('set-value', fieldName, fieldValue)
     }
+
+    const conditions = getShowConditions(props.fields)
+
+    watch(() => props.values, (record, previous) => {
+      for (const [key, field] of Object.entries(props.fields)) {
+        if (conditions[field.name]) {
+          props.fields[key].inForm = eval(conditions[field.name])
+        }
+      }
+    },{flush: 'pre', immediate: true, deep: true})
 
     return {
       setValue
