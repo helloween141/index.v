@@ -7,7 +7,7 @@ const toast = useToast()
 
 export const loadRecord = async (moduleName: string, modelName: string, id: number) => {
     try {
-        const response = await axios.get(APISettings.baseURL + `/record/${moduleName}/${modelName}/${id}`)
+        const response = await axios.get(APISettings.baseURL + `/${moduleName}/${modelName}/record/${id}`)
         return response.data
     } catch (error) {
         toast.error(APIMessage.ERROR_LOAD_DATA)

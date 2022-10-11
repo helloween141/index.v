@@ -7,7 +7,7 @@ const toast = useToast()
 
 export const loadInterface = async (moduleName: string, modelName: string) => {
     try {
-        const response = await axios.get(APISettings.baseURL + `/interface/${moduleName}/${modelName}`)
+        const response = await axios.get(APISettings.baseURL + `/${moduleName}/${modelName}/interface`)
         return response.data
     } catch (error) {
         toast.error(APIMessage.ERROR_LOAD_INTERFACE)
@@ -17,7 +17,7 @@ export const loadInterface = async (moduleName: string, modelName: string) => {
 
 export const loadList = async (moduleName: string, modelName: string, page: number = 0, filter: any = [], search: string = '') => {
     try {
-        const response = await axios.get(APISettings.baseURL + `/list/${moduleName}/${modelName}`, {
+        const response = await axios.get(APISettings.baseURL + `/${moduleName}/${modelName}/list`, {
             params: {
                 'filter': JSON.stringify(filter),
                 search,
