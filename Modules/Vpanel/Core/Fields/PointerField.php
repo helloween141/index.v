@@ -42,7 +42,7 @@ class PointerField extends Field
 
         return [
             "{$tableName}_{$this->name}.id AS {$this->name}.id",
-            "{$tableName}_{$this->name}.{$identifyFieldName} AS {$this->name}.value"
+            "{$tableName}_{$this->name}.{$identifyFieldName} AS {$this->name}.{$identifyFieldName}"
         ];
     }
 

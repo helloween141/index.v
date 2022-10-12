@@ -24,6 +24,8 @@ class ModelStructure
 
     protected bool $sortable = false;
 
+    protected bool $recursive = false;
+
     static function create(): ModelStructure
     {
         return new ModelStructure();
@@ -73,6 +75,11 @@ class ModelStructure
 
     public function setSortable(): ModelStructure {
         $this->sortable = true;
+        return $this;
+    }
+
+    public function setRecursive(): ModelStructure {
+        $this->recursive = true;
         return $this;
     }
 
@@ -138,6 +145,10 @@ class ModelStructure
 
     public function isSortable(): bool {
         return $this->sortable;
+    }
+
+    public function isRecursive(): bool {
+        return $this->recursive;
     }
 }
 

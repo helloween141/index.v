@@ -32,7 +32,8 @@ export default defineComponent({
   },
   emits: ['set-value'],
   setup(props, {emit}) {
-    let selectedOption = ref((props.value).value)
+    const identifyLabel = props.field.identify || 'name'
+    const selectedOption = ref(props.value[identifyLabel])
     const pointerPath = parseModelPath(props.field.model)
 
     let model = null
@@ -60,11 +61,12 @@ export default defineComponent({
             },
             on: {
               selectRecord(record) {
-                const identifyKey = Object.keys(record)[1] || ''
-                selectedOption.value = record[identifyKey]
-
-                emit('set-value', props.field.name, record)
-                $vfm.hideAll()
+                const identifyField = model.fields.find(field => field.identify)
+                if (identifyField) {
+                  selectedOption.value = record[identifyField.name]
+                  emit('set-value', props.field.name, record)
+                  $vfm.hideAll()
+                }
               }
             }
           }

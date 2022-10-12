@@ -31,8 +31,8 @@ export default defineComponent({
   },
   emits: ['set-value'],
   setup(props, {emit}) {
+    const identifyLabel = props.field.identify || 'name'
     const options = ref([])
-    const identifyLabel = ref(props.field.identify || 'name')
     const selectedOption = ref()
 
     onMounted(async () => {
@@ -42,7 +42,7 @@ export default defineComponent({
       if (options.value.length > 0) {
         const currentOption = (options.value.find(option => option.id === props.value['id']))
         if (currentOption) {
-          selectedOption.value = currentOption[identifyLabel.value]
+          selectedOption.value = currentOption[identifyLabel]
         }
       }
     })

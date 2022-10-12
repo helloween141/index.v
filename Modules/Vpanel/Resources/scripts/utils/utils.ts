@@ -56,14 +56,20 @@ export const getRowsForEditorTable = (fields: any, data: any) => {
         if (field.inEditor) {
           const fName = field['name']
           const fValue = item[field['name']]
+          let mergeValue = {}
 
           if (field.type === 'date') {
-            obj = {...obj, [fName]: formatDate(fValue)}
+            mergeValue = {[fName]: formatDate(fValue)}
           } else if (field.type === 'select' && fValue) {
-            obj = {...obj, [fName]: field.options[fValue]}
+            mergeValue = {[fName]: field.options[fValue]}
+          } else if (field.type === 'pointer' && fValue) {
+            const identifyKey = Object.keys(fValue)[1] || ''
+            mergeValue = {[fName]: fValue[identifyKey]}
           } else {
-            obj = {...obj, [fName]: (fValue !== null) ? fValue : ''}
+            mergeValue = {[fName]: (fValue !== null) ? fValue : ''}
           }
+
+          obj = {...obj, ...mergeValue}
         }
       })
       result.push(obj)

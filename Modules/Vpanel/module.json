@@ -1,5 +1,20 @@
 {
     "name": "Vpanel",
+    "menu": {
+        "title": "Контроль доступа",
+        "icon": "fa-solid fa-key",
+        "module": "Vpanel",
+        "list": [
+            {
+                "model": "User",
+                "title": "Пользователи"
+            },
+            {
+                "model": "User",
+                "title": "Роли"
+            }
+        ]
+    },
     "alias": "vpanel",
     "description": "",
     "keywords": [],
