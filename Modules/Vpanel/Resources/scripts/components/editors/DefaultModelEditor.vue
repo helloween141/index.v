@@ -54,7 +54,9 @@ export default defineComponent({
 
     const selectRecord = (recordId) => {
       if (props.isModal) {
-        emit('select-record', recordId)
+        const record = (currentValues.value).data.find(item => item.id === recordId)
+
+        emit('select-record', record)
       } else {
         router.push({ name: 'module', params: {
             module: props.incPathData.module,

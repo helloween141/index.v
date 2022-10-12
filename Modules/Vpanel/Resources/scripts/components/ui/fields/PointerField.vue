@@ -27,7 +27,7 @@ export default defineComponent({
   name: 'PointerField',
   props: {
     field: Object,
-    value: [Number, Object]
+    value: Object
   },
   emits: ['set-value'],
   setup(props, {emit}) {
@@ -55,8 +55,7 @@ export default defineComponent({
       options,
       identifyLabel,
       selectedOption,
-      handleInput,
-      fetchData
+      handleInput
     }
   }
 })

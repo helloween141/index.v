@@ -119,6 +119,7 @@ abstract class BaseModel extends Model
         }
 
         Utils::prepareModelData($record);
+
         return $record[0];
     }
 

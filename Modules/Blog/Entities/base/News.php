@@ -64,7 +64,7 @@ class News extends BaseModel
                     ->setTitle('Стоимость')
                     ->setTooltip('В рублях')
                     ->showInFilter()
-                    ->showCondition('record.title === "test" && record.show')
+                    ->showCondition('record.show && record.author_id?.value')
             )
             ->addField(
                 SelectField::create()
@@ -81,7 +81,7 @@ class News extends BaseModel
                 PointerField::create()
                     ->setName('author_id')
                     ->setTitle('Автор')
-                    ->required()
+                    //->required()
                     ->setModel(Author::class)
                     ->modal()
                     ->showInFilter()
