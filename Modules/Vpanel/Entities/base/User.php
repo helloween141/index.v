@@ -13,36 +13,19 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Modules\Vpanel\Core\BaseModel;
+use Modules\Vpanel\Core\Fields\ImageField;
+use Modules\Vpanel\Core\Fields\PasswordField;
 use Modules\Vpanel\Core\Fields\StringField;
 use Modules\Vpanel\Core\ModelStructure;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Modules\Vpanel\Database\factories\UserFactory;
 
 class User extends BaseModel implements
     AuthenticatableContract,
     AuthorizableContract,
     CanResetPasswordContract
 {
-    use HasFactory, Authenticatable, Authorizable, CanResetPassword, MustVerifyEmail, HasApiTokens,  Notifiable;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var string[]
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    use HasFactory, Authenticatable, Authorizable, CanResetPassword, MustVerifyEmail, HasApiTokens, Notifiable;
 
     /**
      * The attributes that should be cast.
@@ -53,12 +36,17 @@ class User extends BaseModel implements
         'email_verified_at' => 'datetime',
     ];
 
+    protected static function newFactory(): Factory
+    {
+        return new UserFactory();
+    }
+
     public static function defineStructure(): ModelStructure
     {
         return ModelStructure::create()
             ->addField(
                 StringField::create()
-                    ->setName('')
+                    ->setName('name')
                     ->setTitle('Имя')
                     ->identify()
                     ->required()
@@ -67,7 +55,7 @@ class User extends BaseModel implements
             )
             ->addField(
                 StringField::create()
-                    ->setName('name')
+                    ->setName('login')
                     ->setTitle('Логин')
                     ->identify()
                     ->required()
@@ -83,11 +71,16 @@ class User extends BaseModel implements
                     ->showInSearch()
             )
             ->addField(
-                StringField::create()
+                PasswordField::create()
                     ->setName('password')
                     ->setTitle('Пароль')
                     ->hideFromEditor()
                     ->required()
+            )
+            ->addField(
+                ImageField::create()
+                    ->setName('avatar')
+                    ->setTitle('Аватар')
             )
             ->setModelTitle('Пользователи')
             ->setRecordTitle('пользователь')

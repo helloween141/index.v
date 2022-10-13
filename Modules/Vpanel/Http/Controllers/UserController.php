@@ -31,7 +31,7 @@ class UserController extends Controller
     {
         try {
             $user = new User();
-            $user->name = $request->name;
+            $user->login = $request->login;
             $user->email = $request->email;
             $user->password = Hash::make($request->password);
             $user->save();
@@ -55,7 +55,7 @@ class UserController extends Controller
      */
     public function login(Request $request)
     {
-        $credentials = $request->only('name', 'password');
+        $credentials = $request->only('login', 'password');
 
         if (Auth::attempt($credentials)) {
             return redirect()->route('dashboard');

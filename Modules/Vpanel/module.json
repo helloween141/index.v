@@ -10,7 +10,7 @@
                 "title": "Пользователи"
             },
             {
-                "model": "User",
+                "model": "Role",
                 "title": "Роли"
             }
         ]

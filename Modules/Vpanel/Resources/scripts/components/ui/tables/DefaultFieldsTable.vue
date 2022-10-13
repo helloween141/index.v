@@ -30,6 +30,13 @@
               @set-value="setValue"
           />
 
+          <PasswordField
+              v-if="field.type === 'password'"
+              :field="field"
+              :value="values[field.name]"
+              @set-value="setValue"
+          />
+
           <NumberField
               v-if="field.type === 'int' || field.type === 'float'"
               :field="field"
@@ -120,10 +127,12 @@ import FileField from "@/components/ui/fields/FileField.vue";
 import ImageField from "@/components/ui/fields/ImageField.vue";
 import Tooltip from "@/components/ui/Tooltip.vue";
 import {getShowConditions} from "@/utils/utils";
+import PasswordField from "@/components/ui/fields/PasswordField.vue";
 
 export default defineComponent({
   name: 'DefaultFieldsTable',
   components: {
+    PasswordField,
     Tooltip,
     ImageField, FileField, PointerModalField, NumberField, StringField, BoolField, DateField,
     PointerField, SelectField, HtmlField, TextField
