@@ -126,8 +126,8 @@ import PointerModalField from "@/components/ui/fields/PointerModalField.vue";
 import FileField from "@/components/ui/fields/FileField.vue";
 import ImageField from "@/components/ui/fields/ImageField.vue";
 import Tooltip from "@/components/ui/Tooltip.vue";
-import {getShowConditions} from "@/utils/utils";
 import PasswordField from "@/components/ui/fields/PasswordField.vue";
+import {getShowConditions} from "@/utils/utils";
 
 export default defineComponent({
   name: 'DefaultFieldsTable',

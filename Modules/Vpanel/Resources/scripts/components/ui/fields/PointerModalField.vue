@@ -1,6 +1,7 @@
 <template>
   <v-select
       v-model="selectedOption"
+      :label="identifyLabel"
       :clearable="!field.required"
       @click="handleClick"
       class="py-2 bg-gray-200 text-gray-700 rounded leading-tight focus:outline-none focus:bg-white focus:border-purple-500 custom-fx"
@@ -32,8 +33,9 @@ export default defineComponent({
   },
   emits: ['set-value'],
   setup(props, {emit}) {
-    const identifyLabel = props.field.identify || 'name'
-    const selectedOption = ref(props.value[identifyLabel])
+    let identifyField = {}
+    const identifyLabel = ref()
+    const selectedOption = ref(props.value)
     const pointerPath = parseModelPath(props.field.model)
 
     let model = null
@@ -42,6 +44,11 @@ export default defineComponent({
     onMounted(async () => {
       model = await loadInterface(pointerPath.module, pointerPath.model)
       values = await loadList(pointerPath.module, pointerPath.model, 1, [], '')
+
+      identifyField = model.fields.find(field => field.identify)
+      if (identifyField) {
+        identifyLabel.value = identifyField['name']
+      }
     })
 
     const handleClick = () => {
@@ -61,12 +68,9 @@ export default defineComponent({
             },
             on: {
               selectRecord(record) {
-                const identifyField = model.fields.find(field => field.identify)
-                if (identifyField) {
-                  selectedOption.value = record[identifyField.name]
-                  emit('set-value', props.field.name, record)
-                  $vfm.hideAll()
-                }
+                selectedOption.value = record[identifyLabel.value]
+                emit('set-value', props.field.name, record)
+                $vfm.hideAll()
               }
             }
           }
@@ -82,6 +86,7 @@ export default defineComponent({
 
     return {
       selectedOption,
+      identifyLabel,
       handleClick
     }
   }
