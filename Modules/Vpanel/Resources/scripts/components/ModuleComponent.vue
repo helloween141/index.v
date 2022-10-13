@@ -56,12 +56,6 @@ export default defineComponent({
             page = parseInt(route.query.page.toString())
           }
 
-          // if (route.query.master_id && route.query.key) {
-          //   const master_id: any = route.query.master_id
-          //   const key: any = route.query.key
-          //   filter = {...filter, ...{[key]: parseInt(master_id)}}
-          // }
-
           modelValues.value = await loadList(moduleName, modelName, page, filter)
           const editorComponent = modelInterface.value['editorComponent']
           targetComponent.value = editorComponent ? loadCustomComponent(editorComponent, moduleName) : loadEditorComponent()

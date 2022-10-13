@@ -64,7 +64,7 @@ abstract class Field
         return $this;
     }
 
-    public function setDefault(mixed $value): Field
+    public function setDefaultValue(mixed $value): Field
     {
         $this->defaultValue = $value;
         return $this;

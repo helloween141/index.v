@@ -55,7 +55,7 @@ class News extends BaseModel
                 DateField::create()
                     ->setName('date')
                     ->setTitle('Дата')
-                    ->setDefault(date('Y-m-d'))
+                    ->setDefaultValue(date('Y-m-d'))
                     ->showInFilter()
             )
             ->addField(
@@ -64,7 +64,7 @@ class News extends BaseModel
                     ->setTitle('Стоимость')
                     ->setTooltip('В рублях')
                     ->showInFilter()
-                    ->showCondition('record.show && record.author_id === 2')
+                    ->showCondition('record.show && record.author_id?.id === 2')
             )
             ->addField(
                 SelectField::create()

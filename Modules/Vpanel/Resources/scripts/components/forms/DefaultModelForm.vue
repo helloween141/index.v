@@ -49,13 +49,15 @@
             :values="currentValues"
             @set-value="setValue"
         />
-        <div v-for="additionalModel in additionalModels" class="mt-5">
-          <ModuleComponent
-              :module="additionalModel.module"
-              :model="additionalModel.model"
-              :default-filter="additionalModel.filter"
-              :is-child="true"
-          />
+        <div v-if="currentValues.id > 0">
+          <div v-for="additionalModel in additionalModels" class="mt-5">
+            <ModuleComponent
+                :module="additionalModel.module"
+                :model="additionalModel.model"
+                :default-filter="additionalModel.filter"
+                :is-child="true"
+            />
+          </div>
         </div>
       </section>
 
