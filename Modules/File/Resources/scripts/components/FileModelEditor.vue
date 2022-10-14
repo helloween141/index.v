@@ -2,13 +2,13 @@
   <div v-if="incModel">
     <EditorActionPanel
         :is-child="isChild"
-        :is-modal="!!isModal"
+        :is-modal="isModal"
         :model="incModel"
         @on-create="createRecord"
         @on-search="applySearch"
     />
 
-    <DefaultEditorTable
+    <ImageEditorTable
         @select-record="selectRecord"
         @set-page="setPage"
         :model="incModel"
@@ -19,16 +19,16 @@
 
 <script lang="ts">
 import {defineComponent, ref} from "vue";
-import DefaultEditorTable from "@/components/ui/tables/DefaultEditorTable.vue";
 import router from "@/router";
 import EditorActionPanel from "@/components/ui/EditorActionPanel.vue";
 import {getRouteParameters} from "@/utils/utils";
 import {loadList} from "@/api/actionEditor";
 import {useRoute} from "vue-router";
+import ImageEditorTable from "./ImageEditorTable.vue";
 
 export default defineComponent({
   name: 'FileModelEditor',
-  components: {EditorActionPanel, DefaultEditorTable},
+  components: {ImageEditorTable, EditorActionPanel},
   emits: ['select-record', 'reload'],
   props: {
     incModel: Object,
@@ -40,7 +40,6 @@ export default defineComponent({
   setup(props, { emit }) {
     const route = useRoute()
     const currentValues = ref(props.incValues)
-    const showFilterPanel = ref(!!route.query.f)
     const {moduleName, modelName} = getRouteParameters(route)
 
     const selectRecord = (recordId) => {

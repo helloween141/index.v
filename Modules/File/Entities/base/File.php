@@ -23,6 +23,20 @@ class File extends BaseModel
     public static function defineStructure(): ModelStructure
     {
         return ModelStructure::create()
+            ->addField(
+                StringField::create()
+                    ->setName('name')
+                    ->setTitle('Название')
+                    ->identify()
+                    ->required()
+                    ->showInSearch()
+            )
+            ->addField(
+                StringField::create()
+                    ->setName('path')
+                    ->setTitle('Путь')
+                    ->hideFromForm()
+            )
             ->setEditorComponent('FileModelEditor')
             ->setModelTitle('Файлы и изображения')
             ->setRecordTitle('')
