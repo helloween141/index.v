@@ -1,7 +1,7 @@
 {
     "name": "Vpanel",
     "menu": {
-        "title": "Контроль доступа",
+        "title": "Система",
         "icon": "fa-solid fa-key",
         "module": "Vpanel",
         "list": [
@@ -12,6 +12,10 @@
             {
                 "model": "Role",
                 "title": "Роли"
+            },
+            {
+                "model": "Constant",
+                "title": "Константы"
             }
         ]
     },

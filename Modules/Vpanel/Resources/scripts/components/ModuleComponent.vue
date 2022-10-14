@@ -31,14 +31,18 @@ export default defineComponent({
   },
   setup(props) {
     const route = useRoute()
-    const modelInterface = ref({})
-    const modelValues = ref({})
+    const modelInterface = ref()
+    const modelValues = ref()
     const targetComponent = shallowRef()
     const pathData = ref()
 
     const loadModule = async (moduleName, modelName, recordId) => {
       if (moduleName && modelName) {
         modelInterface.value = await loadInterface(moduleName, modelName)
+
+        if (modelInterface.value?.single) {
+          recordId = 1
+        }
 
         if (recordId >= 0) {
           modelValues.value = await loadRecord(moduleName, modelName, recordId)

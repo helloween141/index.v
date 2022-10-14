@@ -28,6 +28,7 @@ class MainRequestController extends Controller
 
     public function getInterface(string $moduleName, string $modelName): JsonResponse
     {
+        /** @var $model BaseModel */
         $model = Utils::getModelClass($moduleName, $modelName);
         if (!class_exists($model)) {
             throw new \Error(ApiError::MODEL_NOT_FOUND);
@@ -39,6 +40,7 @@ class MainRequestController extends Controller
 
     public function getList(Request $request, string $moduleName = '', string $modelName = ''): JsonResponse
     {
+        /** @var $model BaseModel */
         $model = Utils::getModelClass($moduleName, $modelName);
         if (!class_exists($model)) {
             throw new \Error(ApiError::MODEL_NOT_FOUND);
@@ -48,7 +50,6 @@ class MainRequestController extends Controller
         $search = $request->get('search', '');
         $page = $request->get('page');
 
-        /** @var $model BaseModel */
         $list = $model::getList(
             params: [
                 'page' => $page,
@@ -61,6 +62,7 @@ class MainRequestController extends Controller
 
     public function getRecord(string $moduleName, string $modelName, int $id = 0): JsonResponse
     {
+        /** @var $model BaseModel */
         $model = Utils::getModelClass($moduleName, $modelName);
         if (!class_exists($model)) {
             throw new \Error(ApiError::MODEL_NOT_FOUND);
@@ -107,13 +109,14 @@ class MainRequestController extends Controller
     }
 
     public function sortList(Request $request, string $moduleName, string $modelName) {
+        /** @var $model BaseModel */
         $model = Utils::getModelClass($moduleName, $modelName);
         if (!class_exists($model)) {
             throw new \Error(ApiError::MODEL_NOT_FOUND);
         }
+
         $data = $request->post('data', []);
 
-        /** @var $model BaseModel */
         $model::sortList($data);
 
         return response()->json(true, Response::HTTP_OK);

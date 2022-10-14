@@ -138,13 +138,19 @@ export default defineComponent({
 
     const onSave = async () => {
       const formData = prepareFormData(currentValues.value)
-      const id = await saveRecord(moduleName, modelName, recordId, formData)
+
+      const id = await saveRecord(
+          moduleName,
+          modelName,
+          !props.incModel.single ? recordId : 1,
+          formData
+      )
 
       if (id) {
         toast.success(APIMessage.SUCCESS_SAVE)
         if (id === recordId) {
           emit('reload', moduleName, modelName, recordId)
-        } else {
+        } else if (!props.incModel.single) {
           await router.push({name: 'module', params: {'module': moduleName, 'model': modelName, id}})
         }
       }

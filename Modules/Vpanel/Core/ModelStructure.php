@@ -26,6 +26,8 @@ class ModelStructure
 
     protected bool $recursive = false;
 
+    protected bool $single = false;
+
     static function create(): ModelStructure
     {
         return new ModelStructure();
@@ -83,6 +85,11 @@ class ModelStructure
         return $this;
     }
 
+    public function setSingle(): ModelStructure {
+        $this->single = true;
+        return $this;
+    }
+
     /**
      * @return Field[]
      */
@@ -128,7 +135,6 @@ class ModelStructure
                 return $field->getName();
             }
         }
-
         return '';
     }
 
@@ -149,6 +155,10 @@ class ModelStructure
 
     public function isRecursive(): bool {
         return $this->recursive;
+    }
+
+    public function isSingle(): bool {
+        return $this->single;
     }
 }
 

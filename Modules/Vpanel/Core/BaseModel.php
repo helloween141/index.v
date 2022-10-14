@@ -114,8 +114,8 @@ abstract class BaseModel extends Model
 
         $record = $query->get();
 
-        if (!$record) {
-            return null;
+        if ($structure->isSingle() && count($record) === 0) {
+            return true;
         }
 
         Utils::prepareModelData($record);
@@ -156,7 +156,7 @@ abstract class BaseModel extends Model
 
         $validatedData = $validator->getData();
 
-        if (count($files) > 0) {
+        if (class_exists(File::class) && count($files) > 0) {
             foreach ($files as $key => $file) {
                 $uploadedFile = File::uploadFile($file);
                 if ($uploadedFile) {
@@ -165,12 +165,12 @@ abstract class BaseModel extends Model
             }
         }
 
-        $query = static::query();
+        $record = static::query()->find($id);
 
-        if ($id > 0) {
-            $query->findOrFail($id)->update($validatedData);
+        if ($record) {
+            $record->update($validatedData);
         } else {
-            $id = ($query->create($validatedData))->id;
+            $id = (static::query()->create($validatedData))->id;
         }
 
         return [
