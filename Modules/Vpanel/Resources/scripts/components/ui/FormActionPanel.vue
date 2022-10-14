@@ -6,7 +6,7 @@
         Назад
       </span>
     </button>
-    <button v-show="!model.single" @click.prevent="onDelete" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-3">
+    <button v-if="!model.single" @click.prevent="onDelete" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-3">
       <span class="text-white">
         Удалить
       </span>

@@ -97,7 +97,6 @@ class News extends BaseModel
                 ImageField::create()
                     ->setName('image')
                     ->setTitle('Изображение')
-                    ->hideFromEditor()
             )
             ->addField(
                 TextField::create()

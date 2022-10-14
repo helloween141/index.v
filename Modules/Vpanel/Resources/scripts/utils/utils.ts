@@ -1,4 +1,5 @@
 import moment from 'moment';
+import {markRaw} from "vue";
 
 export const prepareFormData = (values: object) => {
   const data = new FormData()
@@ -62,6 +63,11 @@ export const getRowsForEditorTable = (fields: any, data: any) => {
             mergeValue = {[fName]: formatDate(fValue)}
           } else if (field.type === 'select' && fValue) {
             mergeValue = {[fName]: field.options[fValue]}
+          } else if (field.type === 'image' && fValue) {
+            mergeValue = {[fName]: {
+              'src': fValue.value ? getStoragePath() + fValue.value : '',
+              'isImage': true
+            }}
           } else if (field.type === 'pointer' && fValue) {
             const identifyKey = Object.keys(fValue)[1] || ''
             mergeValue = {[fName]: fValue[identifyKey]}

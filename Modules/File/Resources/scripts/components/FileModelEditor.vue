@@ -6,19 +6,11 @@
         :model="incModel"
         @on-create="createRecord"
         @on-search="applySearch"
-        @on-toggle-filter="toggleFilterPanel"
-    />
-
-    <EditorFilterPanel
-        v-show="showFilterPanel"
-        :fields="filterFields"
-        @on-filter="applyFilter"
     />
 
     <DefaultEditorTable
         @select-record="selectRecord"
         @set-page="setPage"
-        @change-sort="changeSort"
         :model="incModel"
         :values="currentValues"
     />
@@ -30,14 +22,13 @@ import {defineComponent, ref} from "vue";
 import DefaultEditorTable from "@/components/ui/tables/DefaultEditorTable.vue";
 import router from "@/router";
 import EditorActionPanel from "@/components/ui/EditorActionPanel.vue";
-import EditorFilterPanel from "@/components/ui/EditorFilterPanel.vue";
-import {getFieldsForFilter, getRouteParameters} from "@/utils/utils";
-import {loadList, sortList} from "@/api/actionEditor";
+import {getRouteParameters} from "@/utils/utils";
+import {loadList} from "@/api/actionEditor";
 import {useRoute} from "vue-router";
 
 export default defineComponent({
-  name: 'DefaultModelEditor',
-  components: {EditorFilterPanel, EditorActionPanel, DefaultEditorTable},
+  name: 'FileModelEditor',
+  components: {EditorActionPanel, DefaultEditorTable},
   emits: ['select-record', 'reload'],
   props: {
     incModel: Object,
@@ -88,17 +79,6 @@ export default defineComponent({
       }
     }
 
-    const applyFilter = async (filter) => {
-      if (props.isModal) {
-        currentValues.value = await loadList(props.incPathData.module, props.incPathData.model, 1, filter, '')
-      } else {
-        (Object.keys(filter).length === 0)
-            ? await router.push({path: route.path})
-            : await router.push({path: route.path, query: {f: JSON.stringify(filter)} })
-        emit('reload', moduleName, modelName)
-      }
-    }
-
     const setPage = async (page: number) => {
       if (props.isModal) {
         currentValues.value = await loadList(props.incPathData.module, props.incPathData.model, page, [], '')
@@ -108,26 +88,11 @@ export default defineComponent({
       }
     }
 
-    const changeSort = async(sortData) => {
-      await sortList(props.incPathData.module, props.incPathData.model, sortData)
-    }
-
-    const toggleFilterPanel = (value) => {
-      showFilterPanel.value = value
-    }
-
-    const filterFields = getFieldsForFilter(props.incModel.fields)
-
     return {
       selectRecord,
       createRecord,
-      toggleFilterPanel,
-      applyFilter,
       applySearch,
       setPage,
-      changeSort,
-      showFilterPanel,
-      filterFields,
       currentValues
     }
   }

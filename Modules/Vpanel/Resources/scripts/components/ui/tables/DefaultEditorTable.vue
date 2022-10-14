@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="rows && rows.length > 0">
     <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
       {{rows}}
       <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -12,10 +12,10 @@
         </thead>
         <Draggable
             v-model="rows"
-            tag="tbody"
-            item-key="sort"
             :disabled="!model.sortable"
             @change="onChangeSort"
+            tag="tbody"
+            item-key="sort"
         >
             <template #item="{element}">
               <tr
@@ -26,12 +26,8 @@
                   v-show="key !== 'id'"
                   class="py-4 px-6"
                 >
-                  <span v-if="val && val.value">
-                    {{ val.value }}
-                  </span>
-                  <span v-else>
-                    {{ val }}
-                  </span>
+                  <img v-if="val.isImage" :src="val.src" />
+                  <span v-if="!val.isImage">{{ val }}</span>
                 </td>
               </tr>
             </template>
@@ -42,6 +38,9 @@
         :pages="values"
         @set-page="setPage"
     />
+  </div>
+  <div v-else>
+    <p class="font-normal text-gray-700 dark:text-gray-400">Записи не найдены!</p>
   </div>
 </template>
 
