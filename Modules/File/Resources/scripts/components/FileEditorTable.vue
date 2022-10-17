@@ -1,8 +1,14 @@
 <template>
   <div v-if="values && values.data.length > 0">
-    <div class="flex">
-      <div v-for="item in values.data">
-        <img class="max-w-xs h-auto" :src="`/storage/${item.path}`" />
+    <div class="container grid grid-cols-4 gap-fx">
+      <div v-for="item in values.data"
+           class="w-full rounded cursor-pointer"
+           @click="onClick(item.id)"
+      >
+        <div>
+          <img :src="getLink(item.path)" :alt="item.name" />
+        </div>
+
       </div>
     </div>
     <Pagination
@@ -18,18 +24,18 @@
 <script lang="ts">
 import {defineComponent, onMounted, ref, watch} from "vue";
 import Pagination from "@/components/ui/Pagination.vue";
-import {getHeadersForEditorTable, getRowsForEditorTable} from "@/utils/utils";
+import {getHeadersForEditorTable, getRowsForEditorTable, getStoragePath} from "@/utils/utils";
 import Draggable from 'vuedraggable'
 
 export default defineComponent({
-  name: 'ImageEditorTable',
+  name: 'FileEditorTable',
   components: {Pagination, Draggable},
   emits: ['select-record', 'set-page', 'change-sort'],
   props: {
     model: Object,
     values: Object
   },
-  setup(props, { emit }) {
+  setup(props, {emit}) {
     const onClick = (recordId: number) => {
       emit('select-record', recordId)
     }
@@ -38,13 +44,21 @@ export default defineComponent({
       emit('set-page', page)
     }
 
+    const getLink = (path) => {
+      return path ? getStoragePath() + path : '#'
+    }
+
     return {
       onClick,
-      setPage
+      setPage,
+      getLink
     }
   },
 })
 </script>
 
 <style scoped>
+.gap-fx {
+  gap: 1rem;
+}
 </style>

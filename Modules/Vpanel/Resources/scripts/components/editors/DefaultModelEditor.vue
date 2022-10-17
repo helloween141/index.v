@@ -15,7 +15,16 @@
         @on-filter="applyFilter"
     />
 
+    <RecursiveEditorTable
+        v-if="incModel.recursive"
+        @select-record="selectRecord"
+        @set-page="setPage"
+        @change-sort="changeSort"
+        :model="incModel"
+        :values="currentValues"
+    />
     <DefaultEditorTable
+        v-else
         @select-record="selectRecord"
         @set-page="setPage"
         @change-sort="changeSort"
@@ -34,10 +43,11 @@ import EditorFilterPanel from "@/components/ui/EditorFilterPanel.vue";
 import {getFieldsForFilter, getRouteParameters} from "@/utils/utils";
 import {loadList, sortList} from "@/api/actionEditor";
 import {useRoute} from "vue-router";
+import RecursiveEditorTable from "@/components/ui/tables/RecursiveEditorTable.vue";
 
 export default defineComponent({
   name: 'DefaultModelEditor',
-  components: {EditorFilterPanel, EditorActionPanel, DefaultEditorTable},
+  components: {RecursiveEditorTable, EditorFilterPanel, EditorActionPanel, DefaultEditorTable},
   emits: ['select-record', 'reload'],
   props: {
     incModel: Object,

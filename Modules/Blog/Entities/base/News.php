@@ -107,6 +107,7 @@ class News extends BaseModel
                 HtmlField::create()
                     ->setName('full_text')
                     ->setTitle('Полное описание')
+                    ->hideFromEditor()
             )
             ->addChildModel(
                 ChildModel::create()

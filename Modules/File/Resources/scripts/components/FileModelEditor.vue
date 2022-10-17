@@ -8,7 +8,7 @@
         @on-search="applySearch"
     />
 
-    <ImageEditorTable
+    <FileEditorTable
         @select-record="selectRecord"
         @set-page="setPage"
         :model="incModel"
@@ -24,11 +24,11 @@ import EditorActionPanel from "@/components/ui/EditorActionPanel.vue";
 import {getRouteParameters} from "@/utils/utils";
 import {loadList} from "@/api/actionEditor";
 import {useRoute} from "vue-router";
-import ImageEditorTable from "./ImageEditorTable.vue";
+import FileEditorTable from "./FileEditorTable.vue";
 
 export default defineComponent({
   name: 'FileModelEditor',
-  components: {ImageEditorTable, EditorActionPanel},
+  components: {FileEditorTable, EditorActionPanel},
   emits: ['select-record', 'reload'],
   props: {
     incModel: Object,

@@ -31,6 +31,16 @@ class File extends BaseModel
                     ->required()
                     ->showInSearch()
             )
+//            ->addField(
+//                SelectField::create()
+//                    ->setName('type')
+//                    ->setTitle('Тип')
+//                    ->required()
+//                    ->setOptions([
+//                        'image' => 'Изображение',
+//                        'file' => 'Файл',
+//                    ])
+//            )
             ->addField(
                 StringField::create()
                     ->setName('path')

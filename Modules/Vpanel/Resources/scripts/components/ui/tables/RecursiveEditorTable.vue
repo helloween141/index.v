@@ -26,7 +26,7 @@
                   v-show="key !== 'id'"
                   class="py-4 px-6"
                 >
-                  <img v-if="val.isImage" :src="val.src" class="w-6/12 sm:w-4/12"/>
+                  <img v-if="val.isImage" :src="val.src" class="w-6/12 sm:w-4/12" />
                   <span v-if="!val.isImage">{{ val }}</span>
                 </td>
               </tr>
@@ -51,7 +51,7 @@ import {getHeadersForEditorTable, getRowsForEditorTable} from "@/utils/utils";
 import Draggable from 'vuedraggable'
 
 export default defineComponent({
-  name: 'DefaultEditorTable',
+  name: 'RecursiveEditorTable',
   components: {Pagination, Draggable},
   emits: ['select-record', 'set-page', 'change-sort'],
   props: {
