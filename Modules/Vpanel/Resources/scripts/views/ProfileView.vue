@@ -11,12 +11,15 @@
           @set-value="setValue"
         />
 
-        <button type="submit" @click.prevent="onSave"
-                class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-3">
+        <div class="flex justify-end">
+          <button type="submit" @click.prevent="onSave"
+                  class="mt-5 bg-green-500 float-right hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
           <span class="text-white">
             Сохранить
           </span>
-        </button>
+          </button>
+        </div>
+
       </form>
     </div>
   </div>
@@ -30,18 +33,22 @@ import {useUserStore} from "@/stores/user";
 import axios from "axios";
 import {APISettings} from "@/api/config";
 import {useToast} from "vue-toastification";
+import {APIMessage} from "@/api/messages";
+import router from "@/router";
+import {prepareFormData} from "@/utils/utils";
 
 export default defineComponent({
   components: {DefaultFieldsTable},
   setup() {
+    const toast = useToast()
     const userStore = useUserStore()
-    const currentValues = ref()
-    const modelInterface = ref()
+    const currentValues = ref(null)
+    const modelInterface = ref(null)
 
 
     onMounted(async () => {
       modelInterface.value = await loadInterface('Vpanel', 'User')
-      currentValues.value = userStore.user
+      currentValues.value = {...currentValues.value, ...userStore.user }
     })
 
     const setValue = (fieldName: string, fieldValue: any) => {
@@ -50,17 +57,13 @@ export default defineComponent({
 
     const onSave = async () => {
       try {
-        console.log(APISettings.baseURL + `/user/update`)
-        const response = await axios.post(APISettings.baseURL + `/user/update`, {
-          'name': currentValues.value.name,
-          'login': currentValues.value.login,
-          'email': currentValues.value.email,
-          'new_password': currentValues.value.new_password,
-        })
-
-        //return response.data.recordId
+        const formData = prepareFormData(currentValues.value)
+        
+        await axios.post(APISettings.baseURL + `/user/update`, formData)
+        toast.success(APIMessage.SUCCESS_SAVE)
+        router.go(0)
       } catch (error) {
-        //useToast().error(APIMessage.ERROR_SAVE)
+        toast.error(APIMessage.ERROR_SAVE)
         console.error(error)
       }
     }

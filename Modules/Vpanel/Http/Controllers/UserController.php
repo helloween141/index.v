@@ -66,6 +66,12 @@ class UserController extends Controller
                 $user->password = Hash::make($request->new_password);
             }
 
+            $avatar = $request->file();
+
+            if ($avatar) {
+                print 13; die;
+            }
+
             $user->save();
             $success = true;
             $message = 'Пользователь успешно создан';

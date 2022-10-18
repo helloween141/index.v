@@ -2,9 +2,9 @@
   <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
     <tbody>
       <tr
-          v-for="field in fields"
+          v-for="(field, key) in fields"
           v-show="field.inForm"
-          :key="field"
+          :key="key"
           class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white odd:bg-gray-50"
       >
         <th scope="row" class="px-4 py-4 whitespace-nowrap w-48">
@@ -94,16 +94,10 @@
           />
 
           <FileField
-              v-else-if="field.type === 'file'"
+              v-else-if="field.type === 'file' || field.type === 'image'"
               :field="field"
               :value="values[field.name]"
-              @set-value="setValue"
-          />
-
-          <ImageField
-              v-else-if="field.type === 'image'"
-              :field="field"
-              :value="values[field.name]"
+              :key="key"
               @set-value="setValue"
           />
         </td>
@@ -124,7 +118,6 @@ import BoolField from "@/components/ui/fields/BoolField.vue";
 import NumberField from "@/components/ui/fields/NumberField.vue";
 import PointerModalField from "@/components/ui/fields/PointerModalField.vue";
 import FileField from "@/components/ui/fields/FileField.vue";
-import ImageField from "@/components/ui/fields/ImageField.vue";
 import Tooltip from "@/components/ui/Tooltip.vue";
 import PasswordField from "@/components/ui/fields/PasswordField.vue";
 import {getShowConditions} from "@/utils/utils";
@@ -132,9 +125,7 @@ import {getShowConditions} from "@/utils/utils";
 export default defineComponent({
   name: 'DefaultFieldsTable',
   components: {
-    PasswordField,
-    Tooltip,
-    ImageField, FileField, PointerModalField, NumberField, StringField, BoolField, DateField,
+    PasswordField, Tooltip, FileField, PointerModalField, NumberField, StringField, BoolField, DateField,
     PointerField, SelectField, HtmlField, TextField
   },
   props: {
