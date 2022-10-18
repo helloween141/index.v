@@ -1,5 +1,6 @@
 import {defineStore} from 'pinia'
 import axios from "axios";
+import {APISettings} from "@/api/config";
 
 export interface User {
     id: number | 0,
@@ -18,10 +19,13 @@ export const useUserStore = defineStore({
         auth: false,
         user: {}
     }),
+    getters: {
+        getUser() { return this.user }
+    },
     actions: {
         async getUserData() {
             try {
-                const userInfo = await axios.get('/api/user')
+                const userInfo = await axios.get(APISettings.baseURL + `/user`)
                 this.auth = true
                 this.user = userInfo.data
             } catch (error) {

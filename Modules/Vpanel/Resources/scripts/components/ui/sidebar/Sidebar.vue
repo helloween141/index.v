@@ -41,14 +41,14 @@
       <div>
         <ul>
           <li>
-            <RouterLink to="/" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
+            <RouterLink to="/admin/profile" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
               <img class="w-6 h-6 rounded-full"
                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6X6SlR7kCahU2erUQtNwHMTGyznLddopKDA&usqp=CAU"
               >
               <span class="ml-4">{{ userStore.user.name }}</span>
             </RouterLink>
           </li>
-            <a href="/admin/logout/" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
+            <a href="/admin/logout" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
               <i class="fa-solid fa-sign-out text-gray-500 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white dark:text-gray-400"></i>
               <span class="ml-3">Выйти</span>
             </a>

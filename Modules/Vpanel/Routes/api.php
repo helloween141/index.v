@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Vpanel\Http\Controllers\MainRequestController;
+use Modules\Vpanel\Http\Controllers\UserController;
 
 Route::group(['prefix' => 'vpanel', 'middleware' => 'auth'], function () {
     Route::get('/menu', [MainRequestController::class, 'getMenu']);
@@ -11,12 +12,13 @@ Route::group(['prefix' => 'vpanel', 'middleware' => 'auth'], function () {
     Route::get('/{moduleName}/{modelName}/delete/{id}', [MainRequestController::class, 'deleteRecord']);
     Route::post('/{moduleName}/{modelName}/save/{id}', [MainRequestController::class, 'saveRecord']);
     Route::post('/{moduleName}/{modelName}/sort-list', [MainRequestController::class, 'sortList']);
-});
 
-Route::group(['prefix' => 'user'], function () {
-    Route::get('/', function () {
-        return Auth::user();
+    Route::group(['prefix' => 'user'], function () {
+        Route::get('/', function () {
+            return Auth::user();
+        });
+        Route::post('/create', function (Request $request) {});
+        Route::post('/update', [UserController::class, 'update']);
     });
-    Route::get('/profile', function (Request $request) {});
-    Route::post('/create', function (Request $request) {});
+
 });

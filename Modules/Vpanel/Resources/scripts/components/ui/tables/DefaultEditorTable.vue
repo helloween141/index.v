@@ -26,8 +26,8 @@
                   v-show="key !== 'id'"
                   class="py-4 px-6"
                 >
-                  <img v-if="val.isImage" :src="val.src" class="w-6/12 sm:w-4/12"/>
-                  <span v-if="!val.isImage">{{ val }}</span>
+                  <img v-if="val && val.isImage" :src="val.src" class="w-6/12 sm:w-4/12"/>
+                  <span v-if="val && !val.isImage">{{ val }}</span>
                 </td>
               </tr>
             </template>

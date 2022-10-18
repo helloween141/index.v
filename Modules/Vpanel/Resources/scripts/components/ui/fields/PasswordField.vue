@@ -3,7 +3,6 @@
       type="password"
       v-model="currentValue"
       @input="handleInput"
-      required
       placeholder="Новый пароль"
       class="mb-5 bg-gray-200 appearance-none border-gray-200 rounded w-full text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
   />
@@ -12,7 +11,6 @@
       type="password"
       @input="handleInput"
       v-model="repeatValue"
-      required
       placeholder="Подтвердите пароль"
       class="bg-gray-200 appearance-none border-gray-200 rounded w-full text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
   />
@@ -29,14 +27,14 @@ export default defineComponent({
   },
   emits: ['set-value'],
   setup(props, {emit}) {
-    const currentValue = ref(props.value || props.field.default)
+    const currentValue = ref()
     const repeatValue = ref()
 
     const handleInput = () => {
       if (currentValue.value === repeatValue.value) {
-        emit('set-value', props.field.name, currentValue.value)
+        emit('set-value', 'new_password', currentValue.value)
       } else {
-        emit('set-value', props.field.name, '')
+        emit('set-value', 'new_password', '')
       }
     }
 

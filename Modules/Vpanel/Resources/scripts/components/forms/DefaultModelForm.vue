@@ -106,7 +106,6 @@ export default defineComponent({
 
     onMounted( () => {
       setActiveTab(route.query.tab || '')
-
       currentValues.value = {...currentValues.value, ...route.query}
     })
 

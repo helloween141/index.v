@@ -31,11 +31,42 @@ class UserController extends Controller
     {
         try {
             $user = new User();
+            $user->name = $request->name;
             $user->login = $request->login;
             $user->email = $request->email;
             $user->password = Hash::make($request->password);
             $user->save();
 
+            $success = true;
+            $message = 'Пользователь успешно создан';
+        } catch (QueryException $ex) {
+            $success = false;
+            $message = $ex->getMessage();
+        }
+
+        $response = [
+            'success' => $success,
+            'message' => $message,
+        ];
+        return response()->json($response);
+    }
+
+    /**
+     * Update
+     */
+    public function update(Request $request): JsonResponse
+    {
+        try {
+            $user = Auth::user();
+
+            $user->name = $request->name;
+            $user->login = $request->login;
+            $user->email = $request->email;
+            if ($request->new_password) {
+                $user->password = Hash::make($request->new_password);
+            }
+
+            $user->save();
             $success = true;
             $message = 'Пользователь успешно создан';
         } catch (QueryException $ex) {
