@@ -9,7 +9,7 @@
         <div v-if="currentValue && currentValue.name">
           <div v-if="field.type === 'image'">
             <p class="flex flex-col items-center text-sm text-gray-500 dark:text-gray-400">
-              <img class="w-6/12 sm:w-4/12" :src="getLink(currentValue.value)"  alt=""/>
+              <img class="w-6/12 sm:w-4/12" :src="getLink(currentValue.value)"/>
               <span class="font-semibold">{{ currentValue.name }}</span>
             </p>
           </div>
@@ -30,18 +30,16 @@
       <input :id="`dropzone-${field.type}${key}`" type="file" class="hidden" ref="file" @change="onChange($event)" />
     </label>
     <div class="mt-3" v-if="currentValue">
-      <a
-          :href="getLink(currentValue.value)"
-          v-if="currentValue.id"
-          download
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-3">
+      <a v-if="currentValue.id"
+         :href="getLink(currentValue.value)"
+         download
+         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-3">
         Скачать
       </a>
-      <a
-          href="#"
-          v-if="currentValue.name"
-          @click.prevent="onReset"
-          class="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-3">
+      <a v-if="currentValue.name"
+         href="#"
+         @click.prevent="onReset"
+         class="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-3">
         Удалить
       </a>
     </div>

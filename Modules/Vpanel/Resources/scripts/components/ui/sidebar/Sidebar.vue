@@ -43,7 +43,11 @@
           <li>
             <RouterLink to="/admin/profile" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
               <img v-if="userStore.user.avatar"
-                   :src="`${getLink(userStore.user.avatar.value)}`"
+                   :src="getLink(userStore.user.avatar.value)"
+                   class="w-9 h-9 rounded-full"
+              />
+              <img v-else
+                   src="@/assets/images/default-avatar.png"
                    class="w-9 h-9 rounded-full"
               />
               <span class="ml-3">{{ userStore.user.name }}</span>
