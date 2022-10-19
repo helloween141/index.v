@@ -1,5 +1,5 @@
 import moment from 'moment';
-import {markRaw} from "vue";
+import {STORAGE_PATH} from "@/api/config";
 
 export const prepareFormData = (values: object) => {
   const data = new FormData()
@@ -65,7 +65,7 @@ export const getRowsForEditorTable = (fields: any, data: any) => {
             mergeValue = {[fName]: field.options[fValue]}
           } else if (field.type === 'image' && fValue) {
             mergeValue = {[fName]: {
-              'src': fValue.value ? getStoragePath() + fValue.value : '',
+              'src': fValue.value ? getLink(fValue.value) : '',
               'isImage': true
             }}
           } else if (field.type === 'pointer' && fValue) {
@@ -104,8 +104,8 @@ export const formatDate = (date) => {
   return moment(date).format('DD.MM.YYYY')
 }
 
-export const getStoragePath = () => {
-  return '/storage/'
+export const getLink = (value) => {
+  return `${STORAGE_PATH}${value}`
 }
 
 export const parseModelPath = (path: string) => {

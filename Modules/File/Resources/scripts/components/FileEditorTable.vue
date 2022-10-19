@@ -1,14 +1,16 @@
 <template>
   <div v-if="values && values.data.length > 0">
-    <div class="container grid grid-cols-4 gap-fx">
+    <div class="container grid grid-cols-4 gap-fx mx-auto">
       <div v-for="item in values.data"
-           class="w-full rounded cursor-pointer"
+           class="w-full rounded cursor-pointer text-center"
            @click="onClick(item.id)"
       >
-        <div>
-          <img :src="getLink(item.path)" :alt="item.name" />
+        <div class="border w-full">
+          <img :src="getLink(item.path)" :alt="item.name"/>
         </div>
-
+        <div>
+          <span>{{item.name}}</span>
+        </div>
       </div>
     </div>
     <Pagination
@@ -22,9 +24,9 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, ref, watch} from "vue";
+import {defineComponent} from "vue";
 import Pagination from "@/components/ui/Pagination.vue";
-import {getHeadersForEditorTable, getRowsForEditorTable, getStoragePath} from "@/utils/utils";
+import {getLink} from "@/utils/utils";
 import Draggable from 'vuedraggable'
 
 export default defineComponent({
@@ -42,10 +44,6 @@ export default defineComponent({
 
     const setPage = (page: number) => {
       emit('set-page', page)
-    }
-
-    const getLink = (path) => {
-      return path ? getStoragePath() + path : '#'
     }
 
     return {

@@ -1,6 +1,4 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import DashboardView from "@/views/DashboardView.vue";
-import ProfileView from "@/views/ProfileView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,17 +12,17 @@ const router = createRouter({
             }
         },
         {
-            path: '/admin',
-            name: 'dashboard',
-            component: () => DashboardView,
+            path: '/admin/profile',
+            name: 'profile',
+            component: () => import('../views/ProfileView.vue'),
             meta: {
                 middleware: 'auth'
             }
         },
         {
-            path: '/admin/profile',
-            name: 'profile',
-            component: () => ProfileView,
+            path: '/admin',
+            name: 'dashboard',
+            component: () => import('../views/DashboardView.vue'),
             meta: {
                 middleware: 'auth'
             }

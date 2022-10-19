@@ -42,10 +42,11 @@
         <ul>
           <li>
             <RouterLink to="/admin/profile" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
-              <img class="w-6 h-6 rounded-full"
-                   src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6X6SlR7kCahU2erUQtNwHMTGyznLddopKDA&usqp=CAU"
-              >
-              <span class="ml-4">{{ userStore.user.name }}</span>
+              <img v-if="userStore.user.avatar"
+                   :src="`${getLink(userStore.user.avatar.value)}`"
+                   class="w-9 h-9 rounded-full"
+              />
+              <span class="ml-3">{{ userStore.user.name }}</span>
             </RouterLink>
           </li>
             <a href="/admin/logout" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
@@ -64,6 +65,7 @@ import {defineComponent} from "vue"
 import {useUserStore} from "@/stores/user";
 import ThemeToggleButton from "@/components/ui/sidebar/ThemeToggleButton.vue";
 import Logo from "@/components/ui/sidebar/Logo.vue";
+import {getLink} from "@/utils/utils";
 
 export default defineComponent({
   name: 'Sidebar',
@@ -73,7 +75,6 @@ export default defineComponent({
   },
   setup(props, {emit}) {
     const userStore = useUserStore()
-
     const onCollapse = (key) => {
       document.getElementById('dropdown-' + key).classList.toggle('hidden')
     }
@@ -84,6 +85,7 @@ export default defineComponent({
 
     return {
       userStore,
+      getLink,
       onCollapse,
       onToggle
     }

@@ -58,9 +58,7 @@ export default defineComponent({
     const onSave = async () => {
       try {
         const formData = prepareFormData(currentValues.value)
-        
         await axios.post(APISettings.baseURL + `/user/update`, formData)
-        toast.success(APIMessage.SUCCESS_SAVE)
         router.go(0)
       } catch (error) {
         toast.error(APIMessage.ERROR_SAVE)

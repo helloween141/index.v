@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Modules\File\Entities\File;
 use Modules\Vpanel\Entities\User;
 
 class UserController extends Controller
@@ -24,9 +25,16 @@ class UserController extends Controller
         return view('vpanel::login');
     }
 
-    /**
-     * Create
-     */
+    public function getInfo(): JsonResponse
+    {
+        $response = null;
+        $userId = Auth::id();
+        if ($userId) {
+            $response = User::getRecord($userId);
+        }
+        return response()->json($response);
+    }
+
     public function create(Request $request): JsonResponse
     {
         try {
@@ -51,9 +59,6 @@ class UserController extends Controller
         return response()->json($response);
     }
 
-    /**
-     * Update
-     */
     public function update(Request $request): JsonResponse
     {
         try {
@@ -66,15 +71,15 @@ class UserController extends Controller
                 $user->password = Hash::make($request->new_password);
             }
 
-            $avatar = $request->file();
-
-            if ($avatar) {
-                print 13; die;
+            $file = $request->file('avatar');
+            if ($file) {
+                $uploadedFile = File::upload($file);
+                $user->avatar = $uploadedFile->id;
             }
 
             $user->save();
             $success = true;
-            $message = 'Пользователь успешно создан';
+            $message = 'Пользователь успешно обновлен';
         } catch (QueryException $ex) {
             $success = false;
             $message = $ex->getMessage();
@@ -87,9 +92,6 @@ class UserController extends Controller
         return response()->json($response);
     }
 
-    /**
-     * Login
-     */
     public function login(Request $request)
     {
         $credentials = $request->only('login', 'password');
@@ -103,9 +105,6 @@ class UserController extends Controller
         ])->onlyInput('email');
     }
 
-    /**
-     * Logout
-     */
     public function logout(Request $request): Redirector|Application|RedirectResponse
     {
         Auth::logout();

@@ -25,7 +25,7 @@ export const useUserStore = defineStore({
     actions: {
         async getUserData() {
             try {
-                const userInfo = await axios.get(APISettings.baseURL + `/user`)
+                const userInfo = await axios.get(APISettings.baseURL + `/user/get-info`)
                 this.auth = true
                 this.user = userInfo.data
             } catch (error) {

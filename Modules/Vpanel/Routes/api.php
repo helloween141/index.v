@@ -14,10 +14,7 @@ Route::group(['prefix' => 'vpanel', 'middleware' => 'auth'], function () {
     Route::post('/{moduleName}/{modelName}/sort-list', [MainRequestController::class, 'sortList']);
 
     Route::group(['prefix' => 'user'], function () {
-        Route::get('/', function () {
-            return Auth::user();
-        });
-        Route::post('/create', function (Request $request) {});
+        Route::get('/get-info', [UserController::class, 'getInfo']);
         Route::post('/update', [UserController::class, 'update']);
     });
 

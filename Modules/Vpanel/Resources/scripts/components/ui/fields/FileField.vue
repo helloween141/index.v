@@ -51,7 +51,7 @@
 <script>
 
 import {defineComponent, ref} from "vue";
-import {getStoragePath} from "@/utils/utils";
+import {getLink} from "@/utils/utils";
 
 export default defineComponent({
   name: 'FileField',
@@ -72,10 +72,6 @@ export default defineComponent({
       handleInput($event.target)
     }
 
-    const getLink = (path) => {
-      return path ? getStoragePath() + path : '#'
-    }
-
     const onReset = () => {
       currentValue.value = null
       emit('set-value', props.field.name, null)
@@ -90,11 +86,10 @@ export default defineComponent({
 
     return {
       currentValue,
-      getStoragePath,
+      getLink,
       onDrop,
       onChange,
       onReset,
-      getLink
     }
   }
 })

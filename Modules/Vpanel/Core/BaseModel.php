@@ -158,10 +158,8 @@ abstract class BaseModel extends Model
 
         if (class_exists(File::class) && count($files) > 0) {
             foreach ($files as $key => $file) {
-                $uploadedFile = File::uploadFile($file);
-                if ($uploadedFile) {
-                    $validatedData[$key] = $uploadedFile->id;
-                }
+                $uploadedFile = File::upload($file);
+                $validatedData[$key] = $uploadedFile->id;
             }
         }
 
