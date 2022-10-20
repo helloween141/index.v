@@ -1,6 +1,6 @@
 <template>
   <div>
-    <label :for="`dropzone-${key}`"
+    <label :for="`dropzone-${ukey}`"
            class="flex flex-col w-1/2 text-center bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
     >
       <div @dragover.prevent="onDrop"
@@ -23,7 +23,7 @@
           </p>
         </div>
       </div>
-      <input :id="`dropzone-${key}`" type="file" class="hidden" ref="file" @change="onChange($event)" />
+      <input :id="`dropzone-${ukey}`" type="file" class="hidden" ref="file" @change="onChange($event)" />
     </label>
     <div class="mt-3" v-if="currentValue">
       <a v-if="currentValue.id"
@@ -52,7 +52,7 @@ export default defineComponent({
   props: {
     field: Object,
     value: [String, Number, Object],
-    key: String
+    ukey: String
   },
   emits: ['set-value'],
   setup(props, {emit}) {

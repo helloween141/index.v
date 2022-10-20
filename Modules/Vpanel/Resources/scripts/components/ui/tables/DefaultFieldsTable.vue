@@ -97,7 +97,7 @@
               v-else-if="field.type === 'image'"
               :field="field"
               :value="values[field.name]"
-              :key="`${field.type}${key}`"
+              :ukey="`${field.type}${key}`"
               @set-value="setValue"
           />
 
@@ -105,9 +105,10 @@
               v-else-if="field.type === 'file'"
               :field="field"
               :value="values[field.name]"
-              :key="`${field.type}${key}`"
+              :ukey="`${field.type}${key}`"
               @set-value="setValue"
           />
+
         </td>
       </tr>
     </tbody>
