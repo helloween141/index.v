@@ -39,8 +39,8 @@ class Role extends BaseModel
                     ->showInFilter()
                     ->showInSearch()
             )
-            ->setModelTitle('Теги')
-            ->setRecordTitle('тег')
-            ->setAccusativeRecordTitle('тег');
+            ->setModelTitle('Роли')
+            ->setRecordTitle('роль')
+            ->setAccusativeRecordTitle('роль');
     }
 }

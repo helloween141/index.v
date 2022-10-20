@@ -19,9 +19,6 @@ export const useUserStore = defineStore({
         auth: false,
         user: {}
     }),
-    getters: {
-        getUser() { return this.user }
-    },
     actions: {
         async getUserData() {
             try {

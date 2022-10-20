@@ -110,9 +110,8 @@ abstract class BaseModel extends Model
                 $query->leftJoin(...$join);
             }
         }
-        $query->where("{$tableName}.id", '=', $id);
 
-        $record = $query->get();
+        $record = $query->where("{$tableName}.id", '=', $id)->get();
 
         if ($structure->isSingle() && count($record) === 0) {
             return true;
@@ -120,7 +119,7 @@ abstract class BaseModel extends Model
 
         Utils::prepareModelData($record);
 
-        return $record[0];
+        return $record->get(0);
     }
 
     public static function saveRecord($data, $id = 0, $files = [])
@@ -137,11 +136,19 @@ abstract class BaseModel extends Model
                     $data[$key] = $field->getDefaultValue();
                 }
             }
+
             if ($field->isRequired()) {
                 $requiredFields = [
                     ...$requiredFields,
                     $field->getName() => 'required'
                 ];
+            }
+
+            if ($field->getType() === 'password') {
+                if (isset($data['new_password'])) {
+                    $data['password'] = bcrypt($data['new_password']);
+                    unset($data['new_password']);
+                }
             }
         }
 
@@ -177,7 +184,8 @@ abstract class BaseModel extends Model
         ];
     }
 
-    public static function sortList($data): void {
+    public static function sortList($data): void
+    {
         $records = static::query()
             ->whereIn('id', $data)
             ->get();

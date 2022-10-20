@@ -59,7 +59,6 @@
             </a>
         </ul>
       </div>
-
     </div>
   </aside>
 </template>

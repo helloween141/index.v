@@ -19,10 +19,10 @@
 
 <script lang="ts">
 import {defineComponent, ref} from "vue";
-import router from "@/router";
-import EditorActionPanel from "@/components/ui/EditorActionPanel.vue";
-import {getRouteParameters} from "@/utils/utils";
-import {loadList} from "@/api/actionEditor";
+import router from "../../../../../Vpanel/Resources/scripts/router";
+import EditorActionPanel from "../../../../../Vpanel/Resources/scripts/components/ui/EditorActionPanel.vue";
+import {getRouteParameters} from "../../../../../Vpanel/Resources/scripts/utils/utils";
+import {loadList} from "../../../../../Vpanel/Resources/scripts/api/actionEditor";
 import {useRoute} from "vue-router";
 import FileEditorTable from "./FileEditorTable.vue";
 

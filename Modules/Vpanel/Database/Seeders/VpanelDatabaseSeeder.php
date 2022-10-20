@@ -5,6 +5,7 @@ namespace Modules\Vpanel\Database\Seeders;
 use Illuminate\Database\Seeder;
 use Modules\Vpanel\Entities\Role;
 use Modules\Vpanel\Entities\User;
+use Psy\Util\Json;
 
 class VpanelDatabaseSeeder extends Seeder
 {
@@ -15,18 +16,19 @@ class VpanelDatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory()->create([
-            'name' => 'Администратор',
-            'login' => 'admin',
-            'email' => 'admin@test.ru',
-            'password' => bcrypt('123')
-        ]);
-
-        User::factory(3)->create();
-
         Role::factory()->create([
             'name' => 'ROOT',
             'description' => 'Администратор'
         ]);
+
+        User::factory()->create([
+            'name' => 'Администратор',
+            'login' => 'admin',
+            'email' => 'admin@test.ru',
+            'password' => bcrypt('123'),
+            'role' => Json::encode(['ROOT'])
+        ]);
+
+        User::factory(3)->create();
     }
 }

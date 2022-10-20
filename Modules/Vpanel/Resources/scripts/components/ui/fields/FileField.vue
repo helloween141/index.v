@@ -9,7 +9,7 @@
         <div v-if="currentValue && currentValue.name">
           <div v-if="field.type === 'image'">
             <p class="flex flex-col items-center text-sm text-gray-500 dark:text-gray-400">
-              <img class="w-6/12 sm:w-4/12" :src="getLink(currentValue.value)"/>
+              <img class="w-4/12 sm:w-2/12" :src="getLink(currentValue.value)"/>
               <span class="font-semibold">{{ currentValue.name }}</span>
             </p>
           </div>

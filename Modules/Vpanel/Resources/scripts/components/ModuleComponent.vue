@@ -47,7 +47,7 @@ export default defineComponent({
         if (recordId >= 0) {
           modelValues.value = await loadRecord(moduleName, modelName, recordId)
           const formComponent = modelInterface.value['formComponent']
-          targetComponent.value = formComponent ? loadCustomComponent(formComponent, moduleName) : loadFormComponent()
+          targetComponent.value = formComponent ? loadCustomComponent(formComponent, moduleName, 'forms') : loadFormComponent()
         } else {
           let filter = props.defaultFilter
           let page = 1
@@ -62,21 +62,30 @@ export default defineComponent({
 
           modelValues.value = await loadList(moduleName, modelName, page, filter)
           const editorComponent = modelInterface.value['editorComponent']
-          targetComponent.value = editorComponent ? loadCustomComponent(editorComponent, moduleName) : loadEditorComponent()
+          targetComponent.value = editorComponent ? loadCustomComponent(editorComponent, moduleName, 'editors') : loadEditorComponent()
         }
       }
     }
 
-    const loadCustomComponent = (component: string, moduleName: string) => {
-      return defineAsyncComponent(() => import('/Modules/' + moduleName + '/Resources/scripts/components/' + component + '.vue'))
+    const loadCustomComponent = (component: string, moduleName: string, type: string) => {
+      return defineAsyncComponent(() => import(
+          /* @vite-ignore */
+          '/Modules/' + moduleName + '/Resources/scripts/components/' + type + '/' + component + '.vue')
+      )
     }
 
     const loadEditorComponent = () => {
-      return defineAsyncComponent(() => import('../components/editors/DefaultModelEditor.vue'))
+      return defineAsyncComponent(() => import(
+          /* @vite-ignore */
+          '../components/editors/DefaultModelEditor.vue')
+      )
     }
 
     const loadFormComponent = () => {
-      return defineAsyncComponent(() => import('../components/forms/DefaultModelForm.vue'))
+      return defineAsyncComponent(() => import(
+          /* @vite-ignore */
+          '../components/forms/DefaultModelForm.vue')
+      )
     }
 
     watch(props, async (to) => {

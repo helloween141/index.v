@@ -1,7 +1,10 @@
 <template>
   <main>
     <div class="flex">
-      <Sidebar @on-toggle-theme="onToggleTheme" :menu="menu"/>
+      <Sidebar
+          @on-toggle-theme="onToggleTheme"
+          :menu="menu"
+      />
       <RouterView
           v-if="!loaderStore.loading"
           class="w-full p-5" />
@@ -43,6 +46,7 @@ export default defineComponent({
         document.documentElement.classList.remove('dark');
       }
     }
+
     applyTheme()
 
     const menu = ref([])
@@ -59,6 +63,7 @@ export default defineComponent({
     return {
       onToggleTheme,
       themeStore,
+      userStore,
       loaderStore,
       menu
     }

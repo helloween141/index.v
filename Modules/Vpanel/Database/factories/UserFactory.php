@@ -5,6 +5,7 @@ namespace Modules\Vpanel\Database\factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use Modules\Vpanel\Entities\User;
+use Psy\Util\Json;
 
 class UserFactory extends Factory
 {
@@ -20,11 +21,11 @@ class UserFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'login' => $this->faker->firstName(),
+            'login' => $this->faker->userName(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => bcrypt('123'),
-            'remember_token' => Str::random(10),
+            'remember_token' => Str::random(10)
         ];
     }
 

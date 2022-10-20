@@ -14,6 +14,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Modules\Vpanel\Core\BaseModel;
 use Modules\Vpanel\Core\Fields\ImageField;
+use Modules\Vpanel\Core\Fields\JsonField;
 use Modules\Vpanel\Core\Fields\PasswordField;
 use Modules\Vpanel\Core\Fields\StringField;
 use Modules\Vpanel\Core\ModelStructure;
@@ -82,6 +83,13 @@ class User extends BaseModel implements
                     ->setName('avatar')
                     ->setTitle('Аватар')
             )
+            ->addField(
+                StringField::create()
+                    ->setName('role')
+                    ->setTitle('Роль')
+                    ->hideFromForm()
+            )
+            ->setFormComponent('UserModelForm')
             ->setModelTitle('Пользователи')
             ->setRecordTitle('пользователь')
             ->setAccusativeRecordTitle('пользователя');

@@ -6,7 +6,7 @@
            @click="onClick(item.id)"
       >
         <div class="border w-full">
-          <img :src="getLink(item.path)" :alt="item.name"/>
+          <img :src="getLink(item.path)" :alt="item.name" class="inline"/>
         </div>
         <div>
           <span>{{item.name}}</span>
@@ -25,8 +25,8 @@
 
 <script lang="ts">
 import {defineComponent} from "vue";
-import Pagination from "@/components/ui/Pagination.vue";
-import {getLink} from "@/utils/utils";
+import Pagination from "../../../../../Vpanel/Resources/scripts/components/ui/Pagination.vue";
+import {getLink} from "../../../../../Vpanel/Resources/scripts/utils/utils";
 import Draggable from 'vuedraggable'
 
 export default defineComponent({

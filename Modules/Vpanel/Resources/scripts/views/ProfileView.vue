@@ -45,7 +45,6 @@ export default defineComponent({
     const currentValues = ref(null)
     const modelInterface = ref(null)
 
-
     onMounted(async () => {
       modelInterface.value = await loadInterface('Vpanel', 'User')
       currentValues.value = {...currentValues.value, ...userStore.user }

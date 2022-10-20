@@ -93,10 +93,9 @@ export const setDefaultFieldsValues = (fields: any, data: any) => {
     }
 
     fields.forEach(field => {
-      result = {...result, ...{[field.name]: data[field.name] ? data[field.name] : field.defaultValue}}
+      result = {...result, ...{[field.name]: (data[field.name] ? data[field.name] : field.defaultValue)}}
     })
   }
-
   return result
 }
 
@@ -105,7 +104,7 @@ export const formatDate = (date) => {
 }
 
 export const getLink = (value) => {
-  return `${STORAGE_PATH}${value}`
+  return value ? `${STORAGE_PATH}${value}` : ''
 }
 
 export const parseModelPath = (path: string) => {
