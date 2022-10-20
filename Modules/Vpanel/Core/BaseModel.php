@@ -2,13 +2,9 @@
 
 namespace Modules\Vpanel\Core;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Modules\File\Entities\File;
-use Modules\Vpanel\Core\Fields\Field;
+use Modules\Archive\Entities\File;
 
 abstract class BaseModel extends Model
 {

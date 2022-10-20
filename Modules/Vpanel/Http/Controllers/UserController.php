@@ -11,11 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
-use Modules\File\Entities\File;
+use Modules\Archive\Entities\File;
 use Modules\Vpanel\Entities\User;
 
 class UserController extends Controller

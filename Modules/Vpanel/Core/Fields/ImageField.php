@@ -1,7 +1,7 @@
 <?php
 namespace Modules\Vpanel\Core\Fields;
 
-use Modules\File\Entities\File;
+use Modules\Archive\Entities\File;
 use Modules\Vpanel\Core\BaseModel;
 
 class ImageField extends Field

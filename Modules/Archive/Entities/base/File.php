@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\File\Entities\base;
+namespace Modules\Archive\Entities\base;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Modules\File\Database\factories\FileFactory;
+use Modules\Archive\Database\factories\FileFactory;
 use Modules\Vpanel\Core\BaseModel;
 use Modules\Vpanel\Core\Fields\StringField;
 use Modules\Vpanel\Core\ModelStructure;
@@ -31,16 +31,6 @@ class File extends BaseModel
                     ->required()
                     ->showInSearch()
             )
-//            ->addField(
-//                SelectField::create()
-//                    ->setName('type')
-//                    ->setTitle('Тип')
-//                    ->required()
-//                    ->setOptions([
-//                        'image' => 'Изображение',
-//                        'file' => 'Файл',
-//                    ])
-//            )
             ->addField(
                 StringField::create()
                     ->setName('path')
@@ -48,8 +38,8 @@ class File extends BaseModel
                     ->hideFromForm()
             )
             ->setEditorComponent('FileModelEditor')
-            ->setModelTitle('Файлы и изображения')
-            ->setRecordTitle('')
-            ->setAccusativeRecordTitle('');
+            ->setModelTitle('Файлы')
+            ->setRecordTitle('файл')
+            ->setAccusativeRecordTitle('файл');
     }
 }

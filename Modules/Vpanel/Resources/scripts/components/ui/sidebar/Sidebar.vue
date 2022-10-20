@@ -31,7 +31,7 @@
                           class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
               >
                 <i :class="[item.icon, 'text-gray-500 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white dark:text-gray-400']"></i>
-                <span class="ml-4">{{ item.title }}</span>
+                <span class="ml-3">{{ item.title }}</span>
               </RouterLink>
             </div>
           </li>
@@ -59,6 +59,7 @@
             </a>
         </ul>
       </div>
+
     </div>
   </aside>
 </template>

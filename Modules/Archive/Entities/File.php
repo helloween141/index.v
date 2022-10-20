@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\File\Entities;
+namespace Modules\Archive\Entities;
 
 
 use Illuminate\Http\UploadedFile;

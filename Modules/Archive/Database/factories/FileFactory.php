@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\File\Database\factories;
+namespace Modules\Archive\Database\factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Modules\File\Entities\base\File;
+use Modules\Archive\Entities\base\File;
 
 class FileFactory extends Factory
 {
