@@ -93,11 +93,19 @@
               @set-value="setValue"
           />
 
-          <FileField
-              v-else-if="field.type === 'file' || field.type === 'image'"
+          <ImageField
+              v-else-if="field.type === 'image'"
               :field="field"
               :value="values[field.name]"
-              :key="key"
+              :key="`${field.type}${key}`"
+              @set-value="setValue"
+          />
+
+          <FileField
+              v-else-if="field.type === 'file'"
+              :field="field"
+              :value="values[field.name]"
+              :key="`${field.type}${key}`"
               @set-value="setValue"
           />
         </td>
@@ -121,11 +129,12 @@ import FileField from "@/components/ui/fields/FileField.vue";
 import Tooltip from "@/components/ui/Tooltip.vue";
 import PasswordField from "@/components/ui/fields/PasswordField.vue";
 import {getShowConditions} from "@/utils/utils";
+import ImageField from "@/components/ui/fields/ImageField.vue";
 
 export default defineComponent({
   name: 'DefaultFieldsTable',
   components: {
-    PasswordField, Tooltip, FileField, PointerModalField, NumberField, StringField, BoolField, DateField,
+    ImageField, PasswordField, Tooltip, FileField, PointerModalField, NumberField, StringField, BoolField, DateField,
     PointerField, SelectField, HtmlField, TextField
   },
   props: {
