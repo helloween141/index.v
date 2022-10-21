@@ -21,7 +21,7 @@
 <script lang="ts">
 import {defineComponent, onMounted, ref} from "vue";
 import {parseModelPath} from "@/utils/utils";
-import {loadList} from "@/api/actionEditor";
+import {loadInterface, loadList} from "@/api/actionEditor";
 
 export default defineComponent({
   name: 'PointerField',
@@ -31,19 +31,19 @@ export default defineComponent({
   },
   emits: ['set-value'],
   setup(props, {emit}) {
-    const identifyLabel = props.field.identify || 'name'
+    const identifyLabel = ref()
     const options = ref([])
-    const selectedOption = ref()
+    const selectedOption = ref(props.value)
 
     onMounted(async () => {
       const pointerPath = parseModelPath(props.field.model)
+
+      const pointerModel = await loadInterface(pointerPath.module, pointerPath.model)
       options.value = await loadList(pointerPath.module, pointerPath.model)
 
-      if (options.value.length > 0) {
-        const currentOption = (options.value.find(option => option.id === props.value?.id))
-        if (currentOption) {
-          selectedOption.value = currentOption[identifyLabel]
-        }
+      const identifyField = pointerModel.fields.find(field => field.identify)
+      if (identifyField) {
+        identifyLabel.value = identifyField['name']
       }
     })
 

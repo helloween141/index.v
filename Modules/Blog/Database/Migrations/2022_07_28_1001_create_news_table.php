@@ -26,6 +26,7 @@ return new class extends Migration
             $table->foreignId('file')->nullable()->constrained('files')->onDelete('cascade');
             $table->foreignId('image')->nullable()->constrained('images')->onDelete('cascade');
             $table->foreignId('author_id')->constrained('authors')->onDelete('cascade');
+            $table->foreignId('parent_id')->nullable()->constrained('news')->onDelete('cascade');
             $table->integer('sort')->default(0);
         });
     }
