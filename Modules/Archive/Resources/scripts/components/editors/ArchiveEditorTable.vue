@@ -23,7 +23,7 @@
     />
   </div>
   <div v-else>
-    <p class="font-normal text-gray-700 dark:text-gray-400">Изображения не найдены!</p>
+    <p class="font-normal text-gray-700 dark:text-gray-400">Записи не найдены!</p>
   </div>
 </template>
 

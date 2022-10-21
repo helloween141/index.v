@@ -42,7 +42,7 @@
         <ul>
           <li>
             <RouterLink to="/admin/profile" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
-              <img v-if="userStore.user.avatar"
+              <img v-if="userStore.user.avatar?.value"
                    :src="getLink(userStore.user.avatar.value)"
                    class="w-9 h-9 rounded-full"
               />
