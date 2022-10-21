@@ -8,6 +8,8 @@ use Modules\Vpanel\Core\Fields\TextField;
 
 class ModelStructure
 {
+    protected string $alias = '';
+
     protected array $fields = [];
 
     protected array $childModel = [];
@@ -39,19 +41,19 @@ class ModelStructure
         return $this;
     }
 
-    public function setModelTitle($title): ModelStructure
+    public function setModelTitle(string $title): ModelStructure
     {
         $this->title = $title;
         return $this;
     }
 
-    public function setAccusativeRecordTitle($title): ModelStructure
+    public function setAccusativeRecordTitle(string $title): ModelStructure
     {
         $this->accusativeRecordTitle = $title;
         return $this;
     }
 
-    public function setRecordTitle($title): ModelStructure
+    public function setRecordTitle(string $title): ModelStructure
     {
         $this->recordTitle = $title;
         return $this;
@@ -63,7 +65,13 @@ class ModelStructure
         return $this;
     }
 
-    public function setEditorComponent($name): ModelStructure
+    public function setAlias(string $alias): ModelStructure
+    {
+        $this->alias = $alias;
+        return $this;
+    }
+
+    public function setEditorComponent(string $name): ModelStructure
     {
         $this->editorComponent = $name;
         return $this;

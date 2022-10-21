@@ -4,12 +4,12 @@ namespace Modules\Archive\Entities\base;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Modules\Archive\Database\factories\FileFactory;
+use Modules\Archive\Database\factories\ImageFactory;
 use Modules\Vpanel\Core\BaseModel;
 use Modules\Vpanel\Core\Fields\StringField;
 use Modules\Vpanel\Core\ModelStructure;
 
-class File extends BaseModel
+class Image extends BaseModel
 {
     use HasFactory;
 
@@ -17,7 +17,7 @@ class File extends BaseModel
 
     protected static function newFactory(): Factory
     {
-        return new FileFactory();
+        return new ImageFactory();
     }
 
     public static function defineStructure(): ModelStructure
@@ -37,10 +37,10 @@ class File extends BaseModel
                     ->setTitle('Путь')
                     ->hideFromForm()
             )
-            ->setAlias('file')
+            ->setAlias('image')
             ->setEditorComponent('ArchiveModelEditor')
-            ->setModelTitle('Файлы')
-            ->setRecordTitle('файл')
-            ->setAccusativeRecordTitle('файл');
+            ->setModelTitle('Изображения')
+            ->setRecordTitle('изображение')
+            ->setAccusativeRecordTitle('изображение');
     }
 }

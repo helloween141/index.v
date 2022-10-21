@@ -14,7 +14,6 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Modules\Vpanel\Core\BaseModel;
 use Modules\Vpanel\Core\Fields\ImageField;
-use Modules\Vpanel\Core\Fields\JsonField;
 use Modules\Vpanel\Core\Fields\PasswordField;
 use Modules\Vpanel\Core\Fields\StringField;
 use Modules\Vpanel\Core\ModelStructure;

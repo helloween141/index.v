@@ -5,17 +5,17 @@ namespace Modules\Archive\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
 
-class FileServiceProvider extends ServiceProvider
+class ArchiveServiceProvider extends ServiceProvider
 {
     /**
      * @var string $moduleName
      */
-    protected $moduleName = 'File';
+    protected $moduleName = 'Archive';
 
     /**
      * @var string $moduleNameLower
      */
-    protected $moduleNameLower = 'file';
+    protected $moduleNameLower = 'archive';
 
     /**
      * Boot the application events.

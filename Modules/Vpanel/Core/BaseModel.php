@@ -4,7 +4,7 @@ namespace Modules\Vpanel\Core;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
-use Modules\Archive\Entities\File;
+use Modules\Archive\Services\UploadService;
 
 abstract class BaseModel extends Model
 {
@@ -118,7 +118,7 @@ abstract class BaseModel extends Model
         return $record->get(0);
     }
 
-    public static function saveRecord($data, $id = 0, $files = [])
+    public static function saveRecord($data, $id = 0, $uploads = [])
     {
         $structure = static::getStructure();
         if (!$structure) {
@@ -159,10 +159,10 @@ abstract class BaseModel extends Model
 
         $validatedData = $validator->getData();
 
-        if (class_exists(File::class) && count($files) > 0) {
-            foreach ($files as $key => $file) {
-                $uploadedFile = File::upload($file);
-                $validatedData[$key] = $uploadedFile->id;
+        if (count($uploads) > 0) {
+            foreach ($uploads as $key => $upload) {
+                $uploadedEntity = (new UploadService())($upload);
+                $validatedData[$key] = $uploadedEntity->id;
             }
         }
 

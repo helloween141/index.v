@@ -2,12 +2,16 @@
   <div v-if="values && values.data.length > 0">
     <div class="container grid grid-cols-4 gap-fx mx-auto">
       <div v-for="item in values.data"
-           class="w-full rounded cursor-pointer text-center"
+           class="flex flex-col justify-between w-full rounded cursor-pointer text-center border"
            @click="onClick(item.id)"
       >
-        <div class="border w-full">
+        <div v-if="model.alias === 'image'" class="w-full">
           <img :src="getLink(item.path)" :alt="item.name" class="inline"/>
         </div>
+        <div v-else-if="model.alias === 'file'" class="w-full p-2">
+          <i class="fa fa-2x fa-file"></i>
+        </div>
+
         <div>
           <span>{{item.name}}</span>
         </div>
@@ -19,7 +23,7 @@
     />
   </div>
   <div v-else>
-    <p class="font-normal text-gray-700 dark:text-gray-400">Записи не найдены!</p>
+    <p class="font-normal text-gray-700 dark:text-gray-400">Изображения не найдены!</p>
   </div>
 </template>
 
@@ -30,7 +34,7 @@ import {getLink} from "../../../../../Vpanel/Resources/scripts/utils/utils";
 import Draggable from 'vuedraggable'
 
 export default defineComponent({
-  name: 'FileEditorTable',
+  name: 'ImageEditorTable',
   components: {Pagination, Draggable},
   emits: ['select-record', 'set-page', 'change-sort'],
   props: {

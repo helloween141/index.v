@@ -3,9 +3,8 @@
 namespace Modules\Archive\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Eloquent\Model;
 
-class FileDatabaseSeeder extends Seeder
+class ArchiveDatabaseSeeder extends Seeder
 {
     /**
      * Run the database seeds.

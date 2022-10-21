@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('login')->unique();
             $table->string('email')->unique();
-            $table->foreignId('avatar')->nullable()->constrained('files')->onDelete('cascade');
+            $table->foreignId('avatar')->nullable()->constrained('images')->onDelete('cascade');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean('blocked')->default(false);

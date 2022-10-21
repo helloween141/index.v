@@ -13,6 +13,7 @@ use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Modules\Archive\Entities\File;
+use Modules\Archive\Services\UploadService;
 use Modules\Vpanel\Entities\User;
 
 class UserController extends Controller
@@ -68,9 +69,9 @@ class UserController extends Controller
                 $user->password = Hash::make($request->new_password);
             }
 
-            $file = $request->file('avatar');
-            if ($file) {
-                $uploadedFile = File::upload($file);
+            $avatar = $request->file('avatar');
+            if ($avatar) {
+                $uploadedFile = (new UploadService())($avatar);
                 $user->avatar = $uploadedFile->id;
             }
 

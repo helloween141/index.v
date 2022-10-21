@@ -6,5 +6,6 @@
     "Vpanel": true,
     "Site": true,
     "Statistic": true,
-    "File": true
+    "File": true,
+    "Archive": true
 }

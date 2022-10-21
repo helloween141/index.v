@@ -104,7 +104,7 @@ export const formatDate = (date) => {
 }
 
 export const getLink = (value) => {
-  return value ? `${STORAGE_PATH}${value}` : ''
+  return value ? `${STORAGE_PATH}/${value}` : ''
 }
 
 export const parseModelPath = (path: string) => {
