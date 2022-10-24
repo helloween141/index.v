@@ -8,6 +8,8 @@ use Modules\Archive\Services\UploadService;
 
 abstract class BaseModel extends Model
 {
+    const ITEMS_PER_PAGE = 3;
+
     public $timestamps = false;
 
     protected $guarded = [];
@@ -24,7 +26,7 @@ abstract class BaseModel extends Model
         return null;
     }
 
-    public static function getList(array $params = [])
+    public static function getList(array $params = [], $parentId = null)
     {
         $structure = static::getStructure();
         if (!$structure) {
@@ -67,6 +69,10 @@ abstract class BaseModel extends Model
             }
         }
 
+        if ($structure->isRecursive()) {
+            $query->where("{$tableName}.parent_id", $parentId);
+        }
+
         if ($structure->isSortable()) {
             $orderKey = 'sort';
             $orderDirection = 'asc';
@@ -78,12 +84,19 @@ abstract class BaseModel extends Model
         $query->orderBy("{$tableName}." . $orderKey, $orderDirection);
 
         if ($page > 0) {
-            $paginatedList = $query->paginate(3, '[*]', 'page', $page);
-            Utils::prepareModelData($paginatedList->getCollection());
-            return $paginatedList;
+            $resultList = $query->paginate(self::ITEMS_PER_PAGE);
+            Utils::prepareModelData($resultList->getCollection());
+        } else {
+            $resultList = $query->get();
         }
 
-        return $query->get();
+        if ($structure->isRecursive()) {
+            foreach ($resultList as $item) {
+                $item->children = static::getList([], $item->id);
+            }
+        }
+
+        return $resultList;
     }
 
     public static function getRecord($id)

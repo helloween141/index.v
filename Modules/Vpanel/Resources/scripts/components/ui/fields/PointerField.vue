@@ -37,7 +37,6 @@ export default defineComponent({
 
     onMounted(async () => {
       const pointerPath = parseModelPath(props.field.model)
-
       const pointerModel = await loadInterface(pointerPath.module, pointerPath.model)
       options.value = await loadList(pointerPath.module, pointerPath.model)
 

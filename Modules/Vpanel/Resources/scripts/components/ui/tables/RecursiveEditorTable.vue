@@ -1,14 +1,14 @@
 <template>
   <div v-if="rows && rows.length > 0">
     <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
-      {{rows}}
+      {{ rows }}
       <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead v-if="headers" class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-          <tr>
-            <th v-for="header in headers" scope="col" class="py-3 px-6">
-              {{ header.title }}
-            </th>
-          </tr>
+        <tr>
+          <th v-for="header in headers" scope="col" class="py-3 px-6">
+            {{ header.title }}
+          </th>
+        </tr>
         </thead>
         <Draggable
             v-model="rows"
@@ -17,21 +17,21 @@
             tag="tbody"
             item-key="sort"
         >
-            <template #item="{element}">
-              <tr
-                  @click="onClick(element.id)"
-                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer">
-                <td v-for="(val, key, index) in element"
+          <template #item="{element}">
+            <tr
+                @click="onClick(element.id)"
+                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer">
+              <td v-for="(val, key, index) in element"
                   :key="index"
-                  v-show="key !== 'id'"
+                  v-show="key !== 'id' && key !== 'children'"
                   class="py-4 px-6"
-                >
-                  <img v-if="val && val.isImage" :src="val.src" class="w-6/12 sm:w-4/12" />
-                  <span v-if="val && !val.isImage">{{ val }}</span>
-                </td>
-              </tr>
-            </template>
-          </Draggable>
+              >
+                <img v-if="val && val.isImage" :src="val.src" class="w-6/12 sm:w-4/12"/>
+                <span v-if="val && !val.isImage">{{ val }}</span>
+              </td>
+            </tr>
+          </template>
+        </Draggable>
       </table>
     </div>
     <Pagination
@@ -58,7 +58,7 @@ export default defineComponent({
     model: Object,
     values: Object
   },
-  setup(props, { emit }) {
+  setup(props, {emit}) {
     let headers = ref()
     let rows = ref()
 
@@ -78,7 +78,7 @@ export default defineComponent({
 
     watch(() => props.values, () => {
       init()
-    }, { deep: true })
+    }, {deep: true})
 
     const onClick = (recordId: number) => {
       emit('select-record', recordId)

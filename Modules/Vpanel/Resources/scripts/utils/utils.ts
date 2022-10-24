@@ -78,6 +78,9 @@ export const getRowsForEditorTable = (fields: any, data: any) => {
           obj = {...obj, ...mergeValue}
         }
       })
+      if (item.children) {
+        obj = {...obj, ...{children: item.children}}
+      }
       result.push(obj)
     })
   }
